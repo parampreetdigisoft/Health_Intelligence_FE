@@ -8,7 +8,11 @@ import {
   SimpleChanges,
   ViewChild,
 } from "@angular/core";
+<<<<<<< HEAD
 import { CountryVM } from "../../../../core/models/CountryVM";
+=======
+import { CityVM } from "../../../../core/models/CityVM";
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {
   InviteUserDto,
@@ -27,7 +31,11 @@ import { UserService } from "src/app/core/services/user.service";
 })
 export class AddUpdateAnalystComponent implements OnInit {
   @Input() analyst: GetUserByRoleResponse | null = null;
+<<<<<<< HEAD
   @Input() countries: CountryVM[] | null = [];
+=======
+  @Input() cities: CityVM[] | null = [];
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   @Output() analystChange = new EventEmitter<UpdateInviteUserDto | null>();
   @Output() closeAnalystModel = new EventEmitter<boolean>();
   @Output() bulkImportChange = new EventEmitter<UpdateInviteUserDto[] | null>();
@@ -48,8 +56,13 @@ export class AddUpdateAnalystComponent implements OnInit {
       fullName: [this.analyst?.fullName, [Validators.required]],
       email: [this.analyst?.email, [Validators.required, Validators.email]],
       phone: [this.analyst?.phone, [Validators.required]],
+<<<<<<< HEAD
       country: [
         this.analyst?.countries?.map((x) => x?.countryID) ?? [],
+=======
+      city: [
+        this.analyst?.cities?.map((x) => x?.cityID) ?? [],
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         [Validators.required],
       ],
     });
@@ -64,6 +77,7 @@ export class AddUpdateAnalystComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     if (this.analystForm.valid) {
+<<<<<<< HEAD
       const countryData: UpdateInviteUserDto = {
         ...this.analystForm.value,
         userID: this.analyst?.userID ?? 0,
@@ -74,13 +88,30 @@ export class AddUpdateAnalystComponent implements OnInit {
   }
   downloadTemplate() {
     const headers = ["FullName", "Email", "Phone", "CountryName"];
+=======
+      const cityData: UpdateInviteUserDto = {
+        ...this.analystForm.value,
+        userID: this.analyst?.userID ?? 0,
+        cityID: this.analystForm.value.city,
+      };
+      this.analystChange.emit(cityData);
+    }
+  }
+  downloadTemplate() {
+    const headers = ["FullName", "Email", "Phone", "CityName"];
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 
     const sampleRow = {
       FullName: "FullName of Analyst",
       Email: "Enter Email of Analyst",
       Phone: "Enter Phone Number of Analyst",
+<<<<<<< HEAD
       CountryName:
         "Enter country seprated by comma, like :- India, USA, UK",
+=======
+      CityName:
+        "Enter city seprated by comma, like :- Chandigarh, Mohali, Swar",
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     };
 
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([sampleRow], {
@@ -184,7 +215,11 @@ export class AddUpdateAnalystComponent implements OnInit {
           phone,
           password: email,
           role: UserRoleValue.Analyst,
+<<<<<<< HEAD
           countryID: this.getCountryByName(cityName),
+=======
+          cityID: this.getCityByName(cityName),
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         };
         excelData.push(dto);
       }
@@ -193,12 +228,21 @@ export class AddUpdateAnalystComponent implements OnInit {
     reader.readAsBinaryString(target.files[0]);
   }
 
+<<<<<<< HEAD
   getCountryByName(countryNames: string): number[] {
     if (!countryNames) return [];
     return countryNames
       .split(",")
       .map((name) => name.trim())
       .map((name) => this.countries?.find((c) => c.countryName === name)?.countryID)
+=======
+  getCityByName(cityNames: string): number[] {
+    if (!cityNames) return [];
+    return cityNames
+      .split(",")
+      .map((name) => name.trim())
+      .map((name) => this.cities?.find((c) => c.cityName === name)?.cityID)
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       .filter((id): id is number => id !== undefined);
   }
 

@@ -2,7 +2,11 @@
 	<div class="row justify-content-between align-items-center">
 		<div class="col-md-auto">
 			<h3 class="page_head">
+<<<<<<< HEAD
 				Countries Performance & Comparison
+=======
+				Cities Performance & Comparison
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 			</h3>
 		</div>
 		<div class="col-auto ms-auto">
@@ -40,6 +44,7 @@
 		</div>
 		<div class="col-md-3">
 			<div class="compare_select input_field input_flex">
+<<<<<<< HEAD
 				<ng-select [items]="countries"
 					[multiple]="true"
 					[searchable]="true"
@@ -49,17 +54,36 @@
 					(change)="kpiChanged()"
 					bindValue="countryID"
 					bindLabel="countryName"
+=======
+				<ng-select [items]="cities"
+					[multiple]="true"
+					[searchable]="true"
+					[placeholder]="selectedCities.length ? '' : 'Select Cities'"
+					[(ngModel)]="selectedCities"
+					[maxSelectedItems]="4"
+					(change)="kpiChanged()"
+					bindValue="cityID"
+					bindLabel="cityName"
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 					class="form-control analyst_multi_select">
 					<ng-template ng-label-tmp
 						let-item="item"
 						class="select_item">
+<<<<<<< HEAD
 						{{ item.countryName }}
+=======
+						{{ item.cityName }}
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 					</ng-template>
 
 
 					<ng-template ng-option-tmp
 						let-item="item">
+<<<<<<< HEAD
 						{{ item.countryName }}, {{ item.continent }} ({{ item.score?.toFixed(1) || 'NA'}})
+=======
+						{{ item.cityName }}, {{ item.state }} ({{ item.score?.toFixed(1) || 'NA'}})
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 					</ng-template>
 				</ng-select>
 
@@ -90,7 +114,11 @@
 			[currentPage]="currentPage"
 			[pageSize]="pageSize"
 			[isLoader]="isLoader"
+<<<<<<< HEAD
 			(pageChange)="compareCountries($event)"></app-pagination>
+=======
+			(pageChange)="compareCities($event)"></app-pagination>
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 	</ng-container>
 
 
@@ -102,6 +130,7 @@
 					<th>KPI Name</th>
 
 
+<<<<<<< HEAD
 					<th *ngFor="let country of chartTableData[0].countryValues">
 						<div class="country_piller compare_piller">
 							<div class="position-relative country_card_outter">
@@ -117,6 +146,23 @@
 													<p *ngIf="isAiViewEnabled"
 														class="city_cards_p">
 														AI Score : {{ getCountryScore(country.countryID,true) }}
+=======
+					<th *ngFor="let city of chartTableData[0].cityValues">
+						<div class="city_piller compare_piller">
+							<div class="position-relative city_card_outter">
+								<div class="city_card">
+									<div class="city_card_inner">
+										<div class="melbourne-card-text">
+											<div class="card_title">
+												<h1 class="city_cards_h1">{{ city.cityName }}</h1>
+												<div class="header_Score">
+													<p class="city_cards_p">
+														Evaluation : {{ getCityScore(city.cityID) }}
+													</p>
+													<p *ngIf="isAiViewEnabled"
+														class="city_cards_p">
+														AI Score : {{ getCityScore(city.cityID,true) }}
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 													</p>
 												</div>
 
@@ -160,7 +206,11 @@
 					</td>
 
 
+<<<<<<< HEAD
 					<ng-container *ngFor="let value of row.countryValues">
+=======
+					<ng-container *ngFor="let value of row.cityValues">
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 						<td>
 
 
@@ -174,7 +224,11 @@
 
 
 					<td *ngIf="!isAiViewEnabled">
+<<<<<<< HEAD
 						<app-circular-score [value]="row.peerCountryScore"></app-circular-score>
+=======
+						<app-circular-score [value]="row.peerCityScore"></app-circular-score>
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 					</td>
 					<td class="action_td">
 						<table>
@@ -223,6 +277,10 @@
 <!-- Bootstrap 5 Offcanvas Sidebar -->
 <div class="offcanvas offcanvas-end custom-sidebar kpi_sidebar" tabindex="-1" id="kpiLayerSidebar">
     <div class="offcanvas-body">
+<<<<<<< HEAD
         <app-compare-country-kpi-detail [selectedLayer]="mutipleCountrykpiLayerResults"></app-compare-country-kpi-detail>
+=======
+        <app-compare-city-kpi-detail [selectedLayer]="mutipleCitykpiLayerResults"></app-compare-city-kpi-detail>
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     </div>
 </div>

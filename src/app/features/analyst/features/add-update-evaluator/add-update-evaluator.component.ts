@@ -1,5 +1,9 @@
 import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
+<<<<<<< HEAD
 import { CountryVM } from '../../../../core/models/CountryVM';
+=======
+import { CityVM } from '../../../../core/models/CityVM';
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GetUserByRoleResponse } from '../../../../core/models/GetUserByRoleResponse';
 import { InviteUserDto, UpdateInviteUserDto } from 'src/app/core/models/AnalystVM';
@@ -15,7 +19,11 @@ import { UserService } from 'src/app/core/services/user.service';
 })
 export class AddUpdateEvaluatorComponent {
   @Input() evaluator: GetUserByRoleResponse | null = null;
+<<<<<<< HEAD
   @Input() countries: CountryVM[] | null = [];
+=======
+  @Input() cities: CityVM[] | null = [];
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   @Output() evaluatorChange = new EventEmitter<UpdateInviteUserDto | null>();
   @Output() bulkImportChange = new EventEmitter<UpdateInviteUserDto[] | null>();
   @Output() closeModal = new EventEmitter<boolean>();
@@ -28,7 +36,11 @@ export class AddUpdateEvaluatorComponent {
     "FullName",
     "Email",
     "Phone",
+<<<<<<< HEAD
     "CountryName"
+=======
+    "CityName"
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   ];
   evaluatorForm: FormGroup<any> = this.fb.group({});
 
@@ -51,7 +63,11 @@ export class AddUpdateEvaluatorComponent {
       fullName: [evaluator?.fullName, [Validators.required]],
       email: [evaluator?.email, [Validators.required, Validators.email]],
       phone: [evaluator?.phone, [Validators.required]],
+<<<<<<< HEAD
       country: [evaluator?.countries?.map(x => x?.countryID) ?? [], [Validators.required]]
+=======
+      city: [evaluator?.cities?.map(x => x?.cityID) ?? [], [Validators.required]]
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     });
     this.evaluatorForm.updateValueAndValidity();
   }
@@ -59,12 +75,21 @@ export class AddUpdateEvaluatorComponent {
   onSubmit() {
     this.isSubmitted = true;
     if (this.evaluatorForm.valid) {
+<<<<<<< HEAD
       const countryData: UpdateInviteUserDto = {
         ...this.evaluatorForm.value,
         userID: this.evaluator?.userID ?? 0,
         countryID: this.evaluatorForm.value.country
       };
       this.evaluatorChange.emit(countryData);
+=======
+      const cityData: UpdateInviteUserDto = {
+        ...this.evaluatorForm.value,
+        userID: this.evaluator?.userID ?? 0,
+        cityID: this.evaluatorForm.value.city
+      };
+      this.evaluatorChange.emit(cityData);
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     }
 
   }
@@ -73,7 +98,11 @@ export class AddUpdateEvaluatorComponent {
       "FullName",
       "Email",
       "Phone",
+<<<<<<< HEAD
       "CountryName"
+=======
+      "CityName"
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     ];
 
     // One sample row
@@ -81,7 +110,11 @@ export class AddUpdateEvaluatorComponent {
       FullName: "FullName of Evaluator",
       Email: "Enter Email of Evaluator",
       Phone: "Enter Phone Number of Evaluator",
+<<<<<<< HEAD
       CountryName: "Enter country separated by comma, like :- India, USA, Canada"
+=======
+      CityName: "Enter city seprated by comma, like :- Chandigarh, Mohali, Swar"
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     };
 
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([sampleRow], { header: headers });
@@ -128,14 +161,24 @@ export class AddUpdateEvaluatorComponent {
         const fullName = String(row["FullName"] || "").trim();
         const email = String(row["Email"] || "").trim();
         const phone = String(row["Phone"] || "").trim();
+<<<<<<< HEAD
         const countryName = String(row["CountryName"] || "").trim();
 
         const isCompletelyBlank = !fullName && !email && !phone && !countryName;
+=======
+        const cityName = String(row["CityName"] || "").trim();
+
+        const isCompletelyBlank = !fullName && !email && !phone && !cityName;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         if (isCompletelyBlank) {
           continue;
         }
         // ✅ Required check
+<<<<<<< HEAD
         if (!fullName || !email || !phone || !countryName) {
+=======
+        if (!fullName || !email || !phone || !cityName) {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           this.alertMsg = `Row ${i + 2}: All fields are required.`;
           this.fileInput.nativeElement.value = "";
           return;
@@ -168,7 +211,11 @@ export class AddUpdateEvaluatorComponent {
           phone,
           password: email,
           role: UserRoleValue.Evaluator,
+<<<<<<< HEAD
           countryID: this.getCountryByName(countryName)
+=======
+          cityID: this.getCityByName(cityName)
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         };
         excelData.push(dto);
       }
@@ -177,12 +224,21 @@ export class AddUpdateEvaluatorComponent {
     reader.readAsBinaryString(target.files[0]);
   }
 
+<<<<<<< HEAD
   getCountryByName(countryNames: string): number[] {
     if (!countryNames) return [];
     return countryNames
       .split(",")
       .map(name => name.trim())
       .map(name => this.countries?.find(c => c.countryName === name)?.countryID)
+=======
+  getCityByName(cityNames: string): number[] {
+    if (!cityNames) return [];
+    return cityNames
+      .split(",")
+      .map(name => name.trim())
+      .map(name => this.cities?.find(c => c.cityName === name)?.cityID)
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       .filter((id): id is number => id !== undefined);
   }
 

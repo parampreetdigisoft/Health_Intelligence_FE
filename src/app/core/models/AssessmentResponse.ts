@@ -2,11 +2,19 @@ import { AssessmentPhase } from "../enums/AssessmentPhase";
 
 export interface GetAssessmentResponse {
   assessmentID:number;
+<<<<<<< HEAD
   userCountryMappingID:number
   createdAt:Date | string;
   countryID: number;
   continent: string;
   countryName: string;
+=======
+  userCityMappingID:number
+  createdAt:Date | string;
+  cityID: number;
+  state: string;
+  cityName: string;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   isActive: boolean;
   userID: number;
   userName: string;
@@ -43,8 +51,13 @@ export interface AssessmentWithProgressVM {
   currentProgress:number
 }
 
+<<<<<<< HEAD
 export interface GetCountrySubmitionHistoryReponseDto {
   countryID: number;
+=======
+export interface GetCitySubmitionHistoryReponseDto {
+  cityID: number;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   totalAssessment: number;
   score: number;
   aiScore: number;

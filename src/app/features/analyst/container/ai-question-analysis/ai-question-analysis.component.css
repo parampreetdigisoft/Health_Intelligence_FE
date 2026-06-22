@@ -43,12 +43,20 @@
 }
 
 .kpi_td_data div:empty,
+<<<<<<< HEAD
 .kpi_sidebar app-view-country-detail .bold_num:empty {
+=======
+.kpi_sidebar app-view-city-detail .bold_num:empty {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     display: none;
 }
 
 .kpi_td_data .bold_num,
+<<<<<<< HEAD
 ::ng-deep .kpi_sidebar app-view-country-detail .bold_num {
+=======
+::ng-deep .kpi_sidebar app-view-city-detail .bold_num {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     background: #304a43;
     color: #ffffff;
     padding: 2px 8px;
@@ -58,6 +66,7 @@
     margin-top: 8px;
 }
 
+<<<<<<< HEAD
 ::ng-deep .kpi_sidebar app-view-country-detail .city_card_outter .city_card_img img {
     max-width: 300px;
 }
@@ -67,6 +76,17 @@
 }
 
 ::ng-deep .kpi_sidebar app-view-country-detail .city_card_outter .city_card_inner .city_cards_h1 {
+=======
+::ng-deep .kpi_sidebar app-view-city-detail .city_card_outter .city_card_img img {
+    max-width: 300px;
+}
+
+::ng-deep .kpi_sidebar app-view-city-detail .city_card_outter .city_card_inner {
+    padding: 10px 0px;
+}
+
+::ng-deep .kpi_sidebar app-view-city-detail .city_card_outter .city_card_inner .city_cards_h1 {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     font-size: 24px;
 }
 
@@ -163,7 +183,11 @@
   table-layout: auto; /* keep responsive behavior */
   width: 100%;
 }
+<<<<<<< HEAD
 .compare_city_table .country-col {
+=======
+.compare_city_table .city-col {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   min-width: 500px;      /* adjust as needed */
   white-space: normal;   /* allow wrapping */
   word-break: break-word;
@@ -183,7 +207,11 @@
     .table_custom_inner {
         overflow-x: auto !important;
     }
+<<<<<<< HEAD
     .table_outer .table td.country-col {
+=======
+    .table_outer .table td.city-col {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         min-width: unset !important;
         max-width: 100%;
         width: 400px;
@@ -201,7 +229,11 @@
         
 }
 @media only screen and (max-width:1345px) {
+<<<<<<< HEAD
     .table_outer .table td.country-col {
+=======
+    .table_outer .table td.city-col {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         min-width: unset !important;
         max-width: 100%;
         width: 400px;

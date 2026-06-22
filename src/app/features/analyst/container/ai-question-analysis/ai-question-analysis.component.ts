@@ -2,7 +2,11 @@ import { forkJoin } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+<<<<<<< HEAD
 import { CountryVM } from 'src/app/core/models/CountryVM';
+=======
+import { CityVM } from 'src/app/core/models/CityVM';
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AnalystService } from '../../analyst.service';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
@@ -14,7 +18,11 @@ import { ToasterService } from 'src/app/core/services/toaster.service';
 import { AITrustLevelVM } from 'src/app/core/models/aiVm/AITrustLevelVM';
 import { AiComputationService } from 'src/app/core/services/ai-computation.service';
 import { PaginationComponent } from 'src/app/shared/pagination/pagination.component';
+<<<<<<< HEAD
 import { AiPillarQuetionsRequestDto } from 'src/app/core/models/aiVm/AiCountrySummeryRequestDto';
+=======
+import { AiPillarQuetionsRequestDto } from 'src/app/core/models/aiVm/AiCitySummeryRequestDto';
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { TypingTextComponent } from 'src/app/shared/standAlone/typing-text/typing-text.component';
 import { AIEstimatedQuestionScoreDto } from 'src/app/core/models/aiVm/AIEstimatedQuestionScoreDto';
 import { ChangeDetectorRef, Component, inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
@@ -36,11 +44,19 @@ declare var bootstrap: any; // 👈 use Bootstrap JS API
 })
 export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
   selectedYear = new Date().getFullYear();
+<<<<<<< HEAD
   selectedCountryID!: number;
   selectedPillarID!: number;
   selectedQuestion: AIEstimatedQuestionScoreDto | null = null;
   isLoader: boolean = false;
   countries: CountryVM[] = [];
+=======
+  selectedCityID!: number;
+  selectedPillarID!: number;
+  selectedQuestion: AIEstimatedQuestionScoreDto | null = null;
+  isLoader: boolean = false;
+  cities: CityVM[] = [];
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   totalRecords: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
@@ -62,7 +78,11 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
     this.headerTextRepeatation = false;
 
     const p = this.pillars.find(x => x.pillarID === this.selectedPillarID)?.pillarName ?? '';
+<<<<<<< HEAD
     const c = this.countries.find(x => x.countryID === this.selectedCountryID)?.countryName ?? '';
+=======
+    const c = this.cities.find(x => x.cityID === this.selectedCityID)?.cityName ?? '';
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 
     setTimeout(() => {
       this.headerTextRepeatation = true;
@@ -87,7 +107,11 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
       let pid = +params['pillarID'] || null;
       let sYear = +params['year'] || this.selectedYear;
       if (pid && cid) {
+<<<<<<< HEAD
         this.selectedCountryID = Number(cid);
+=======
+        this.selectedCityID = Number(cid);
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         this.selectedPillarID = Number(pid);
         this.selectedYear = Number(sYear);
         this.getAIPillarQuestions();
@@ -107,6 +131,7 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
 
     forkJoin({
       pillarsRes: this.analystService.getAllPillars(),
+<<<<<<< HEAD
       countriesRes: this.analystService.getAllCountriesByUserId(this.userService.userInfo?.userID ?? 0)
     }).subscribe({
       next: ({ pillarsRes, countriesRes }) => {
@@ -121,6 +146,22 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
         if ((!this.selectedPillarID && !this.selectedCountryID) && this.pillars.length && this.countries.length) {
           this.selectedPillarID = this.pillars[0].pillarID
           this.selectedCountryID = this.countries[0].countryID
+=======
+      citiesRes: this.analystService.getAllCitiesByUserId(this.userService.userInfo?.userID ?? 0)
+    }).subscribe({
+      next: ({ pillarsRes, citiesRes }) => {
+
+        this.pillars = pillarsRes ?? [];
+        if (citiesRes.succeeded) {
+          this.cities = citiesRes.result ?? [];
+        } else {
+          this.toaster.showError(citiesRes.errors.join(', '));
+        }
+
+        if ((!this.selectedPillarID && !this.selectedCityID) && this.pillars.length && this.cities.length) {
+          this.selectedPillarID = this.pillars[0].pillarID
+          this.selectedCityID = this.cities[0].cityID
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           this.getAIPillarQuestions()
         }
       },
@@ -140,8 +181,13 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
       pageSize: this.pageSize,
       year: this.selectedYear
     }
+<<<<<<< HEAD
     if (this.selectedCountryID > 0) {
       payload.countryID = this.selectedCountryID;
+=======
+    if (this.selectedCityID > 0) {
+      payload.cityID = this.selectedCityID;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     }
     if (this.selectedPillarID > 0) {
       payload.pillarID = this.selectedPillarID;
@@ -164,8 +210,13 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
     })
   }
 
+<<<<<<< HEAD
   viewDetails(country: AIEstimatedQuestionScoreDto) {
     this.selectedQuestion = country;
+=======
+  viewDetails(city: AIEstimatedQuestionScoreDto) {
+    this.selectedQuestion = city;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     const sidebarEl = document.getElementById('kpiLayerSidebar');
     const offcanvas = new bootstrap.Offcanvas(sidebarEl);
 

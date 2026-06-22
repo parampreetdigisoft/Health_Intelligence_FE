@@ -367,7 +367,11 @@ p.btn_spinner {
 
 
 @media only screen and (max-width:1750px) {
+<<<<<<< HEAD
     .compare_city_table .country-col{
+=======
+    .compare_city_table .city-col{
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         min-width: 200px;
         width: 200px;
     }

@@ -3,6 +3,7 @@
     <div class="row justify-content-between align-items-end">
       <div class="col-md-auto">
         <div class="input_field">
+<<<<<<< HEAD
           <label>Select Country *</label>
           <ng-select [items]="countries" bindValue="countryID" bindLabel="countryName" class="form-control analyst_multi_select"
             [searchable]="true" [placeholder]="selectedCountries == '' ? 'Select Country' : ''" [(ngModel)]="selectedCountries"
@@ -13,6 +14,18 @@
 
             <ng-template ng-option-tmp let-item="item">
               {{ item.countryName }}, {{ item.continent }}
+=======
+          <label>Select City *</label>
+          <ng-select [items]="cities" bindValue="cityID" bindLabel="cityName" class="form-control analyst_multi_select"
+            [searchable]="true" [placeholder]="selectedCities == '' ? 'Select City' : ''" [(ngModel)]="selectedCities"
+            (change)="getCityPillarHistory()">
+            <ng-template ng-label-tmp let-item="item " class="select_item">
+              {{ item.cityName }}
+            </ng-template>
+
+            <ng-template ng-option-tmp let-item="item">
+              {{ item.cityName }}, {{ item.state }}
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
             </ng-template>
           </ng-select>
         </div>
@@ -28,11 +41,19 @@
         </div>
       </div>
       <div class="col-md d-flex justify-content-end gap-2 mb-3">
+<<<<<<< HEAD
 				<button [disabled]="!countryQuestionHistoryReponse?.pillars?.length"
 					[matTooltip]=" 'Go to the AI analysis page to review detailed country insights and scores'"
 					(click)="goToCountryAnalysis()"
 					class="common_button">
 					AI Country Insights
+=======
+				<button [disabled]="!cityQuestionHistoryReponse?.pillars?.length"
+					[matTooltip]=" 'Go to the AI analysis page to review detailed city insights and scores'"
+					(click)="goToCityAnalysis()"
+					class="common_button">
+					AI City Insights
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 					<svg xmlns="http://www.w3.org/2000/svg"
 						width="20"
 						height="20"
@@ -46,9 +67,15 @@
 					</svg>
 				</button>
 
+<<<<<<< HEAD
 				<button [disabled]="!countryQuestionHistoryReponse?.pillars?.length"
 				    [matTooltip]=" 'Export pillar details'"
 					(click)="ExportCountryPillar()"
+=======
+				<button [disabled]="!cityQuestionHistoryReponse?.pillars?.length"
+				    [matTooltip]=" 'Export pillar details'"
+					(click)="ExportCityPillar()"
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 					class="common_button d-flex align-items-center">
 					Export
 					<svg xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +99,11 @@
   </div>
   <div class="apx_chart_new" *ngIf="chartOptions?.series">
     <div class="card_heading">
+<<<<<<< HEAD
       <h3>Country Overview</h3>
+=======
+      <h3>City Overview</h3>
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     </div>
     <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [plotOptions]="chartOptions.plotOptions!"
       [labels]="chartOptions.labels!" [legend]="chartOptions.legend!" [colors]="chartOptions.colors!">

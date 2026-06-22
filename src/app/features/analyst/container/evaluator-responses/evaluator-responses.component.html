@@ -17,6 +17,7 @@
         </select>
 
         <select
+<<<<<<< HEAD
           [(ngModel)]="selectedCountryID"
           name="countryID"
           class="form-control"
@@ -25,13 +26,27 @@
           <option value="">Search by Country</option>
           <option *ngFor="let country of countries" [value]="country.countryID">
             {{ country.countryName }}
+=======
+          [(ngModel)]="selectedcityID"
+          name="cityID"
+          class="form-control"
+          (change)="getAssessments()"
+        >
+          <option value="">Search by City</option>
+          <option *ngFor="let city of cities" [value]="city.cityID">
+            {{ city.cityName }}
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           </option>
         </select>
 
         <select
           *ngIf="!assessmentUserID"
           [(ngModel)]="selecteduserID"
+<<<<<<< HEAD
           name="userID"
+=======
+          name="cityID"
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           class="form-control"
           (change)="getAssessments()"
         >
@@ -54,7 +69,11 @@
       <tr>
         <th>S.No.</th>
         <th>Submitted</th>
+<<<<<<< HEAD
         <th>Country</th>
+=======
+        <th>City</th>
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         <th>Score</th>
         <th>Status</th>
         <th>Unknown</th>
@@ -65,7 +84,11 @@
     <tbody>
       <tr *ngFor="let assessment of assessmentsResponse?.data; let i = index">
         <td>{{ (currentPage - 1) * pageSize + (i + 1) }}</td>
+<<<<<<< HEAD
         <td>{{ assessment.countryName }}</td>
+=======
+        <td>{{ assessment.cityName }}</td>
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         <td>{{ assessment.userName }}</td>
         <td>
           <span class="bold_num"> {{ (assessment.score ?? 0).toFixed(1) }}</span>

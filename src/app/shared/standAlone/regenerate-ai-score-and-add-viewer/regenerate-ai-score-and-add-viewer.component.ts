@@ -3,7 +3,11 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, O
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { PublicUserResponse } from 'src/app/core/models/UserInfo';
+<<<<<<< HEAD
 import { AiCountrySummeryDto } from 'src/app/core/models/aiVm/AiCountrySummeryDto';
+=======
+import { AiCitySummeryDto } from 'src/app/core/models/aiVm/AiCitySummeryDto';
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 
 @Component({
   selector: 'app-regenerate-ai-score-and-add-viewer',
@@ -14,7 +18,11 @@ import { AiCountrySummeryDto } from 'src/app/core/models/aiVm/AiCountrySummeryDt
 })
 export class RegenerateAiScoreAndAddViewerComponent implements OnInit, OnChanges {
 
+<<<<<<< HEAD
   @Input() country?: AiCountrySummeryDto | any | null = null;
+=======
+  @Input() city?: AiCitySummeryDto | any | null = null;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   @Input() loading = false;
   @Input() evaluatorList: PublicUserResponse[] = [];
   @Output() regenerate = new EventEmitter<any>();
@@ -36,13 +44,21 @@ export class RegenerateAiScoreAndAddViewerComponent implements OnInit, OnChanges
       { label: 'Question-level AI insights', control: 'questionEnable', time: this.importPillar ? 30 : 120 }
     ];
     if (!this.importPillar) {
+<<<<<<< HEAD
       this.aiOptions.unshift({ label: 'Country-level AI insights', control: 'countryEnable', time: 5 });
+=======
+      this.aiOptions.unshift({ label: 'City-level AI insights', control: 'cityEnable', time: 5 });
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       this.aiOptions.unshift({ label: 'Immediate Situation', control: 'immediateSummaryEnable', time: 2  });
     }
     if (this.showRegenerateMissingQuestionsOption)
     {
       const completionRate = Math.round(
+<<<<<<< HEAD
     this.country?.aiCompletionRate ?? 0
+=======
+    this.city?.aiCompletionRate ?? 0
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   );
 
   this.aiOptions.push({
@@ -58,7 +74,11 @@ export class RegenerateAiScoreAndAddViewerComponent implements OnInit, OnChanges
 
   initializeForm() {
     this.assesmentForm = this.fb.group({
+<<<<<<< HEAD
       countryID: [this.country?.countryID],
+=======
+      cityID: [this.city?.cityID],
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       cityEnable: [!this.importPillar],
       immediateSummaryEnable: [!this.importPillar],
       regenerateMissingQuestionsEnable: [false],
@@ -69,7 +89,11 @@ export class RegenerateAiScoreAndAddViewerComponent implements OnInit, OnChanges
   }
 
   onSubmit() {
+<<<<<<< HEAD
     if (!this.country) return;
+=======
+    if (!this.city) return;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 
     const payload = {
       ...this.assesmentForm.value

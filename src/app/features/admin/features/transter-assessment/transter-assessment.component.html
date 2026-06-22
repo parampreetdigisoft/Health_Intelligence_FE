@@ -17,8 +17,13 @@
         <div class="tab-content details_transf" id="pills-tabContent">
           <!-- Single Add / Update -->
           <h5>Transfer From </h5>
+<<<<<<< HEAD
           <div class="details_list">Country: <span>{{ assesment?.countryName }}</span></div>
           <div class="details_list">Continent: <span>{{ assesment?.continent }}</span></div>
+=======
+          <div class="details_list">City: <span>{{ assesment?.cityName }}</span></div>
+          <div class="details_list">State: <span>{{ assesment?.state }}</span></div>
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           <div class="details_list">UserName: <span>{{ assesment?.userName }}</span></div>
           <div class="details_list">
             Score: <span class="bold_num">{{ assesment?.score }}</span>
@@ -29,7 +34,11 @@
               <div class="input_field">
                 <label>Select user to transfer results *</label>
                 <ng-select
+<<<<<<< HEAD
                   [items]="userofSelectedCountryResponse"
+=======
+                  [items]="userofSelecteCityResponse"
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
                   bindValue="userID"
                   bindLabel="userName"
                   formControlName="transferToUserID"
@@ -66,8 +75,13 @@
 
                 <ng-container *ngIf="selectedUserAssesment != null">
                     <h5>Transfer to </h5>
+<<<<<<< HEAD
                     <div class="details_list">Country: <span>{{ selectedUserAssesment.countryName }}</span></div>
                     <div class="details_list">Continent: <span>{{ selectedUserAssesment.continent }}</span></div>
+=======
+                    <div class="details_list">City: <span>{{ selectedUserAssesment.cityName }}</span></div>
+                    <div class="details_list">State: <span>{{ selectedUserAssesment.state }}</span></div>
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
                     <div class="details_list">UserName: <span>{{ selectedUserAssesment.userName }}</span></div>
                     <div class="details_list">
                     Score:

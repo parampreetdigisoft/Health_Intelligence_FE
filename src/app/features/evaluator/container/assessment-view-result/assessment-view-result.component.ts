@@ -1,5 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+<<<<<<< HEAD
 import { CountryVM } from 'src/app/core/models/CountryVM';
+=======
+import { CityVM } from 'src/app/core/models/CityVM';
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { PaginationUserRequest } from 'src/app/core/models/PaginationRequest';
 import { PaginationResponse } from 'src/app/core/models/PaginationResponse';
 import { ToasterService } from 'src/app/core/services/toaster.service';
@@ -70,11 +74,19 @@ export class AssessmentViewResultComponent implements OnInit {
       assessmentID: this.assessmentID,
       pillarID: this.selectedPillarId
     }
+<<<<<<< HEAD
     this.evaluatorService.getAssessmentQuestoins(payload).subscribe(countries => {
       this.questionResponse = countries;
       this.totalRecords = countries.totalRecords;
       this.currentPage = currentPage;
       this.pageSize = countries.pageSize;
+=======
+    this.evaluatorService.getAssessmentQuestoins(payload).subscribe(cities => {
+      this.questionResponse = cities;
+      this.totalRecords = cities.totalRecords;
+      this.currentPage = currentPage;
+      this.pageSize = cities.pageSize;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       this.isLoader = false;
     });
   }

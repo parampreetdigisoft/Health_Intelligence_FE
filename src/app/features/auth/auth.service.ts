@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
 import { map, Subject, tap } from 'rxjs';
 import { HttpService } from 'src/app/core/http/http.service';
+<<<<<<< HEAD
 import { CountryVM } from 'src/app/core/models/CountryVM';
+=======
+import { CityVM } from 'src/app/core/models/CityVM';
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { ResultResponseDto } from 'src/app/core/models/ResultResponseDto';
 import { UserInfo } from 'src/app/core/models/UserInfo';
 import { UserService } from 'src/app/core/services/user.service';
 import { environment } from 'src/environments/environment';
+<<<<<<< HEAD
 import { CountryUserSignUpDto } from './model/CountryUserSignUpDto';
+=======
+import { CityUserSignUpDto } from './model/CityUserSignUpDto';
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 declare const google: any;
 @Injectable({
   providedIn: 'root'
@@ -46,9 +54,15 @@ export class AuthService {
     return this.http.post(`Auth/changePassword`, data).pipe(map(x => x as ResultResponseDto<any>),);
   }
 
+<<<<<<< HEAD
   public countryUserSignUp(data: CountryUserSignUpDto) {
     return this.http
       .post(`Auth/CountryUserSignUp`, data)
+=======
+  public cityUserSignUp(data: CityUserSignUpDto) {
+    return this.http
+      .post(`Auth/CityUserSignUp`, data)
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       .pipe(
         map(x => x as ResultResponseDto<UserInfo | any>),
         tap((user) => {
@@ -58,10 +72,17 @@ export class AuthService {
 
         }));
   }
+<<<<<<< HEAD
   public getAllCountries() {
     return this.http
       .get(`Public/getAllCountries`)
       .pipe(map((x) => x as ResultResponseDto<CountryVM[]>));
+=======
+  public getAllCities() {
+    return this.http
+      .get(`Public/getAllCities`)
+      .pipe(map((x) => x as ResultResponseDto<CityVM[]>));
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   }
   public initGoogleButton(elementId: string, callback: (response: any) => void) {
     if (typeof google !== 'undefined') {

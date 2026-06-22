@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # HealthIntelligence_Frontend
+=======
+# ScoreAnalytics_Frontend
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 
 Health systems determine whether populations survive predictable risks and whether states retain authority during shocks. They operate simultaneously as service delivery mechanisms, fiscal instruments, security assets, and legitimacy-producing institutions. In Africa, health systems have evolved through colonial extraction, post-independence state formation, structural adjustment, donor-driven verticalization, decentralization, and episodic emergency mobilization. Each phase has left institutional residues that continue to shape performance. Fragmented data architectures have obscured these continuities. Most existing platforms describe conditions. Few explain trajectories. Fewer still permit systematic comparison of system strength, failure modes, and adaptive capacity over time.
 The Africa Health Systems Intelligence Platform (AHSIP) is established as a continental public-interest infrastructure for longitudinal, comparative, and operational health intelligence. It is not a repository of indicators alone. It is a structured system for reconstructing historical baselines from 1950 onward, integrating real-time operational feeds, and generating analytically defensible signals about system performance, risk exposure, and resilience. The platform treats health systems as institutional formations rather than sectoral programs. It therefore centers governance, financing, service architecture, workforce, supply chains, infrastructure, information systems, and regulatory authority as primary explanatory variables.

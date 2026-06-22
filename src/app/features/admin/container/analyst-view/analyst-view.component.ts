@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { AdminService } from "../../admin.service";
+<<<<<<< HEAD
 import { CountryVM } from "../../../../core/models/CountryVM";
+=======
+import { CityVM } from "../../../../core/models/CityVM";
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { PaginationResponse } from "src/app/core/models/PaginationResponse";
 import { ToasterService } from "src/app/core/services/toaster.service";
 import { UserService } from "src/app/core/services/user.service";
@@ -24,12 +28,20 @@ declare var bootstrap: any;
 export class AnalystViewComponent implements OnInit, OnDestroy {
   isLoader: boolean = false;
   selectedAnalyst: GetUserByRoleResponse | null = null;
+<<<<<<< HEAD
   selectedCountry: CountryVM | null = null;
+=======
+  selectedCity: CityVM | null = null;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   analystResponse: PaginationResponse<GetUserByRoleResponse> | undefined;
   totalRecords: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
+<<<<<<< HEAD
   countries: CountryVM[] | null = [];
+=======
+  cities: CityVM[] | null = [];
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   loading: boolean = false;
   isOpendialog: boolean = false;
   roleId: number | any = 0;
@@ -37,7 +49,11 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
   selectedIndex?:number;
   rolesList = [
     { name: "Evaluator", role: UserRoleValue.Evaluator },
+<<<<<<< HEAD
     { name: "CityUser", role: UserRoleValue.CountryUser },
+=======
+    { name: "CityUser", role: UserRoleValue.CityUser },
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   ];
 
   constructor(
@@ -53,6 +69,7 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
       this.selectedRoleID = this.roleId;
     });
     this.getAnalyst();
+<<<<<<< HEAD
     this.getAllCountriesByUserId();
   }
 
@@ -62,6 +79,17 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           this.countries = res.result;
+=======
+    this.getAllCitiesByUserId();
+  }
+
+  getAllCitiesByUserId() {
+    this.adminService
+      .getAllCitiesByUserId(this.userService?.userInfo?.userID)
+      .subscribe({
+        next: (res) => {
+          this.cities = res.result;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         },
       });
   }
@@ -122,7 +150,11 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
       password: "",
       role: UserRoleValue.Analyst,
       invitedUserID: this.userService.userInfo?.userID ?? 0,
+<<<<<<< HEAD
       countryID: analyst.countries.map((x) => x.countryID),
+=======
+      cityID: analyst.cities.map((x) => x.cityID),
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       userID: analyst.userID,
     };
     this.addUpdateAnalyst(payload);
@@ -140,7 +172,11 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
       password: analyst.password,
       role: UserRoleValue.Analyst,
       invitedUserID: this.userService.userInfo?.userID ?? 0,
+<<<<<<< HEAD
       countryID: analyst.countryID,
+=======
+      cityID: analyst.cityID,
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       userID: analyst.userID,
     };
 

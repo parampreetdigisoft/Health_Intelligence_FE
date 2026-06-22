@@ -9,8 +9,13 @@ import {
 import { AdminService } from "../../admin.service";
 import { ToasterService } from "src/app/core/services/toaster.service";
 import { UserService } from "src/app/core/services/user.service";
+<<<<<<< HEAD
 import { CountryVM } from "src/app/core/models/CountryVM";
 import { CountryHistoryDto, UserCountryRequstDto } from "../../../../core/models/CountryHistoryDto";
+=======
+import { CityVM } from "src/app/core/models/CityVM";
+import { CityHistoryDto, UserCityRequstDto } from "../../../../core/models/cityHistoryDto";
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { CommonService } from "src/app/core/services/common.service";
 import { Router } from "@angular/router";
 import {
@@ -26,7 +31,11 @@ import {
   ApexYAxis,
   ApexStates,
 } from "ng-apexcharts";
+<<<<<<< HEAD
 import { AiCountryPillarDashboardResponseDto } from "src/app/core/models/AiCountryPillarDashboardResponseDto";
+=======
+import { AiCityPillarDashboardResponseDto } from "src/app/core/models/AiCityPillarDashboardResponseDto";
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -62,10 +71,17 @@ export type PillarChartOptions = {
 })
 export class AdminDashboardComponent implements OnInit, AfterViewInit {
   selectedYear = new Date().getFullYear();
+<<<<<<< HEAD
   countries: CountryVM[] | null = [];
   selectedCountries: number | any = "";
   countryHistory: CountryHistoryDto | null = null;
   countryQuestionHistoryReponse: AiCountryPillarDashboardResponseDto | null = null;
+=======
+  cities: CityVM[] | null = [];
+  selectedCities: number | any = "";
+  cityHistory: CityHistoryDto | null = null;
+  cityQuestionHistoryReponse: AiCityPillarDashboardResponseDto | null = null;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   isLoader: boolean = false;
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions!: Partial<ChartOptions>;
@@ -82,12 +98,18 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.isLoader = true;
+<<<<<<< HEAD
     this.getAllCountriesByUserId();
     this.GetCountryHistory();
+=======
+    this.getAllCitiesByUserId();
+    this.GetCityHistory();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   }
 
   ngAfterViewInit() { }
 
+<<<<<<< HEAD
   getAllCountriesByUserId() {
     this.adminService
       .getAllCountriesByUserId(this.userService?.userInfo?.userID)
@@ -99,12 +121,26 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
             this.isLoader = true;
             this.selectedCountries = this.countries[0].countryID;
             this.getCountryPillarHistory();
+=======
+  getAllCitiesByUserId() {
+    this.adminService
+      .getAllCitiesByUserId(this.userService?.userInfo?.userID)
+      .subscribe({
+        next: (res) => {
+          this.cities = res.result;
+          this.isLoader = false;
+          if (this.cities && this.cities.length > 0) {
+            this.isLoader = true;
+            this.selectedCities = this.cities[0].cityID;
+            this.getCityPillarHistory();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           }
         },
       });
   }
 
   yearChanged() {
+<<<<<<< HEAD
     this.getCountryPillarHistory();
     this.GetCountryHistory();
   }
@@ -112,17 +148,31 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   GetCountryHistory() {
     this.adminService
       .getCountryHistory(
+=======
+    this.getCityPillarHistory();
+    this.GetCityHistory();
+  }
+
+  GetCityHistory() {
+    this.adminService
+      .getCityHistory(
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         this.userService?.userInfo?.userID ?? 0,
         this.commonService.getStartOfYearLocal(this.selectedYear)
       )
       .subscribe({
         next: (res) => {
+<<<<<<< HEAD
           this.countryHistory = res.result;
+=======
+          this.cityHistory = res.result;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           this.GetApexPieOptions();
         },
       });
   }
 
+<<<<<<< HEAD
   getCountryPillarHistory() {
     if (
       this.userService?.userInfo?.userID == null ||
@@ -144,6 +194,29 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
         this.isLoader = false;
         this.countryQuestionHistoryReponse = res.result;
         if (this.countryQuestionHistoryReponse) {
+=======
+  getCityPillarHistory() {
+    if (
+      this.userService?.userInfo?.userID == null ||
+      !this.selectedCities ||
+      this.selectedCities === "" ||
+      this.selectedCities == null
+    ) {
+      return;
+    }
+    this.cityQuestionHistoryReponse =null;
+    this.buildPillarComparisonChart();
+    let request: UserCityRequstDto = {
+      userID: this.userService?.userInfo?.userID ?? 0,
+      cityID: this.selectedCities,
+      updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear), 
+    };
+    this.adminService.getCityPillarHistory(request).subscribe({
+      next: (res) => {
+        this.isLoader = false;
+        this.cityQuestionHistoryReponse = res.result;
+        if (this.cityQuestionHistoryReponse) {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           this.buildPillarComparisonChart();
         }
       },
@@ -152,6 +225,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       },
     });
   }
+<<<<<<< HEAD
   goToCountryAnalysis() {
     // If countryID exists, pass it as a query parameter
     const queryParams: any = {};
@@ -168,6 +242,24 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       var exportData = this.countryQuestionHistoryReponse?.pillars.map((x) => {
         return {
           CountryName: country?.countryName,
+=======
+  goToCityAnalysis() {
+    // If cityID exists, pass it as a query parameter
+    const queryParams: any = {};
+    if (this.selectedCities > 0) {
+      queryParams.cityID = this.selectedCities;
+    }
+
+    this.router.navigate(["/admin/ai/city-analysis"], { queryParams });
+  }
+
+  ExportCityPillar() {
+    let city = this.cities?.find((x) => x.cityID == this.selectedCities);
+    if (this.cityQuestionHistoryReponse?.pillars && city) {
+      var exportData = this.cityQuestionHistoryReponse?.pillars.map((x) => {
+        return {
+          CityName: city?.cityName,
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           PillarName: x.pillarName,
           AIScore: x.aiValue?.toFixed(2),
           EvaluationScore: x.evaluationValue?.toFixed(2)
@@ -175,6 +267,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       });
       this.commonService.exportExcel(exportData);
     } else {
+<<<<<<< HEAD
       this.toaster.showWarning("Please select country to export the records");
     }
   }
@@ -186,6 +279,19 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
 
     const finalizeCountry = this.countryHistory?.finalizeCountry ?? 0;
     const unFinalize = this.countryHistory?.unFinalize ?? 0;
+=======
+      this.toaster.showWarning("Please select city to export the records");
+    }
+  }
+  GetApexPieOptions() {
+    const total = this.cityHistory?.totalCity ?? 0;
+    const active = this.cityHistory?.activeCity ?? 0;
+    const inprogress = this.cityHistory?.inprocessCity ?? 0;
+    const complete = this.cityHistory?.compeleteCity ?? 0;
+
+    const finalizeCity = this.cityHistory?.finalizeCity ?? 0;
+    const unFinalize = this.cityHistory?.unFinalize ?? 0;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 
     this.chartOptions = {
       series: [
@@ -193,7 +299,11 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
         (active / total) * 100,
         (inprogress / total) * 100,
         (complete / total) * 100,
+<<<<<<< HEAD
         (finalizeCountry / total) * 100,
+=======
+        (finalizeCity / total) * 100,
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         (unFinalize / total) * 100,
       ],
 
@@ -232,7 +342,11 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
             },
             total: {
               show: true,
+<<<<<<< HEAD
               label: "Total Country",
+=======
+              label: "Total City",
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
               formatter: (value: any) => {
                 return `${total}`;
               },
@@ -284,7 +398,11 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   }
 
   buildPillarComparisonChart() {
+<<<<<<< HEAD
     const data = [...(this.countryQuestionHistoryReponse?.pillars ?? [])];
+=======
+    const data = [...(this.cityQuestionHistoryReponse?.pillars ?? [])];
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 
     const categories = this.buildUniqueCategories(data);
     const aiSeries = data.map(x => x.aiValue);

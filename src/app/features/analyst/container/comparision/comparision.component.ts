@@ -1,9 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { ToasterService } from "src/app/core/services/toaster.service";
 import { UserService } from "src/app/core/services/user.service";
+<<<<<<< HEAD
 import { CountryVM } from "src/app/core/models/CountryVM";
 import { CommonService } from "src/app/core/services/common.service";
 import { GetCountryPillarHistoryRequestDto, GetCountryPillarHistoryRequestNewDto } from "src/app/core/models/AssessmentRequest";
+=======
+import { CityVM } from "src/app/core/models/CityVM";
+import { CommonService } from "src/app/core/services/common.service";
+import { GetCityPillarHistoryRequestDto, GetCityPillarHistoryRequestNewDto } from "src/app/core/models/AssessmentRequest";
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { PillarsVM } from "src/app/core/models/PillersVM";
 import { MatTableDataSource } from "@angular/material/table";
 import {
@@ -41,8 +47,13 @@ export class ComparisionComponent implements OnInit {
   pillers: PillarsVM[] = [];
   pillersHistory: PillarsHistoryResponse[] = [];
   questionsByUserPillars: QuestionsByUserPillarsResponsetDto[] = [];
+<<<<<<< HEAD
   countries: CountryVM[] | null = [];
   selectedCountries: number | any = "";
+=======
+  cities: CityVM[] | null = [];
+  selectedCities: number | any = "";
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   selectedPillarID: number | any = "";
   isLoader: boolean = false;
   isPillarHistroyDownloading: boolean = false;
@@ -69,7 +80,11 @@ export class ComparisionComponent implements OnInit {
   ngOnInit(): void {
     this.isLoader = true;
     this.GetAllPillars();
+<<<<<<< HEAD
     this.getAllCountriesByUserId();
+=======
+    this.getAllCitiesByUserId();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     this.initializeChart();
   }
   GetAllPillars() {
@@ -77,18 +92,30 @@ export class ComparisionComponent implements OnInit {
       this.pillers = p;
     });
   }
+<<<<<<< HEAD
   getAllCountriesByUserId() {
     this.analystService
       .getAllCountriesByUserId(this.userService?.userInfo?.userID)
+=======
+  getAllCitiesByUserId() {
+    this.analystService
+      .getAllCitiesByUserId(this.userService?.userInfo?.userID)
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       .subscribe({
         next: (res) => {
           setTimeout(() => {
             this.isLoader = false;
           }, 1000);
 
+<<<<<<< HEAD
           this.countries = res.result;
           if (this.countries && this.countries.length > 0) {
             this.selectedCountries = this.countries[0].countryID;
+=======
+          this.cities = res.result;
+          if (this.cities && this.cities.length > 0) {
+            this.selectedCities = this.cities[0].cityID;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
             this.getResponsesByUserId();
           }
         },
@@ -101,21 +128,35 @@ export class ComparisionComponent implements OnInit {
   getResponsesByUserId() {
     if (
       this.userService?.userInfo?.userID == null ||
+<<<<<<< HEAD
       !this.selectedCountries ||
       this.selectedCountries === "" ||
       this.selectedCountries == null
+=======
+      !this.selectedCities ||
+      this.selectedCities === "" ||
+      this.selectedCities == null
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     ) {
       return;
     }
 
     this.isLoader = true;
+<<<<<<< HEAD
     let payload: GetCountryPillarHistoryRequestNewDto = {
+=======
+    let payload: GetCityPillarHistoryRequestNewDto = {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       userId: this.userService?.userInfo?.userID,
       pillarID:
         this.selectedPillarID && this.selectedPillarID > 0
           ? this.selectedPillarID
           : null,
+<<<<<<< HEAD
       countryID: this.selectedCountries,
+=======
+      cityID: this.selectedCities,
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear),
       pageNumber: this.currentPage,
       pageSize: this.pageSize
@@ -137,7 +178,11 @@ export class ComparisionComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
   compareCountries(event: any) {
+=======
+  compareCities(event: any) {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     this.currentPage = event;
     this.getResponsesByUserId();
   }
@@ -468,17 +513,30 @@ export class ComparisionComponent implements OnInit {
   getQuestionsHistoryByPillar(pillarID: number) {
     if (
       this.userService?.userInfo?.userID == null ||
+<<<<<<< HEAD
       !this.selectedCountries ||
       this.selectedCountries === "" ||
       this.selectedCountries == null
+=======
+      !this.selectedCities ||
+      this.selectedCities === "" ||
+      this.selectedCities == null
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     ) {
       return;
     }
 
+<<<<<<< HEAD
     let payload: GetCountryPillarHistoryRequestDto = {
       userID: this.userService?.userInfo?.userID,
       pillarID: pillarID,
       countryID: this.selectedCountries,
+=======
+    let payload: GetCityPillarHistoryRequestDto = {
+      userID: this.userService?.userInfo?.userID,
+      pillarID: pillarID,
+      cityID: this.selectedCities,
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear),
       exportType:DocumentFormat.Xlsx
     };
@@ -502,16 +560,28 @@ export class ComparisionComponent implements OnInit {
   exportPillarsHistoryByUserId() {
     if (
       this.userService?.userInfo?.userID == null ||
+<<<<<<< HEAD
       !this.selectedCountries ||
       this.selectedCountries === "" ||
       this.selectedCountries == null || this.pillarColumns?.length == 0
+=======
+      !this.selectedCities ||
+      this.selectedCities === "" ||
+      this.selectedCities == null || this.pillarColumns?.length == 0
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     ) {
       return;
     }
     this.isPillarHistroyDownloading = true;
+<<<<<<< HEAD
     let payload: GetCountryPillarHistoryRequestDto = {
       userID: this.userService?.userInfo?.userID,
       countryID: this.selectedCountries,
+=======
+    let payload: GetCityPillarHistoryRequestDto = {
+      userID: this.userService?.userInfo?.userID,
+      cityID: this.selectedCities,
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear),
       exportType:DocumentFormat.Xlsx
     };

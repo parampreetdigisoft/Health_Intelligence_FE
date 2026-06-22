@@ -1,5 +1,9 @@
 import { Component, OnInit } from "@angular/core";
+<<<<<<< HEAD
 import { CountryVM } from "src/app/core/models/CountryVM";
+=======
+import { CityVM } from "src/app/core/models/CityVM";
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { PaginationResponse } from "src/app/core/models/PaginationResponse";
 import { ToasterService } from "src/app/core/services/toaster.service";
 import { UserService } from "src/app/core/services/user.service";
@@ -29,7 +33,11 @@ export class AssesmentComponent implements OnInit {
   selectedYear = new Date().getFullYear();
   isLoader: boolean = false;
   isOpendialog = false;
+<<<<<<< HEAD
   selectedCountryID: number | any = "";
+=======
+  selectedcityID: number | any = "";
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   selectedRoleID: UserRoleValue | any = "";
   selectedAssessment: GetAssessmentResponse | any = "";
   changeAssessment: ChangeAssessmentStatusRequestDto | any = "";
@@ -37,10 +45,17 @@ export class AssesmentComponent implements OnInit {
   totalRecords: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
+<<<<<<< HEAD
   countries: CountryVM[] | null = [];
   loading: boolean = false;
   evaluators: PublicUserResponse[] | null = [];
   userofSelectedCountryResponse: GetAssessmentResponse[] = [];
+=======
+  cities: CityVM[] | null = [];
+  loading: boolean = false;
+  evaluators: PublicUserResponse[] | null = [];
+  userofSelecteCityResponse: GetAssessmentResponse[] = [];
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   isAItransfer:boolean=false;
   rolesList = [
     { name: "Analyst", role: UserRoleValue.Analyst },
@@ -58,6 +73,7 @@ export class AssesmentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+<<<<<<< HEAD
     this.getAllCountriesByUserId();
     this.route.paramMap.subscribe((params) => {
       let rid = params.get("roleID");
@@ -65,6 +81,15 @@ export class AssesmentComponent implements OnInit {
       if (rid && cid) {
         this.selectedRoleID = rid;
         this.selectedCountryID = cid;
+=======
+    this.getAllCitiesByUserId();
+    this.route.paramMap.subscribe((params) => {
+      let rid = params.get("roleID");
+      let cid = params.get("cityID");
+      if (rid && cid) {
+        this.selectedRoleID = rid;
+        this.selectedcityID = cid;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       }
     });
     this.getAssessments();
@@ -89,7 +114,11 @@ export class AssesmentComponent implements OnInit {
       pageNumber: currentPage,
       pageSize: this.pageSize,
       userId: this.userService?.userInfo?.userID,
+<<<<<<< HEAD
       countryID: this.selectedCountryID,
+=======
+      cityID: this.selectedcityID,
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       role: this.selectedRoleID,
       updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear),
     };
@@ -101,6 +130,7 @@ export class AssesmentComponent implements OnInit {
       this.isLoader = false;
     });
   }
+<<<<<<< HEAD
   getAllCountriesByUserId() {
     this.adminService
       .getAllCountriesByUserId(this.userService?.userInfo?.userID)
@@ -111,6 +141,18 @@ export class AssesmentComponent implements OnInit {
             //this.selectedCountryID = this.countries?.length > 0 ? this.countries[0].countryID : null
           } else {
             this.toaster.showWarning("No country assigned");
+=======
+  getAllCitiesByUserId() {
+    this.adminService
+      .getAllCitiesByUserId(this.userService?.userInfo?.userID)
+      .subscribe({
+        next: (res) => {
+          this.cities = res.result;
+          if (this.cities) {
+            //this.selectedcityID = this.cities?.length > 0 ? this.cities[0].cityID : null
+          } else {
+            this.toaster.showWarning("No city assigned");
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           }
         },
       });
@@ -144,7 +186,11 @@ export class AssesmentComponent implements OnInit {
   }
   selectAssessement(selectedAssessment: GetAssessmentResponse) {
     this.selectedAssessment = selectedAssessment;
+<<<<<<< HEAD
     this.getUsersAssignedToCountry();
+=======
+    this.getUsersAssignedToCity();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     this.opendialog();
   }
   transferAssessment(payload:TransferAssessmentRequestDto) {
@@ -189,16 +235,28 @@ export class AssesmentComponent implements OnInit {
     if (modalInstance) modalInstance.hide();
     this.isOpendialog = false;
   }
+<<<<<<< HEAD
   getUsersAssignedToCountry() {
+=======
+  getUsersAssignedToCity() {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     if (this.selectedAssessment == null) {
       this.toaster.showError("Plese select assessment");
     }
     this.adminService
+<<<<<<< HEAD
       .getUsersAssignedToCountry(this.selectedAssessment.countryID)
       .subscribe({
         next: (res) => {
           if (res.succeeded) {
             this.userofSelectedCountryResponse = res.result ?? [];
+=======
+      .getUsersAssignedToCity(this.selectedAssessment.cityID)
+      .subscribe({
+        next: (res) => {
+          if (res.succeeded) {
+            this.userofSelecteCityResponse = res.result ?? [];
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           } else {
             this.toaster.showError(res.errors.join(", "));
           }
@@ -214,15 +272,27 @@ export class AssesmentComponent implements OnInit {
     this.selectedAssessment = selectedAssessment;
   }
 
+<<<<<<< HEAD
     aiResultTransfer() {  
   
       if (!this.selectedAssessment) {
         this.toaster.showWarning("Please select a country");
+=======
+    aiResultTransfer() {
+  
+  
+      if (!this.selectedAssessment) {
+        this.toaster.showWarning("Please select a city");
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         return;
       }
   
       const payload: AITransferAssessmentRequestDto = {
+<<<<<<< HEAD
         countryID: this.selectedAssessment.countryID,
+=======
+        cityID: this.selectedAssessment.cityID,
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         transferToUserID: this.selectedAssessment.userID
       };
   

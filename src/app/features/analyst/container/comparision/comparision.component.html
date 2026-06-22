@@ -19,9 +19,15 @@
               {{ year }}
             </option>
           </select>
+<<<<<<< HEAD
           <select [(ngModel)]="selectedCountries" (change)="getResponsesByUserId()" name="countryID" class="form-control">
             <option *ngFor="let country of countries" [value]="country.countryID">
               {{ country.countryName }}
+=======
+          <select [(ngModel)]="selectedCities" (change)="getResponsesByUserId()" name="cityID" class="form-control">
+            <option *ngFor="let city of cities" [value]="city.cityID">
+              {{ city.cityName }}
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
             </option>
           </select>
         </div>
@@ -40,7 +46,11 @@
     <ng-container *ngIf="totalRecords > pageSize">
       <div class="pagination-wrapper">
         <app-pagination [totalPage]="totalRecords" [currentPage]="currentPage" [pageSize]="pageSize"
+<<<<<<< HEAD
           [isLoader]="isLoader" (pageChange)="compareCountries($event)">
+=======
+          [isLoader]="isLoader" (pageChange)="compareCities($event)">
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         </app-pagination>
       </div>
     </ng-container>

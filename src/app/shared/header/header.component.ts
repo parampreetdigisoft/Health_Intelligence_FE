@@ -113,12 +113,20 @@ export class HeaderComponent implements OnInit {
   }
 
   showRoleBasedInfor(){
+<<<<<<< HEAD
     if(this.userinfo?.role?.toLowerCase() === 'countryuser'){
+=======
+    if(this.userinfo?.role?.toLowerCase() === 'cityuser'){
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       if(this.userinfo?.tier === 1){
         return 'Researcher';
       }
       else if(this.userinfo?.tier === 2){
+<<<<<<< HEAD
         return 'Country Analyst';
+=======
+        return 'City Analyst';
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       }
       else if(this.userinfo?.tier === 3){
         return 'Network Administrator';

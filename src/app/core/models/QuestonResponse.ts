@@ -3,9 +3,15 @@ import { PaginationRequest } from "./PaginationRequest";
 export interface GetQuestionRequest extends PaginationRequest {
   pillarID?: number;
 }
+<<<<<<< HEAD
 export interface GetQuestionByCountryMappingRespones {
   assessmentID: number;
   userCountryMappingID: number;
+=======
+export interface GetQuestionByCityMappingRespones {
+  assessmentID: number;
+  userCityMappingID: number;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   displayOrder: number;
   submittedPillarDisplayOrder: number;
   pillarID: number;
@@ -14,7 +20,11 @@ export interface GetQuestionByCountryMappingRespones {
   questions:AssessmentQuestionResponse[];
 }
 
+<<<<<<< HEAD
 export interface GetQuestionByCountryRespones extends GetQuestionResponse {
+=======
+export interface GetQuestionByCityRespones extends GetQuestionResponse {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   assessmentID: number;
   pillarDisplayOrder: number;
 }

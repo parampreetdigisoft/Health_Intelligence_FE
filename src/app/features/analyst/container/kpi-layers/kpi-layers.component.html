@@ -29,6 +29,7 @@
         </div>
         <div class="col-md-3">
             <div class="compare_select input_field input_flex">
+<<<<<<< HEAD
                 <ng-select [items]="countryList" bindValue="countryID" bindLabel="countryName" [searchable]="true"
                     class="form-control analyst_multi_select" [placeholder]="!selectedCountryID? 'Select Countries' :''"
                     [(ngModel)]="selectedCountryID" (change)="GetAnalyticalLayerResults()">
@@ -38,6 +39,17 @@
 
                     <ng-template ng-option-tmp let-item="item">
                         {{ item.countryName }}, {{ item.continent }} ({{ item.score?.toFixed(1) || 'NA'}})
+=======
+                <ng-select [items]="cityList" bindValue="cityID" bindLabel="cityName" [searchable]="true"
+                    class="form-control analyst_multi_select" [placeholder]="!selectedCityID? 'Select Cities' :''"
+                    [(ngModel)]="selectedCityID" (change)="GetAnalyticalLayerResults()">
+                    <ng-template ng-label-tmp let-item="item" class="select_item">
+                        {{ item.cityName }}
+                    </ng-template>
+
+                    <ng-template ng-option-tmp let-item="item">
+                        {{ item.cityName }}, {{ item.state }} ({{ item.score?.toFixed(1) || 'NA'}})
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
                     </ng-template>
                 </ng-select>
 
@@ -53,7 +65,11 @@
             <thead>
                 <tr>
                     <th>S.No.</th>
+<<<<<<< HEAD
                     <th>Country</th>
+=======
+                    <th>City</th>
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
                     <th>Kpi Layer</th>
                     <th>Condition</th>
                     <th>Category1</th>
@@ -70,7 +86,11 @@
 
                     <td>
                         <div class="kpi_city kpi_td_data">
+<<<<<<< HEAD
                             <p>{{ kpi.country?.countryName }}</p> ({{ kpi.country?.continent }})
+=======
+                            <p>{{ kpi.city?.cityName }}</p> ({{ kpi.city?.country }})
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
                         </div>
                     </td>
                     <td>

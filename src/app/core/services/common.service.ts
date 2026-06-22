@@ -6,8 +6,13 @@ import { UserService } from "./user.service";
 import { BehaviorSubject, catchError, from, map, Observable, switchMap, tap } from "rxjs";
 import { HttpService } from "../http/http.service";
 import { UpdateUserResponseDto, UserInfo } from "../models/UserInfo";
+<<<<<<< HEAD
 import { CountryVM } from "../models/CountryVM";
 import { GetNearestCountryRequestDto } from "../models/GetNearestCountryRequestDto";
+=======
+import { CityVM } from "../models/CityVM";
+import { GetNearestCityRequestDto } from "../models/GetNearestCityRequestDto";
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { ToasterService } from "./toaster.service";
 
 @Injectable({
@@ -21,19 +26,32 @@ export class CommonService {
 
   constructor(private http: HttpService, private userService: UserService, private toaster: ToasterService) { }
 
+<<<<<<< HEAD
   public getAllCountryByLocation(): Observable<ResultResponseDto<CountryVM[]>> {
     const payload: GetNearestCountryRequestDto = {
+=======
+  public getAllCityByLocation(): Observable<ResultResponseDto<CityVM[]>> {
+    const payload: GetNearestCityRequestDto = {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       userID: this.userService.userInfo.userID,
       latitude: this.latitude,
       longitude: this.longitude,
     };
 
     return this.http
+<<<<<<< HEAD
       .getWithQueryParams('Country/getAllCountryByLocation', payload)
       .pipe(map((x) => x as ResultResponseDto<CountryVM[]>));
   }
 
   public getUserNearestCountry(): Observable<ResultResponseDto<CountryVM[]>> {
+=======
+      .getWithQueryParams('City/getAllCityByLocation', payload)
+      .pipe(map((x) => x as ResultResponseDto<CityVM[]>));
+  }
+
+  public getUserNearestCity(): Observable<ResultResponseDto<CityVM[]>> {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     if (navigator.geolocation) {
       return from(
         new Promise<GeolocationPosition>((resolve, reject) => {
@@ -43,19 +61,33 @@ export class CommonService {
         switchMap((position) => {
           this.latitude = position.coords.latitude;
           this.longitude = position.coords.longitude;
+<<<<<<< HEAD
           return this.getAllCountryByLocation();
+=======
+          return this.getAllCityByLocation();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         }),
         catchError((error) => {
           console.error('Geolocation error:', error);
           this.toaster.showError(
+<<<<<<< HEAD
             'Location access denied or unavailable. Showing all countries.'
           );
           return this.getAllCountryByLocation(); // fallback
+=======
+            'Location access denied or unavailable. Showing all cities.'
+          );
+          return this.getAllCityByLocation(); // fallback
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         })
       );
     } else {
       this.toaster.showError('Geolocation not supported by this browser.');
+<<<<<<< HEAD
       return this.getAllCountryByLocation();
+=======
+      return this.getAllCityByLocation();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     }
   }
 
@@ -158,9 +190,15 @@ export class CommonService {
     }
     return years;
   }
+<<<<<<< HEAD
   public getLatitudeLongitude(country: any) {
     return this.http
       .getExternalApi('https://nominatim.openstreetmap.org/search', country)
+=======
+  public getLatitudeLongitude(city: any) {
+    return this.http
+      .getExternalApi('https://nominatim.openstreetmap.org/search', city)
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       .pipe(map((x) => x as any[]));
   }
   getGeneratedTime(utcDate: string | Date | null | undefined): string {

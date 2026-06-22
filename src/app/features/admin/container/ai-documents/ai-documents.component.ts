@@ -15,10 +15,17 @@ import { PaginationResponse } from 'src/app/core/models/PaginationResponse';
 import { AiComputationService } from 'src/app/core/services/ai-computation.service';
 import { CircularScoreComponent } from 'src/app/shared/standAlone/circular-score/circular-score.component';
 import { SparklineScoreComponent } from 'src/app/shared/standAlone/sparkline-score/sparkline-score.component';
+<<<<<<< HEAD
 import { GetCountryDocumentResponseDto, GetCountryPillarDocumentResponseDto} from 'src/app/core/models/aiVm/GetCountryDocumentResponseDto';
 import { CountryVM } from 'src/app/core/models/CountryVM';
 import { AdminService } from 'src/app/features/admin/admin.service';
 import { AiCountryDocumentRequestDto, AiCountryPillarDocumentRequestDto, DeleteCountryDocumentRequestDto,  } from 'src/app/core/models/aiVm/AiCountrySummeryRequestDto';
+=======
+import { GetCityDocumentResponseDto, GetCityPillarDocumentResponseDto} from 'src/app/core/models/aiVm/GetCityDocumentResponseDto';
+import { CityVM } from 'src/app/core/models/CityVM';
+import { AdminService } from 'src/app/features/admin/admin.service';
+import { AiCityDocumentRequestDto, AiCityPillarDocumentRequestDto, DeleteCityDocumentRequestDto,  } from 'src/app/core/models/aiVm/AiCitySummeryRequestDto';
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { AiDocumentViewDetailsComponent } from "src/app/shared/standAlone/ai-document-view-details/ai-document-view-details.component";
 
 @Component({
@@ -32,18 +39,32 @@ export class AiDocumentsComponent {
 
   selectedYear = new Date().getFullYear();
   urlBase = environment.apiUrl;
+<<<<<<< HEAD
   selectedCountry: GetCountryDocumentResponseDto | null | undefined = null;
   selectedCountryID?: number;
   selecteddocumentLayerID?: number;
   documentLayersResponse: PaginationResponse<GetCountryDocumentResponseDto> | undefined;
+=======
+  selectedCity: GetCityDocumentResponseDto | null | undefined = null;
+  selectedCityID?: number;
+  selecteddocumentLayerID?: number;
+  documentLayersResponse: PaginationResponse<GetCityDocumentResponseDto> | undefined;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   totalRecords: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
   isLoader: boolean = false;
+<<<<<<< HEAD
   countryList: CountryVM[] = [];
   pillars: PillarsVM[] = [];
   $documentChanged = new Subject();
   documentLayers: GetCountryDocumentResponseDto[] = [];
+=======
+  cityList: CityVM[] = [];
+  pillars: PillarsVM[] = [];
+  $documentChanged = new Subject();
+  documentLayers: GetCityDocumentResponseDto[] = [];
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   sidebarLoader = {
     index: -1,
     loader: false
@@ -51,7 +72,11 @@ export class AiDocumentsComponent {
   selectedDoc: any = null;
   saveDocumentLoader: boolean = false;
   isDeletePromptOpen = false;
+<<<<<<< HEAD
   countryPillarDocuments: GetCountryPillarDocumentResponseDto[] = [];
+=======
+  cityPillarDocuments: GetCityPillarDocumentResponseDto[] = [];
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 
   constructor(private adminService: AdminService,
     private toaster: ToasterService,
@@ -61,11 +86,19 @@ export class AiDocumentsComponent {
 
 
   ngOnInit(): void {
+<<<<<<< HEAD
     this.getAICountryDocuments(1);
     this.getCountryUserCountries();
     this.getPillars();
     this.$documentChanged.pipe(debounceTime(1000)).subscribe(x => {
       this.getAICountryDocuments();
+=======
+    this.getAICityDocuments(1);
+    this.getCityUserCities();
+    this.getPillars();
+    this.$documentChanged.pipe(debounceTime(1000)).subscribe(x => {
+      this.getAICityDocuments();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     });
   }
   documentChanged() {
@@ -76,6 +109,7 @@ export class AiDocumentsComponent {
       this.pillars = r;
     })
   }
+<<<<<<< HEAD
   getAICountryDocuments(currentPage: any = 1) {
     this.documentLayersResponse = undefined;
     this.isLoader = true;
@@ -90,6 +124,22 @@ export class AiDocumentsComponent {
     }
 
     this.aiComputationService.getAICountryDocuments(payload).subscribe(documentLayers => {
+=======
+  getAICityDocuments(currentPage: any = 1) {
+    this.documentLayersResponse = undefined;
+    this.isLoader = true;
+    let payload: AiCityDocumentRequestDto = {
+      sortDirection: SortDirection.ASC,
+      sortBy: 'CityName',
+      pageNumber: currentPage,
+      pageSize: this.pageSize
+    }
+    if (this.selectedCityID != undefined && this.selectedCityID != 0) {
+      payload.cityID = this.selectedCityID;
+    }
+
+    this.aiComputationService.getAICityDocuments(payload).subscribe(documentLayers => {
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       this.documentLayersResponse = documentLayers;
       this.totalRecords = documentLayers.totalRecords;
       this.currentPage = currentPage;
@@ -100,6 +150,7 @@ export class AiDocumentsComponent {
 
   ngOnDestroy(): void { }
 
+<<<<<<< HEAD
   viewDetails(country: GetCountryDocumentResponseDto, index: number) {
     this.selectedCountry = country;
     this.sidebarLoader.index = index;
@@ -112,10 +163,25 @@ export class AiDocumentsComponent {
       next: (res) => {
         if (res.succeeded) {
           this.countryList = res.result ?? [];
+=======
+  viewDetails(city: GetCityDocumentResponseDto, index: number) {
+    this.selectedCity = city;
+    this.sidebarLoader.index = index;
+    this.sidebarLoader.loader = true;
+    this.getAICityPillarDocuments();
+  }
+
+  getCityUserCities() {
+    this.adminService.getAllCitiesByUserId(this.userService.userInfo.userID ?? 0).subscribe({
+      next: (res) => {
+        if (res.succeeded) {
+          this.cityList = res.result ?? [];
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         }
       }
     });
   }
+<<<<<<< HEAD
   getAICountryPillarDocuments(isOpen = true) {   
     let payload: AiCountryPillarDocumentRequestDto = {
       countryID: this.selectedCountry?.countryID ?? 0
@@ -124,6 +190,16 @@ export class AiDocumentsComponent {
       next: (res) => {
         if (res.succeeded) {
           this.countryPillarDocuments = res.result ?? [];
+=======
+  getAICityPillarDocuments(isOpen = true) {   
+    let payload: AiCityPillarDocumentRequestDto = {
+      cityID: this.selectedCity?.cityID ?? 0
+    }
+    this.aiComputationService.getAICityPillarDocuments(payload).subscribe({
+      next: (res) => {
+        if (res.succeeded) {
+          this.cityPillarDocuments = res.result ?? [];
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           if (isOpen) {
             this.sidebarLoader.index = -1;
             this.sidebarLoader.loader = false;
@@ -142,9 +218,15 @@ export class AiDocumentsComponent {
       next: (res) => {
         this.saveDocumentLoader = false;
         if (res.succeeded) {
+<<<<<<< HEAD
           this.getAICountryPillarDocuments(false);
           this.toaster.showSuccess(res.messages.join(", "));
           this.getAICountryDocuments();
+=======
+          this.getAICityPillarDocuments(false);
+          this.toaster.showSuccess(res.messages.join(", "));
+          this.getAICityDocuments();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         }
       },
       error: () => {
@@ -153,20 +235,34 @@ export class AiDocumentsComponent {
     });
   }
 
+<<<<<<< HEAD
   deleteDocument(payload: DeleteCountryDocumentRequestDto) {
     this.aiComputationService.deleteDocument(payload).subscribe({
       next: (res) => {
         if (res.succeeded) {
           this.getAICountryPillarDocuments(false);
           this.getAICountryDocuments();
+=======
+  deleteDocument(payload: DeleteCityDocumentRequestDto) {
+    this.aiComputationService.deleteDocument(payload).subscribe({
+      next: (res) => {
+        if (res.succeeded) {
+          this.getAICityPillarDocuments(false);
+          this.getAICityDocuments();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           this.toaster.showSuccess(res.messages.join(", "))
         }
       }
     });
   }
 
+<<<<<<< HEAD
   downloadDocument(request: GetCountryPillarDocumentResponseDto) {
     this.aiComputationService.downloadDocument(request.countryDocumentID).subscribe({
+=======
+  downloadDocument(request: GetCityPillarDocumentResponseDto) {
+    this.aiComputationService.downloadDocument(request.cityDocumentID).subscribe({
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       next: (blob) => {
         if (blob.size > 0) {
           const url = window.URL.createObjectURL(blob);

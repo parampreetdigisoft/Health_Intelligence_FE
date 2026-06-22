@@ -37,7 +37,11 @@
         <th>Name</th>
         <th>Email</th>
         <th>Phone No. </th>
+<<<<<<< HEAD
         <th>Country</th>
+=======
+        <th>City</th>
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         <th>Mail Status</th>
         <th class="action_th">Actions</th>
       </tr>
@@ -49,8 +53,13 @@
         <td>{{ evaluator.email }}</td>
         <td>{{ evaluator.phone }}</td>
         <td>
+<<<<<<< HEAD
           <span *ngFor="let country of evaluator?.countries; let last = last">
             {{ country?.countryName }}{{ last ? "" : ", " }}
+=======
+          <span *ngFor="let city of evaluator?.cities; let last = last">
+            {{ city?.cityName }}{{ last ? "" : ", " }}
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           </span>
         </td>
         <td>
@@ -136,7 +145,11 @@
   >
     <app-add-update-evaluator
       [evaluator]="selectedEvaluator"
+<<<<<<< HEAD
       [countries]="countries"
+=======
+      [cities]="cities"
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       [loading]="loading"
       (closeModal)="closeModal()"
       (evaluatorChange)="addUpdateEvaluator($event)"
@@ -146,8 +159,13 @@
 </ng-container>
 
 <app-prompt
+<<<<<<< HEAD
   [title]="'Unassigned Countries'"
   [message]="'Are you sure you want to unassigned country for this Evaluator?'"
+=======
+  [title]="'Unassigned Cities'"
+  [message]="'Are you sure you want to unassigned city for this Evaluator?'"
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   [confirmText]="'Unassigned'"
   [cancelText]="'Cancel'"
   (confirm)="deleteEvaluator()"

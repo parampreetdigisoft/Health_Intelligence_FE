@@ -15,10 +15,17 @@
             {{ year }}
           </option>
         </select>
+<<<<<<< HEAD
         <select [(ngModel)]="selectedCountryID" name="countryID" class="form-control" (change)="getAssessments()">
           <option value="">Select Country</option>
           <option *ngFor="let country of countries" [value]="country.countryID">
             {{ country.countryName }}
+=======
+        <select [(ngModel)]="selectedcityID" name="cityID" class="form-control" (change)="getAssessments()">
+          <option value="">Select City</option>
+          <option *ngFor="let city of cities" [value]="city.cityID">
+            {{ city.cityName }}
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           </option>
         </select>
       </div>
@@ -32,7 +39,11 @@
     <thead>
       <tr>
         <th>S.No.</th>
+<<<<<<< HEAD
         <th>Country</th>
+=======
+        <th>City</th>
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         <th>Score</th>
         <th>Status</th>
         <th>Unknown</th>
@@ -44,7 +55,11 @@
     <tbody>
       <tr *ngFor="let assessment of assessmentsResponse?.data; let i = index">
         <td>{{((currentPage-1) * pageSize ) +(i+1)}}</td>
+<<<<<<< HEAD
         <td>{{assessment.countryName}}</td>
+=======
+        <td>{{assessment.cityName}}</td>
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         <td><span class="bold_num"> {{ (assessment.score ?? 0).toFixed(1) }}</span></td>
         <td>{{ assessment.assessmentPhase==5 ? 'Completed' :'InProgress' }}</td>
         <td>{{ assessment.totalUnknown }}</td>

@@ -12,6 +12,7 @@
     </div>
     <div class="col-md-2">
       <div class="compare_select input_field input_flex">
+<<<<<<< HEAD
         <ng-select [items]="countries" bindValue="countryID" bindLabel="countryName" [searchable]="true"
           class="form-control analyst_multi_select" [placeholder]="selectedCountryID > 0? '' : 'Search Country..'"
           [(ngModel)]="selectedCountryID" (change)="getAIPillarQuestions()">
@@ -21,6 +22,17 @@
 
           <ng-template ng-option-tmp let-item="item">
             {{ item.countryName }}, {{ item.continent }} ({{ item.score?.toFixed(1) || 'NA'}})
+=======
+        <ng-select [items]="cities" bindValue="cityID" bindLabel="cityName" [searchable]="true"
+          class="form-control analyst_multi_select" [placeholder]="selectedCityID > 0? '' : 'Search City..'"
+          [(ngModel)]="selectedCityID" (change)="getAIPillarQuestions()">
+          <ng-template ng-label-tmp let-item="item" class="select_item">
+            {{ item.cityName }}
+          </ng-template>
+
+          <ng-template ng-option-tmp let-item="item">
+            {{ item.cityName }}, {{ item.state }} ({{ item.score?.toFixed(1) || 'NA'}})
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           </ng-template>
         </ng-select>
       </div>
@@ -80,7 +92,11 @@
       <tbody>
         <tr *ngFor="let question of aiQuestions; let i = index">
           <td>{{ (currentPage - 1) * pageSize + (i + 1) }}</td>
+<<<<<<< HEAD
           <td class="country-col">
+=======
+          <td class="city-col">
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
             {{question.questionText}}
           </td>
 

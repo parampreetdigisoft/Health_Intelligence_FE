@@ -6,16 +6,27 @@ import {
   ViewChild,
 } from "@angular/core";
 import { PillarsVM } from "src/app/core/models/PillersVM";
+<<<<<<< HEAD
 import { CountryVM } from "src/app/core/models/CountryVM";
 import { UserService } from "src/app/core/services/user.service";
 import { CountryMappingPillerRequestDto } from "src/app/core/models/QuestionRequest";
 import { GetQuestionByCountryMappingRespones } from "src/app/core/models/QuestonResponse";
+=======
+import { CityVM } from "src/app/core/models/CityVM";
+import { UserService } from "src/app/core/services/user.service";
+import { CityMappingPillerRequestDto } from "src/app/core/models/QuestionRequest";
+import { GetQuestionByCityMappingRespones } from "src/app/core/models/QuestonResponse";
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { ToasterService } from "src/app/core/services/toaster.service";
 import { FormBuilder, FormGroup, FormArray, Validators } from "@angular/forms";
 import {
   AddAssessmentDto,
   AddAssessmentResponseDto,
+<<<<<<< HEAD
   GetCountryPillarHistoryRequestDto,
+=======
+  GetCityPillarHistoryRequestDto,
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 } from "src/app/core/models/AssessmentRequest";
 import { AnalystService } from "../../analyst.service";
 import { environment } from "src/environments/environment";
@@ -33,9 +44,15 @@ import { DocumentFormat } from "src/app/core/enums/DocumentFormat";
 export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   selectedYear = new Date().getFullYear();
   pillars: PillarsVM[] = [];
+<<<<<<< HEAD
   countries: CountryVM[] = []; // ✅ fixed type
   selectedUserCountryMappingID: number = 0;
   pillerQuestions: GetQuestionByCountryMappingRespones | null = null;
+=======
+  cities: CityVM[] = []; // ✅ fixed type
+  selectedUserCityMappingID: number = 0;
+  pillerQuestions: GetQuestionByCityMappingRespones | null = null;
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   form!: FormGroup;
   pillarDisplayOrder: number = 1;
   selectedPillar?: PillarsVM;
@@ -60,7 +77,11 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
     this.isLoader = true;
     this.formInitialized();
     this.GetAllPillars();
+<<<<<<< HEAD
     this.getCountryByUserIdForAssessment();
+=======
+    this.getCityByUserIdForAssessment();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   }
 
   get questions() {
@@ -143,15 +164,24 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
     });
   }
   pillarChanged(pillar?: PillarsVM) {
+<<<<<<< HEAD
     if (!this.selectedUserCountryMappingID || this.selectedUserCountryMappingID == 0) {
       this.toaster.showWarning("Please select country first");
+=======
+    if (!this.selectedUserCityMappingID || this.selectedUserCityMappingID == 0) {
+      this.toaster.showWarning("Please select city first");
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       return;
     }
 
     this.isAssessementFinalized = false;
     if (pillar) {
       this.selectedPillar = pillar;
+<<<<<<< HEAD
       this.getQuestionsByCountryId();
+=======
+      this.getQuestionsByCityId();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     }
     else {
       this.selectedPillar = this.pillars.find((x) => x.pillarID == this.pillerQuestions?.pillarID);
@@ -160,6 +190,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       }
     }
   }
+<<<<<<< HEAD
   countryChanged() {
     this.selectedPillar = undefined;
     this.getQuestionsByCountryId();
@@ -179,6 +210,27 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
               this.toaster.showInfo("You have rediredected to assgined country, please submit all pillars for the country");
             }, 1000);
             this.getQuestionsByCountryId();
+=======
+  cityChanged() {
+    this.selectedPillar = undefined;
+    this.getQuestionsByCityId();
+  }
+
+  getCityByUserIdForAssessment() {
+    this.selectedPillar = undefined;
+    this.commonService.getUserNearestCity()
+      .subscribe({
+        next: (res) => {
+          this.cities = res.result ?? [];
+          if (this.cities.length > 0) {
+            this.selectedUserCityMappingID = this.analystService.userCityMappingIDSubject$.value != null ?
+              this.analystService.userCityMappingIDSubject$.value
+              : this.cities[0].userCityMappingID ?? 0;
+            setTimeout(() => {
+              this.toaster.showInfo("You have rediredected to assgined city, please submit all pillars for the city");
+            }, 1000);
+            this.getQuestionsByCityId();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           } else {
             this.toaster.showWarning(res.errors.join(", "));
           }
@@ -189,6 +241,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       });
   }
 
+<<<<<<< HEAD
   getQuestionsByCountryId() {
     if (
       !this.selectedUserCountryMappingID ||
@@ -200,13 +253,30 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
     this.formInitialized();
     const payload: CountryMappingPillerRequestDto = {
       userCountryMappingID: this.selectedUserCountryMappingID ?? 0,
+=======
+  getQuestionsByCityId() {
+    if (
+      !this.selectedUserCityMappingID ||
+      this.selectedUserCityMappingID == 0
+    ) {
+      this.toaster.showWarning("Please select city first");
+      return;
+    }
+    this.formInitialized();
+    const payload: CityMappingPillerRequestDto = {
+      userCityMappingID: this.selectedUserCityMappingID ?? 0,
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     };
     if (this.selectedPillar) {
       payload.pillarID = this.selectedPillar.pillarID;
     }
     this.pillerQuestions = null;
     this.isLoader = true;
+<<<<<<< HEAD
     this.analystService.getQuestionsByCountryId(payload).subscribe({
+=======
+    this.analystService.getQuestionsByCityId(payload).subscribe({
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       next: (res) => {
         this.isLoader = false;
         if (res.succeeded) {
@@ -220,7 +290,11 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
           this.pillarChanged();
           this.loadQuestions();
         } else {
+<<<<<<< HEAD
           this.toaster.showWarning("Country's assessment is already submitted");
+=======
+          this.toaster.showWarning("City's assessment is already submitted");
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         }
       },
     });
@@ -228,17 +302,28 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
 
   SaveAssessment() {
     if (
+<<<<<<< HEAD
       !this.selectedUserCountryMappingID ||
       this.selectedUserCountryMappingID == 0
     ) {
       this.toaster.showWarning("Please select country first");
+=======
+      !this.selectedUserCityMappingID ||
+      this.selectedUserCityMappingID == 0
+    ) {
+      this.toaster.showWarning("Please select city first");
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       return;
     }
     const validQuestions = this.questionsArray.controls
       .filter((ctrl) => ctrl.valid)
       .map((ctrl) => ctrl.value as AddAssessmentResponseDto);
     const payload: AddAssessmentDto = {
+<<<<<<< HEAD
       userCountryMappingID: this.selectedUserCountryMappingID,
+=======
+      userCityMappingID: this.selectedUserCityMappingID,
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       assessmentID: this.pillerQuestions?.assessmentID ?? 0,
       pillarID: this.pillerQuestions?.pillarID ?? 0,
       responses: validQuestions ?? [],
@@ -259,12 +344,21 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
           }, 300);
           if (res.succeeded) {
             if (this.pillerQuestions?.displayOrder == 14 || this.isAssessementFinalized) {
+<<<<<<< HEAD
               this.analystService.userCountryMappingIDSubject$.next(null);
               this.getCountryByUserIdForAssessment();
             } else {
               if (this.selectedPillar)
                 this.selectedPillar = this.pillars.find(x => x.displayOrder == (Number(this.selectedPillar?.displayOrder) + 1));
               this.getQuestionsByCountryId();
+=======
+              this.analystService.userCityMappingIDSubject$.next(null);
+              this.getCityByUserIdForAssessment();
+            } else {
+              if (this.selectedPillar)
+                this.selectedPillar = this.pillars.find(x => x.displayOrder == (Number(this.selectedPillar?.displayOrder) + 1));
+              this.getQuestionsByCityId();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
             }
             this.toaster.showSuccess(res.messages.join(", "));
           } else {
@@ -285,6 +379,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   }
 
   ImportQuestions() {
+<<<<<<< HEAD
     if (this.selectedUserCountryMappingID != 0) {
       this.isDownalodingExcel = true;
       this.analystService
@@ -293,13 +388,27 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
           next: (res: any) => {
             var country = this.countries?.find(
               (x) => x.userCountryMappingID == this.selectedUserCountryMappingID
+=======
+    if (this.selectedUserCityMappingID != 0) {
+      this.isDownalodingExcel = true;
+      this.analystService
+        .ExportQuestions(this.selectedUserCityMappingID)
+        .subscribe({
+          next: (res: any) => {
+            var city = this.cities?.find(
+              (x) => x.userCityMappingID == this.selectedUserCityMappingID
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
             );
             this.isDownalodingExcel = false;
             const url = window.URL.createObjectURL(res);
             const a = document.createElement("a");
             a.href = url;
             a.download =
+<<<<<<< HEAD
               country?.countryName + "_" + country?.assignedBy + "_Questions.xlsx";
+=======
+              city?.cityName + "_" + city?.assignedBy + "_Questions.xlsx";
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
             a.click();
             this.toaster.showSuccess("Questions downloaded successfully");
           },
@@ -309,7 +418,11 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
           },
         });
     } else {
+<<<<<<< HEAD
       this.toaster.showWarning("Please select country to get questions");
+=======
+      this.toaster.showWarning("Please select city to get questions");
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     }
   }
 
@@ -323,7 +436,11 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
         this.selectedPillar = undefined;
         this.isUploading = false;
         if (res.succeeded) {
+<<<<<<< HEAD
           this.getCountryByUserIdForAssessment();
+=======
+          this.getCityByUserIdForAssessment();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           this.toaster.showSuccess(res.messages.join(", "));
         } else {
           this.toaster.showError(res.errors.join(", "));
@@ -350,14 +467,23 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   autoSaveSingleAssessemnt(index: number) {
 
     if (this.questionsArray.controls[index].valid) {
+<<<<<<< HEAD
       if (!this.selectedUserCountryMappingID || this.selectedUserCountryMappingID == 0) {
         this.toaster.showWarning("Please select country first");
+=======
+      if (!this.selectedUserCityMappingID || this.selectedUserCityMappingID == 0) {
+        this.toaster.showWarning("Please select city first");
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         return;
       }
       if (this.questionsArray.controls[index].valid && this.questionsArray.controls[index].dirty) {
 
         const payload: AddAssessmentDto = {
+<<<<<<< HEAD
           userCountryMappingID: this.selectedUserCountryMappingID,
+=======
+          userCityMappingID: this.selectedUserCityMappingID,
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           assessmentID: this.pillerQuestions?.assessmentID ?? 0,
           pillarID: this.pillerQuestions?.pillarID ?? 0,
           responses: [this.questionsArray.controls[index].value],
@@ -387,15 +513,26 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   }
 
   aiResultTransfer() {
+<<<<<<< HEAD
     const country = this.countries.find(x => x.userCountryMappingID === Number(this.selectedUserCountryMappingID));
 
     if (!country) {
       this.toaster.showWarning("Please select a country");
+=======
+    const city = this.cities.find(x => x.userCityMappingID === Number(this.selectedUserCityMappingID));
+
+    if (!city) {
+      this.toaster.showWarning("Please select a city");
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       return;
     }
 
     const payload: AITransferAssessmentRequestDto = {
+<<<<<<< HEAD
       countryID: country.countryID,
+=======
+      cityID: city.cityID,
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       transferToUserID: this.userService.userInfo?.userID
     };
 
@@ -410,7 +547,11 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           if (res?.succeeded) {
+<<<<<<< HEAD
             this.countryChanged();
+=======
+            this.cityChanged();
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
             this.toaster.showSuccess(res.messages?.join(", ") || "Transfer successful");
           } else {
             this.toaster.showError(res.errors?.join(", ") || "Transfer failed");
@@ -434,16 +575,26 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   exportPillarsHistoryByUserId(type: 'xlsx' | 'pdf') {
     if (
       this.userService?.userInfo?.userID == null ||
+<<<<<<< HEAD
       !this.selectedUserCountryMappingID ||
       this.selectedUserCountryMappingID == 0 ||
       this.selectedUserCountryMappingID == null
     ) {
 
       this.toaster.showWarning("Please select country to for history");
+=======
+      !this.selectedUserCityMappingID ||
+      this.selectedUserCityMappingID == 0 ||
+      this.selectedUserCityMappingID == null
+    ) {
+
+      this.toaster.showWarning("Please select city to for history");
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       return;
     }
     
 
+<<<<<<< HEAD
     const selectedCountry = this.countries.find(
       (x: any) => x.userCountryMappingID == this.selectedUserCountryMappingID
     );
@@ -456,6 +607,20 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
     let payload: GetCountryPillarHistoryRequestDto = {
       userID: this.userService?.userInfo?.userID,
       countryID: selectedCountry.countryID,   // ✅ Correct countryID
+=======
+    const selectedCity = this.cities.find(
+      (x: any) => x.userCityMappingID == this.selectedUserCityMappingID
+    );
+
+    if (!selectedCity) {
+      this.toaster.showWarning("Please select city to for history");
+      return;
+    }
+
+    let payload: GetCityPillarHistoryRequestDto = {
+      userID: this.userService?.userInfo?.userID,
+      cityID: selectedCity.cityID,   // ✅ Correct cityID
+>>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear),
       exportType: type
     };
