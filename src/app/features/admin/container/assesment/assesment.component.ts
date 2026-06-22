@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { CityVM } from "src/app/core/models/CityVM";
+import { CountryVM } from "src/app/core/models/CountryVM";
 import { PaginationResponse } from "src/app/core/models/PaginationResponse";
 import { ToasterService } from "src/app/core/services/toaster.service";
 import { UserService } from "src/app/core/services/user.service";
@@ -29,7 +29,7 @@ export class AssesmentComponent implements OnInit {
   selectedYear = new Date().getFullYear();
   isLoader: boolean = false;
   isOpendialog = false;
-  selectedcityID: number | any = "";
+  selectedCountryID: number | any = "";
   selectedRoleID: UserRoleValue | any = "";
   selectedAssessment: GetAssessmentResponse | any = "";
   changeAssessment: ChangeAssessmentStatusRequestDto | any = "";
@@ -37,10 +37,10 @@ export class AssesmentComponent implements OnInit {
   totalRecords: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
-  cities: CityVM[] | null = [];
+  countries: CountryVM[] | null = [];
   loading: boolean = false;
   evaluators: PublicUserResponse[] | null = [];
-  userofSelecteCityResponse: GetAssessmentResponse[] = [];
+  userofSelectedCountryResponse: GetAssessmentResponse[] = [];
   isAItransfer:boolean=false;
   rolesList = [
     { name: "Analyst", role: UserRoleValue.Analyst },
@@ -58,13 +58,13 @@ export class AssesmentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getAllCitiesByUserId();
+    this.getAllCountriesByUserId();
     this.route.paramMap.subscribe((params) => {
       let rid = params.get("roleID");
-      let cid = params.get("cityID");
+      let cid = params.get("countryID");
       if (rid && cid) {
         this.selectedRoleID = rid;
-        this.selectedcityID = cid;
+        this.selectedCountryID = cid;
       }
     });
     this.getAssessments();
@@ -89,7 +89,7 @@ export class AssesmentComponent implements OnInit {
       pageNumber: currentPage,
       pageSize: this.pageSize,
       userId: this.userService?.userInfo?.userID,
-      cityID: this.selectedcityID,
+      countryID: this.selectedCountryID,
       role: this.selectedRoleID,
       updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear),
     };
@@ -101,16 +101,16 @@ export class AssesmentComponent implements OnInit {
       this.isLoader = false;
     });
   }
-  getAllCitiesByUserId() {
+  getAllCountriesByUserId() {
     this.adminService
-      .getAllCitiesByUserId(this.userService?.userInfo?.userID)
+      .getAllCountriesByUserId(this.userService?.userInfo?.userID)
       .subscribe({
         next: (res) => {
-          this.cities = res.result;
-          if (this.cities) {
-            //this.selectedcityID = this.cities?.length > 0 ? this.cities[0].cityID : null
+          this.countries = res.result;
+          if (this.countries) {
+            //this.selectedCountryID = this.countries?.length > 0 ? this.countries[0].countryID : null
           } else {
-            this.toaster.showWarning("No city assigned");
+            this.toaster.showWarning("No country assigned");
           }
         },
       });
@@ -144,7 +144,7 @@ export class AssesmentComponent implements OnInit {
   }
   selectAssessement(selectedAssessment: GetAssessmentResponse) {
     this.selectedAssessment = selectedAssessment;
-    this.getUsersAssignedToCity();
+    this.getUsersAssignedToCountry();
     this.opendialog();
   }
   transferAssessment(payload:TransferAssessmentRequestDto) {
@@ -189,16 +189,16 @@ export class AssesmentComponent implements OnInit {
     if (modalInstance) modalInstance.hide();
     this.isOpendialog = false;
   }
-  getUsersAssignedToCity() {
+  getUsersAssignedToCountry() {
     if (this.selectedAssessment == null) {
       this.toaster.showError("Plese select assessment");
     }
     this.adminService
-      .getUsersAssignedToCity(this.selectedAssessment.cityID)
+      .getUsersAssignedToCountry(this.selectedAssessment.countryID)
       .subscribe({
         next: (res) => {
           if (res.succeeded) {
-            this.userofSelecteCityResponse = res.result ?? [];
+            this.userofSelectedCountryResponse = res.result ?? [];
           } else {
             this.toaster.showError(res.errors.join(", "));
           }
@@ -214,16 +214,15 @@ export class AssesmentComponent implements OnInit {
     this.selectedAssessment = selectedAssessment;
   }
 
-    aiResultTransfer() {
-  
+    aiResultTransfer() {  
   
       if (!this.selectedAssessment) {
-        this.toaster.showWarning("Please select a city");
+        this.toaster.showWarning("Please select a country");
         return;
       }
   
       const payload: AITransferAssessmentRequestDto = {
-        cityID: this.selectedAssessment.cityID,
+        countryID: this.selectedAssessment.countryID,
         transferToUserID: this.selectedAssessment.userID
       };
   

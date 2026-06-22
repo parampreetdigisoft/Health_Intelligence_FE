@@ -26,13 +26,14 @@ import { AIAssistantFAQDto } from 'src/app/core/models/chat/AIAssistantFAQDto';
 
 import { CommonService } from 'src/app/core/services/common.service';
 import { environment } from 'src/environments/environment';
-import { CityExecutiveSlidesResult, PillarsUserHistoryResponseDto } from 'src/app/core/models/chat/ChatCityExecutiveSlidesResponse';
-import { CityVM } from 'src/app/core/models/CityVM';
-import { CityUserService } from 'src/app/features/city-user/city-user.service';
+import { CountryExecutiveSlidesResult, PillarsUserHistoryResponseDto } from 'src/app/core/models/chat/ChatCountryExecutiveSlidesResponse';
+import { CountryVM } from 'src/app/core/models/CountryVM';
+
 import { UserService } from 'src/app/core/services/user.service';
 import { UserRole } from 'src/app/core/enums/UserRole';
-import { ChatEmergingTrendsResponse, EmergingTrendCityCard } from 'src/app/core/models/chat/EmergingTrendsResponse';
+import { ChatEmergingTrendsResponse, EmergingTrendCountryCard } from 'src/app/core/models/chat/EmergingTrendsResponse';
 import { PillarLiveSignalCard, PillarLiveSignalsResult } from 'src/app/core/models/chat/PillarLiveSignalsResponse';
+import { CountryUserService } from 'src/app/features/country-user/country-user.service';
 
 @Component({
   selector: 'app-chat-container',
@@ -48,7 +49,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   protected chatService = inject(ChatService);
   private cdr = inject(ChangeDetectorRef);
   private commonService = inject(CommonService);
-   protected cityUserService = inject(CityUserService);
+   protected countryUserService = inject(CountryUserService);
   protected userService = inject(UserService);
 
   // ─── View refs ────────────────────────────────────────────────────────────
@@ -61,8 +62,8 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   showSuggestions = signal(false);
   showContextPanel = signal(true);
   unreadCount = signal(0);
-  citySlide :CityExecutiveSlidesResult|null = null;
-  citySlidesLoading = signal(false);
+  countrySlide :CountryExecutiveSlidesResult|null = null;
+  countrySlidesLoading = signal(false);
   urlBase = environment.apiUrl;
   emergingTrends = signal<ChatEmergingTrendsResponse | null>(null);
   emergingTrendsLoading = signal(false);
@@ -77,20 +78,20 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   protected isOpen = this.chatService.isOpen;
   protected isTyping = this.chatService.isTyping;
   protected messages = this.chatService.messages;
-  protected selectedCity = this.chatService.selectedCity;
+  protected selectedCountry = this.chatService.selectedCountry;
   protected selectedPillar = this.chatService.selectedPillar;
   isExpanded = true;
 
   // ─── Computed ─────────────────────────────────────────────────────────────
   protected hasContext = computed(() =>
-    !!this.chatService.selectedCity() || !!this.chatService.selectedPillar()
+    !!this.chatService.selectedCountry() || !!this.chatService.selectedPillar()
   );
 
   protected contextLabel = computed<string | null>(() => {
-    const c = this.chatService.selectedCity();
+    const c = this.chatService.selectedCountry();
     const p = this.chatService.selectedPillar();
-    if (c && p) return `${c.cityName} · ${p.pillarName}`;
-    if (c) return c.cityName;
+    if (c && p) return `${c.countryName} · ${p.pillarName}`;
+    if (c) return c.countryName;
     if (p) return p.pillarName;
     return null;
   });
@@ -108,18 +109,18 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   });
 
   readonly rotatingHeadlines = [
-    'Welcome to VUI Aevum',
+    'Welcome to AHI Aevum',
     'Surface stability signals across regions',
-    'Interrogate city risk with pillar context',
+    'Interrogate country risk with pillar context',
     'Compare indices and emerging pressure points',
     'Brief on conflict trajectories and early warnings',
   ];
 
   readonly rotatingPlaceholders = [
-    'Frame a city intelligence question…',
+    'Frame a country intelligence question…',
     'Which stability indicators matter for your decision?',
     'Ask about governance, security, or humanitarian drivers…',
-    'Request a cross-city or regional assessment…',
+    'Request a cross-country or regional assessment…',
   ];
 
   rotatingIndex = signal(0);
@@ -174,14 +175,14 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     this.closeChat();
     this.clearContext();
     let userRole = this.userService.userInfo.role;
-    if (userRole === UserRole.CityUser) {
-      this.cityUserService.getCityUserCities().subscribe({
+    if (userRole === UserRole.CountryUser) {
+      this.countryUserService.getCountryUserCountries().subscribe({
         next: res => {
-          const cities = res.result ?? [];
-          this.chatService.cities.next(cities);
+          const countries = res.result ?? [];
+          this.chatService.countries.next(countries);
         }
       });
-      this.cityUserService.getCityUserAllPillars().subscribe({
+      this.countryUserService.getCountryUserAllPillars().subscribe({
         next: res => {
           const pillars = res.result ?? [];
           this.chatService.pillars.next(pillars);
@@ -189,7 +190,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
       });
     }
     else {
-      this.chatService.getAllCites();
+      this.chatService.getAllCountries();
       this.chatService.getPillars();
     }
     this.chatService.getPillars();
@@ -198,36 +199,36 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
      this.loadPillarLiveSignals();
     this.startSlider();
     this.startPromptRotation();
-    if (this.chatService.crossComparisionCityIDs.value.length > 0) {
-      this.getCitiesCrossComparision()
+    if (this.chatService.crossComparisionCountryIDs.value.length > 0) {
+      this.getCountriesCrossComparision()
     }
   }
 
- onCityChange(city: CityVM | null): void {
+ onCountryChange(country: CountryVM | null): void {
   this.analysisModalOpen.set(false);
   this.sliderItems = [];
   this.currentSlide = 0;
 
   clearInterval(this.intervalId);
 
-  this.chatService.selectedCity.set(city ?? null);
+  this.chatService.selectedCountry.set(country ?? null);
 
-  if (!city?.cityID) {
-    this.citySlide = null;
-    this.citySlidesLoading.set(false);
+  if (!country?.countryID) {
+    this.countrySlide = null;
+    this.countrySlidesLoading.set(false);
     this.cdr.markForCheck();
     return;
   }
 
-  this.citySlide = null;
-  this.citySlidesLoading.set(true);
+  this.countrySlide = null;
+  this.countrySlidesLoading.set(true);
   this.cdr.markForCheck();
 
-  this.chatService.getCitySlides(city.cityID)
+  this.chatService.getCountrySlides(country.countryID)
     .pipe(
       takeUntil(this.destroy$),
       finalize(() => {
-        this.citySlidesLoading.set(false);
+        this.countrySlidesLoading.set(false);
         this.cdr.markForCheck();
       })
     )
@@ -236,7 +237,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
 
         const data = res?.result?.result ?? null;
 
-        this.citySlide = data;
+        this.countrySlide = data;
 
         if (!data) {
           this.sliderItems = [];
@@ -252,17 +253,17 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
           ? data.combinedRisks
           : [];
 
-        const cityName =
-          data?.city?.cityName ||
-          city?.cityName ||
-          'City';
+        const countryName =
+          data?.country?.countryName ||
+          country?.countryName ||
+          'Country';
 
         const recentPerformanceSummary =
           data?.recentPerformance?.summary || '';
 
         this.sliderItems = [
           {
-            title: `${cityName} recent performance`,
+            title: `${countryName} recent performance`,
             subtitle: recentPerformanceSummary,
             trend: 'Recent'
           },
@@ -301,9 +302,9 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
 
       error: (err) => {
 
-        console.error('Error loading city slides:', err);
+        console.error('Error loading country slides:', err);
 
-        this.citySlide = null;
+        this.countrySlide = null;
         this.sliderItems = [];
 
         this.cdr.markForCheck();
@@ -350,14 +351,14 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   }
 
   // ─── Send ─────────────────────────────────────────────────────────────────
-  getCitiesCrossComparision (): void {
+  getCountriesCrossComparision (): void {
 
     this.inputText.set('');
     this.showSuggestions.set(false);
     this.suggestions.set([]);
 
     this.chatService
-      .getCitiesCrossComparision()
+      .getCountriesCrossComparision()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => { this.scrollToBottom(); this.cdr.markForCheck(); },
@@ -430,7 +431,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   }
 
   clearContext(): void {
-    this.chatService.selectedCity.set(null);
+    this.chatService.selectedCountry.set(null);
     this.chatService.selectedPillar.set(null);
     this.chatService.selectedfaq.set(null);
   }
@@ -454,9 +455,9 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** Pillars from city slide, ordered for sidebar display. */
+  /** Pillars from country slide, ordered for sidebar display. */
   get sidebarPillars(): PillarsUserHistoryResponseDto[] {
-    const pillars = this.citySlide?.city?.pillars;
+    const pillars = this.countrySlide?.country?.pillars;
     if (!pillars?.length) return [];
     return [...pillars].sort(
       (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)
@@ -539,12 +540,12 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     return p.pillarID;
   }
 
-  /** Search both city name and alias (also used as a fallback for pillar name) */
+  /** Search both country name and alias (also used as a fallback for pillar name) */
   customSearchFn(term: string, item: any): boolean {
     const t = term.toLowerCase();
     return (
-      item.cityName?.toLowerCase().includes(t) ||
-      item.cityAliasName?.toLowerCase().includes(t) ||
+      item.countryName?.toLowerCase().includes(t) ||
+      item.countryAliasName?.toLowerCase().includes(t) ||
       item.region?.toLowerCase().includes(t) ||
       item.pillarName?.toLowerCase().includes(t) ||
       false
@@ -776,9 +777,9 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     ).subscribe({
       next: res => {
         const payload = res?.succeeded ? res.result : null;
-        const cities = payload?.cities?.filter(c => c?.city && c?.sourceUrl) ?? [];
+        const countries = payload?.countries?.filter(c => c?.country && c?.sourceUrl) ?? [];
 
-        if (!payload || !cities.length) {
+        if (!payload || !countries.length) {
           this.emergingTrends.set(null);
           this.emergingTrendsError.set(
             res?.errors?.[0] ?? res?.messages?.join(", ") ?? 'Unable to load global trends right now.'
@@ -786,8 +787,8 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.emergingTrends.set({ ...payload, cities });
-        this.selectedTrendCode.set(cities[0]?.cityCode ?? null);
+        this.emergingTrends.set({ ...payload, countries });
+        this.selectedTrendCode.set(countries[0]?.countryCode ?? null);
         this.emergingTrendsError.set(null);
         this.cdr.markForCheck();
       },
@@ -803,17 +804,17 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     this.loadEmergingTrends();
   }
 
-  selectTrendCard(card: EmergingTrendCityCard): void {
-    this.selectedTrendCode.set(card.cityCode);
+  selectTrendCard(card: EmergingTrendCountryCard): void {
+    this.selectedTrendCode.set(card.countryCode ?? null);
     this.cdr.markForCheck();
   }
 
-  isTrendSelected(card: EmergingTrendCityCard): boolean {
-    return this.selectedTrendCode() === card.cityCode;
+  isTrendSelected(card: EmergingTrendCountryCard): boolean {
+    return this.selectedTrendCode() === card.countryCode;
   }
 
-  trackTrendCard(_: number, card: EmergingTrendCityCard): string {
-    return card.cityCode;
+  trackTrendCard(_: number, card: EmergingTrendCountryCard): string {
+    return card.countryCode ?? '';
   }
 
   trendAccentColor(color: string | null | undefined): string {

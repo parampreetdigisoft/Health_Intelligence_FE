@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { CityVM } from '../../../../core/models/CityVM';
+import { CountryVM } from '../../../../core/models/CountryVM';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GetUserByRoleResponse } from '../../../../core/models/GetUserByRoleResponse';
 import { InviteUserDto, UpdateInviteUserDto } from 'src/app/core/models/AnalystVM';
@@ -15,7 +15,7 @@ import { UserService } from 'src/app/core/services/user.service';
 })
 export class AddUpdateEvaluatorComponent {
   @Input() evaluator: GetUserByRoleResponse | null = null;
-  @Input() cities: CityVM[] | null = [];
+  @Input() countries: CountryVM[] | null = [];
   @Output() evaluatorChange = new EventEmitter<UpdateInviteUserDto | null>();
   @Output() bulkImportChange = new EventEmitter<UpdateInviteUserDto[] | null>();
   @Output() closeModal = new EventEmitter<boolean>();
@@ -28,7 +28,7 @@ export class AddUpdateEvaluatorComponent {
     "FullName",
     "Email",
     "Phone",
-    "CityName"
+    "CountryName"
   ];
   evaluatorForm: FormGroup<any> = this.fb.group({});
 
@@ -51,7 +51,7 @@ export class AddUpdateEvaluatorComponent {
       fullName: [evaluator?.fullName, [Validators.required]],
       email: [evaluator?.email, [Validators.required, Validators.email]],
       phone: [evaluator?.phone, [Validators.required]],
-      city: [evaluator?.cities?.map(x => x?.cityID) ?? [], [Validators.required]]
+      country: [evaluator?.countries?.map(x => x?.countryID) ?? [], [Validators.required]]
     });
     this.evaluatorForm.updateValueAndValidity();
   }
@@ -59,12 +59,12 @@ export class AddUpdateEvaluatorComponent {
   onSubmit() {
     this.isSubmitted = true;
     if (this.evaluatorForm.valid) {
-      const cityData: UpdateInviteUserDto = {
+      const countryData: UpdateInviteUserDto = {
         ...this.evaluatorForm.value,
         userID: this.evaluator?.userID ?? 0,
-        cityID: this.evaluatorForm.value.city
+        countryID: this.evaluatorForm.value.country
       };
-      this.evaluatorChange.emit(cityData);
+      this.evaluatorChange.emit(countryData);
     }
 
   }
@@ -73,7 +73,7 @@ export class AddUpdateEvaluatorComponent {
       "FullName",
       "Email",
       "Phone",
-      "CityName"
+      "CountryName"
     ];
 
     // One sample row
@@ -81,7 +81,7 @@ export class AddUpdateEvaluatorComponent {
       FullName: "FullName of Evaluator",
       Email: "Enter Email of Evaluator",
       Phone: "Enter Phone Number of Evaluator",
-      CityName: "Enter city seprated by comma, like :- Chandigarh, Mohali, Swar"
+      CountryName: "Enter country separated by comma, like :- India, USA, Canada"
     };
 
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([sampleRow], { header: headers });
@@ -128,14 +128,14 @@ export class AddUpdateEvaluatorComponent {
         const fullName = String(row["FullName"] || "").trim();
         const email = String(row["Email"] || "").trim();
         const phone = String(row["Phone"] || "").trim();
-        const cityName = String(row["CityName"] || "").trim();
+        const countryName = String(row["CountryName"] || "").trim();
 
-        const isCompletelyBlank = !fullName && !email && !phone && !cityName;
+        const isCompletelyBlank = !fullName && !email && !phone && !countryName;
         if (isCompletelyBlank) {
           continue;
         }
         // ✅ Required check
-        if (!fullName || !email || !phone || !cityName) {
+        if (!fullName || !email || !phone || !countryName) {
           this.alertMsg = `Row ${i + 2}: All fields are required.`;
           this.fileInput.nativeElement.value = "";
           return;
@@ -168,7 +168,7 @@ export class AddUpdateEvaluatorComponent {
           phone,
           password: email,
           role: UserRoleValue.Evaluator,
-          cityID: this.getCityByName(cityName)
+          countryID: this.getCountryByName(countryName)
         };
         excelData.push(dto);
       }
@@ -177,12 +177,12 @@ export class AddUpdateEvaluatorComponent {
     reader.readAsBinaryString(target.files[0]);
   }
 
-  getCityByName(cityNames: string): number[] {
-    if (!cityNames) return [];
-    return cityNames
+  getCountryByName(countryNames: string): number[] {
+    if (!countryNames) return [];
+    return countryNames
       .split(",")
       .map(name => name.trim())
-      .map(name => this.cities?.find(c => c.cityName === name)?.cityID)
+      .map(name => this.countries?.find(c => c.countryName === name)?.countryID)
       .filter((id): id is number => id !== undefined);
   }
 

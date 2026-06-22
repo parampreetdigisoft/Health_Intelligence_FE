@@ -1,6 +1,4 @@
-export interface EmergingTrendCityCard {
-  city: string;
-  cityCode: string;
+export interface EmergingTrendCountryCard {
   country: string;
   region: string;
   type: 'risk' | 'trend';
@@ -12,12 +10,13 @@ export interface EmergingTrendCityCard {
   confidence: number;
   icon: string;
   color: string;
-  sourceUrl: string;
+  sourceUrl: string; 
+  countryCode?: string;
 }
 
 export interface ChatEmergingTrendsResponse {
   updatedAt: string;
   headline: string;
   subHeadline: string;
-  cities: EmergingTrendCityCard[];
+  countries: EmergingTrendCountryCard[];
 }

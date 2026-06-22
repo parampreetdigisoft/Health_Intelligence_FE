@@ -22,10 +22,10 @@ export class AddUpdateQuestionComponent implements OnChanges, OnInit {
   isSubmitted = false;
   alertMsg = '';
   scoreOptions = [
-    { scoreValue: 4 },
-    { scoreValue: 3 },
-    { scoreValue: 2 },
-    { scoreValue: 1 },
+    { scoreValue: 100 },
+    { scoreValue: 75 },
+    { scoreValue: 50 },
+    { scoreValue: 25 },
     { scoreValue: 0 }
   ];
   excelData: any[] = [];

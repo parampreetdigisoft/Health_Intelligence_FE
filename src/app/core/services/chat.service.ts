@@ -3,7 +3,8 @@ import { Observable, interval, Subject, takeUntil, BehaviorSubject, map, Subscri
 import {
   ChatMessage,
   ChatResponseDto,
-  CityChatRequestDto,
+  
+  CountryChatRequestDto,
   CrossComparisionChatRequestDto,
   GlobalChatRequestDto,
 
@@ -15,8 +16,8 @@ import { HttpService } from '../http/http.service';
 import { ToasterService } from './toaster.service';
 import { ResultResponseDto } from '../models/ResultResponseDto';
 import { AIAssistantFAQDto } from '../models/chat/AIAssistantFAQDto';
-import { CityVM } from '../models/CityVM';
-import { ChatCityExecutiveSlidesResponse, CityExecutiveSlidesResult } from '../models/chat/ChatCityExecutiveSlidesResponse';
+import { CountryVM } from '../models/CountryVM';
+import {  ChatCountryExecutiveSlidesResponse } from '../models/chat/ChatCountryExecutiveSlidesResponse';
 import { ChatEmergingTrendsResponse } from '../models/chat/EmergingTrendsResponse';
 import { PillarLiveSignalsResult } from '../models/chat/PillarLiveSignalsResponse';
 
@@ -25,15 +26,15 @@ export class ChatService {
   // ─── State ────────────────────────────────────────────────────────────────
   isOpen = signal(false);
   isTyping = signal(false);
-  selectedCity = signal<CityVM | null>(null);
+  selectedCountry = signal<CountryVM | null>(null);
   selectedPillar = signal<PillarsVM | null>(null);
   messages = signal<ChatMessage[]>([]);
-  cities = new BehaviorSubject<CityVM[]>([]);
+  countries = new BehaviorSubject<CountryVM[]>([]);
   pillars = new BehaviorSubject<PillarsVM[]>([]);
   faqs = new BehaviorSubject<AIAssistantFAQDto[]>([]);
   selectedfaq = signal<AIAssistantFAQDto | null>(null);
-   crossComparisionCityIDs = new BehaviorSubject<number[]>([]);
-  quickQuestions = computed(() => this.selectedCity() ? this.cityQuickQuestions : this.globalQuickQuestions);
+   crossComparisionCountryIDs = new BehaviorSubject<number[]>([]);
+  quickQuestions = computed(() => this.selectedCountry() ? this.countryQuickQuestions : this.globalQuickQuestions);
   // ─── Cancellation tokens ──────────────────────────────────────────────────
   /**
    * Emitting on cancelStream$ stops an active typewriter interval via takeUntil.
@@ -56,7 +57,7 @@ export class ChatService {
   private readonly welcomeMessage: ChatMessage = {
     id: 'welcome',
     role: 'assistant',
-    content: `## Welcome to Verdian Urban Index\n\nI'm your **Urban Intelligence Assistant**. I can help you analyze:\n\n- **City index scores** \n- **Pillar-level breakdowns** and risk factors\n- **Trends and recommendations**\n\nSelect a **city** and **pillar** above for focused insights, or ask me anything!`,
+    content: `## Welcome to Africa Health Intelligence \n\nI'm your **Urban Intelligence Assistant**. I can help you analyze:\n\n- **Country index scores** \n- **Pillar-level breakdowns** and risk factors\n- **Trends and recommendations**\n\nSelect a **country** and **pillar** above for focused insights, or ask me anything!`,
     timestamp: new Date(),
   };
 
@@ -70,8 +71,8 @@ export class ChatService {
 
   // ─── Public API ───────────────────────────────────────────────────────────
 
-  openWithContext(city?: CityVM, pillar?: PillarsVM): void {
-    if (city) this.selectedCity.set(city);
+  openWithContext(country?: CountryVM, pillar?: PillarsVM): void {
+    if (country) this.selectedCountry.set(country);
     if (pillar) this.selectedPillar.set(pillar);
     this.isOpen.set(true);
   }
@@ -123,7 +124,7 @@ export class ChatService {
   filterQuestions(query: string): AIAssistantFAQDto[] {
     if (!query || query.trim().length < 2) return [];
     const q = query.toLowerCase();
-    if (this.selectedCity()) {
+    if (this.selectedCountry()) {
       return this.faqs.value
         .filter(pq => pq.questionText.toLowerCase().includes(q) && !pq.related.includes('global'))
         .slice(0, 4);
@@ -149,7 +150,7 @@ export class ChatService {
     // New cancel token per message
     this.cancelStream$ = new Subject<void>();
 
-    const city = this.selectedCity();
+    const country = this.selectedCountry();
     const pillar = this.selectedPillar();
     const histories = this.messages()
       .slice(1)
@@ -186,16 +187,16 @@ export class ChatService {
       };
       this.messages.update(msgs => [...msgs, placeholder]);
 
-      if (city) {
-        const payload: CityChatRequestDto = {
-          cityID: city.cityID,
+      if (country) {
+        const payload: CountryChatRequestDto = {
+          countryID: country.countryID,
           pillarID: pillar?.pillarID ?? 0,
           questionText: userText,
           fAQID: this.selectedfaq()?.faqid,
           historyText: histories,
         };
 
-        this.activeRequest$ = this.askAboutCity(payload).subscribe({
+        this.activeRequest$ = this.askAboutCountry(payload).subscribe({
           next: res => {
             this.activeRequest$ = null; // HTTP done; typewriter phase begins
 
@@ -249,10 +250,10 @@ export class ChatService {
     });
   }
 
-  getAllCites(): void {
-    if (this.cities.value.length > 0) return;
-    this.getAllCitiesByUserId(this.userService?.userInfo?.userID).subscribe({
-      next: res => this.cities.next(res.result ?? []),
+  getAllCountries(): void {
+    if (this.countries.value.length > 0) return;
+    this.getAllCountriesByUserId(this.userService?.userInfo?.userID).subscribe({
+      next: res => this.countries.next(res.result ?? []),
     });
   }
 
@@ -264,13 +265,13 @@ export class ChatService {
   }
 
 
-  getCitySlides(
-    cityId: number
-  ): Observable<ResultResponseDto<ChatCityExecutiveSlidesResponse>> {
+  getCountrySlides(
+    countryId: number
+  ): Observable<ResultResponseDto<ChatCountryExecutiveSlidesResponse>> {
 
-    return this.http.post<ResultResponseDto<ChatCityExecutiveSlidesResponse>>(
-      `Chat/citySlides`,
-      cityId as any
+    return this.http.post<ResultResponseDto<ChatCountryExecutiveSlidesResponse>>(
+      `Chat/countrySlides`,
+      countryId as any
     );
   }
 
@@ -340,10 +341,10 @@ export class ChatService {
 
   // ─── HTTP ─────────────────────────────────────────────────────────────────
 
-  private getAllCitiesByUserId(userId: number) {
+  private getAllCountriesByUserId(userId: number) {
     return this.http
-      .get(`City/getAllCityByUserId/${userId}`)
-      .pipe(map(x => x as ResultResponseDto<CityVM[]>));
+      .get(`Country/getAllCountryByUserId/${userId}`)
+      .pipe(map(x => x as ResultResponseDto<CountryVM[]>));
   }
 
   private getAllPillars() {
@@ -358,9 +359,9 @@ export class ChatService {
       .pipe(map(x => x as ResultResponseDto<AIAssistantFAQDto[]>));
   }
 
-  private askAboutCity(request: CityChatRequestDto) {
+  private askAboutCountry(request: CountryChatRequestDto) {
     return this.http
-      .post('chat/askAboutCity', request)
+      .post('chat/askAboutCountry', request)
       .pipe(map(x => x as ResultResponseDto<ChatResponseDto>));
   }
 
@@ -369,27 +370,27 @@ export class ChatService {
       .post('chat/askglobalQuestion', request)
       .pipe(map(x => x as ResultResponseDto<ChatResponseDto>));
   }
-  cityQuickQuestions = [
+  countryQuickQuestions = [
     {
       label: 'Overview',
-      question: 'Provide an overall summary of this city’s current performance in the Veridian Urban Index.'
+      question: 'Provide an overall summary of this country’s current performance in the Africa Health Intelligence .'
     },
     {
       label: 'Strengths',
-      question: 'What are the major strengths and positive developments observed in this city across urban development indicators?'
+      question: 'What are the major strengths and positive developments observed in this country across urban development indicators?'
     },
     {
       label: 'Challenges',
-      question: 'What are the most critical urban challenges or risks currently affecting this city?'
+      question: 'What are the most critical urban challenges or risks currently affecting this country?'
     },
         
     {
       label: 'Governance & capacity',
-      question: 'How effective are the city’s governance systems, institutional capacity, and implementation mechanisms?'
+      question: 'How effective are the country’s governance systems, institutional capacity, and implementation mechanisms?'
     },
     {
       label: 'Equity & sustainability',
-      question: 'How does this city perform in terms of inclusiveness, sustainability, and long-term urban resilience?'
+      question: 'How does this country perform in terms of inclusiveness, sustainability, and long-term urban resilience?'
     }
   ];
 
@@ -398,34 +399,34 @@ export class ChatService {
   globalQuickQuestions = [
     {
       label: 'Overview',
-      question: 'Provide a global overview of recent trends and performance across cities in the Veridian Urban Index.'
+      question: 'Provide a global overview of recent trends and performance across countries in the Africa Health Intelligence .'
     },
     {
-      label: 'Top cities',
-      question: 'Which cities are currently demonstrating the strongest overall performance across urban development indicators?'
+      label: 'Top countries',
+      question: 'Which countries are currently demonstrating the strongest overall performance across urban development indicators?'
     },
     {
       label: 'Critical risks',
-      question: 'What are the most significant urban risks and challenges currently affecting cities globally?'
+      question: 'What are the most significant urban risks and challenges currently affecting countries globally?'
     },
     
     {
       label: 'Most improved',
-      question: 'Which cities have shown the greatest improvement in their Veridian Urban Index performance recently?'
+      question: 'Which countries have shown the greatest improvement in their Africa Health Intelligence  performance recently?'
     },
     {
       label: 'High-risk',
-      question: 'Which cities are currently facing the highest levels of urban vulnerability, governance challenges, or sustainability risks?'
+      question: 'Which countries are currently facing the highest levels of urban vulnerability, governance challenges, or sustainability risks?'
     },
     {
       label: 'Urban trends',
-      question: 'What are the latest global urban development trends, cross-city patterns, and emerging priorities?'
+      question: 'What are the latest global urban development trends, cross-country patterns, and emerging priorities?'
     }
     
   ];
 
-  getCitiesCrossComparision() {
-    let userText = "Provide a detailed comparative analysis of the selected cities across all urban performance pillars, including key risks, development opportunities, structural vulnerabilities, resilience indicators, emerging urban trends, and strategic observations for each pillar."
+  getCountriesCrossComparision() {
+    let userText = "Provide a detailed comparative analysis of the selected countries across all urban performance pillars, including key risks, development opportunities, structural vulnerabilities, resilience indicators, emerging urban trends, and strategic observations for each pillar."
 
     if (this.isTyping()) {
       this.stopGeneration();
@@ -469,9 +470,9 @@ export class ChatService {
 
       this.messages.update(msgs => [...msgs, placeholder]);
 
-      if (this.crossComparisionCityIDs.value.length > 0) {
+      if (this.crossComparisionCountryIDs.value.length > 0) {
         const payload: CrossComparisionChatRequestDto = {
-          cityIDs: this.crossComparisionCityIDs.value,
+          countryIDs: this.crossComparisionCountryIDs.value,
           questionText: userText,
           historyText: histories,
         };

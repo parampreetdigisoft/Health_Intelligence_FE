@@ -1,4 +1,5 @@
-import { CityVM } from "../CityVM";
+
+import { CountryVM } from "../CountryVM";
 import { FiveLevelInterpretation } from "../GetAnalyticalLayerResultDto";
 
 export interface GetMutiplekpiLayerResultsDto {
@@ -13,14 +14,14 @@ export interface GetMutiplekpiLayerResultsDto {
   calText4?: string | null;
   calText5?: string | null;
 
-  cities: MutipleCitieskpiLayerResults[];
+  countries: MutipleCountrieskpiLayerResults[];
 
   fiveLevelInterpretations: FiveLevelInterpretation[];
 }
 
-export interface MutipleCitieskpiLayerResults {
+export interface MutipleCountrieskpiLayerResults {
   layerResultID: number;
-  cityID: number;
+  countryID: number;
 
   interpretationID?: number | null;
   normalizeValue?: number | null;
@@ -44,5 +45,5 @@ export interface MutipleCitieskpiLayerResults {
 
   aiLastUpdated?: string | null;
 
-  city?: CityVM;
+  country?: CountryVM;
 }

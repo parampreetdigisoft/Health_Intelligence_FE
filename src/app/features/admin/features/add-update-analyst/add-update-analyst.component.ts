@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from "@angular/core";
-import { CityVM } from "../../../../core/models/CityVM";
+import { CountryVM } from "../../../../core/models/CountryVM";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {
   InviteUserDto,
@@ -27,7 +27,7 @@ import { UserService } from "src/app/core/services/user.service";
 })
 export class AddUpdateAnalystComponent implements OnInit {
   @Input() analyst: GetUserByRoleResponse | null = null;
-  @Input() cities: CityVM[] | null = [];
+  @Input() countries: CountryVM[] | null = [];
   @Output() analystChange = new EventEmitter<UpdateInviteUserDto | null>();
   @Output() closeAnalystModel = new EventEmitter<boolean>();
   @Output() bulkImportChange = new EventEmitter<UpdateInviteUserDto[] | null>();
@@ -48,8 +48,8 @@ export class AddUpdateAnalystComponent implements OnInit {
       fullName: [this.analyst?.fullName, [Validators.required]],
       email: [this.analyst?.email, [Validators.required, Validators.email]],
       phone: [this.analyst?.phone, [Validators.required]],
-      city: [
-        this.analyst?.cities?.map((x) => x?.cityID) ?? [],
+      country: [
+        this.analyst?.countries?.map((x) => x?.countryID) ?? [],
         [Validators.required],
       ],
     });
@@ -64,23 +64,23 @@ export class AddUpdateAnalystComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     if (this.analystForm.valid) {
-      const cityData: UpdateInviteUserDto = {
+      const countryData: UpdateInviteUserDto = {
         ...this.analystForm.value,
         userID: this.analyst?.userID ?? 0,
-        cityID: this.analystForm.value.city,
+        countryID: this.analystForm.value.country,
       };
-      this.analystChange.emit(cityData);
+      this.analystChange.emit(countryData);
     }
   }
   downloadTemplate() {
-    const headers = ["FullName", "Email", "Phone", "CityName"];
+    const headers = ["FullName", "Email", "Phone", "CountryName"];
 
     const sampleRow = {
       FullName: "FullName of Analyst",
       Email: "Enter Email of Analyst",
       Phone: "Enter Phone Number of Analyst",
-      CityName:
-        "Enter city seprated by comma, like :- Chandigarh, Mohali, Swar",
+      CountryName:
+        "Enter country seprated by comma, like :- India, USA, UK",
     };
 
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([sampleRow], {
@@ -184,7 +184,7 @@ export class AddUpdateAnalystComponent implements OnInit {
           phone,
           password: email,
           role: UserRoleValue.Analyst,
-          cityID: this.getCityByName(cityName),
+          countryID: this.getCountryByName(cityName),
         };
         excelData.push(dto);
       }
@@ -193,12 +193,12 @@ export class AddUpdateAnalystComponent implements OnInit {
     reader.readAsBinaryString(target.files[0]);
   }
 
-  getCityByName(cityNames: string): number[] {
-    if (!cityNames) return [];
-    return cityNames
+  getCountryByName(countryNames: string): number[] {
+    if (!countryNames) return [];
+    return countryNames
       .split(",")
       .map((name) => name.trim())
-      .map((name) => this.cities?.find((c) => c.cityName === name)?.cityID)
+      .map((name) => this.countries?.find((c) => c.countryName === name)?.countryID)
       .filter((id): id is number => id !== undefined);
   }
 

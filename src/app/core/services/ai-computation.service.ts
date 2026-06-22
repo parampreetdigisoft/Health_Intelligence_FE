@@ -1,20 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { map } from 'rxjs';
-import { AiCitySummeryDto } from '../models/aiVm/AiCitySummeryDto';
-import { AiCitySummeryRequestDto, AiCityDocumentRequestDto, AiCityPillarDocumentRequestDto, AiPillarQuetionsRequestDto, DeleteCityDocumentRequestDto } from '../models/aiVm/AiCitySummeryRequestDto';
-import { PaginationResponse } from '../models/PaginationResponse';
-import { AiCityPillarResponseDto } from '../models/aiVm/AiCityPillarResponseDto';
+import { AiCountrySummeryDto } from '../models/aiVm/AiCountrySummeryDto';
+
+
 import { ResultResponseDto } from '../models/ResultResponseDto';
 import { AITrustLevelVM } from '../models/aiVm/AITrustLevelVM';
 import { AIEstimatedQuestionScoreDto } from '../models/aiVm/AIEstimatedQuestionScoreDto';
-import { AiCrossCityResponseDto } from '../models/aiVm/AiCrossCityResponseDto';
-import { ChangedAiCityEvaluationStatusDto } from '../models/aiVm/ChangedAiCityEvaluationStatusDto';
+
+
 import { RegenerateAiSearchDto } from '../models/aiVm/RegenerateAiSearchDto';
-import { AiCitySummeryRequestPdfDto } from '../models/aiVm/AiCitySummeryRequestPdfDto';
+
 import { DownloadReportDto } from '../models/aiVm/downloadReportDto';
 import { AITransferAssessmentRequestDto } from '../models/aiVm/AITransferAssessmentRequestDto';
-import { GetCityDocumentResponseDto, GetCityPillarDocumentResponseDto } from '../models/aiVm/GetCityDocumentResponseDto';
+import { PaginationResponse } from '../models/PaginationResponse';
+import { AiCountryDocumentRequestDto, AiCountryPillarDocumentRequestDto, AiCountrySummeryRequestDto, AiPillarQuetionsRequestDto, DeleteCountryDocumentRequestDto } from '../models/aiVm/AiCountrySummeryRequestDto';
+import { AiCountrySummeryRequestPdfDto } from '../models/aiVm/AiCountrySummeryRequestPdfDto';
+import { AiCountryPillarResponseDto } from '../models/aiVm/AiCountryPillarResponseDto';
+import { AiCrossCountryResponseDto } from '../models/aiVm/AiCrossCountryResponseDto';
+import { ChangedAiCountryEvaluationStatusDto } from '../models/aiVm/ChangedAiCountryEvaluationStatusDto';
+import { GetCountryDocumentResponseDto, GetCountryPillarDocumentResponseDto } from '../models/aiVm/GetCountryDocumentResponseDto';
+
 
 @Injectable({
   providedIn: 'root'
@@ -29,35 +35,35 @@ export class AiComputationService {
       .pipe(map((x) => x as ResultResponseDto<AITrustLevelVM[]>));
   }
 
-  public getAICities(request: AiCitySummeryRequestDto) {
+  public getAICountries(request: AiCountrySummeryRequestDto) {
     return this.http
-      .getWithQueryParams(`AiComputation/getAICities`, request)
-      .pipe(map((x) => x as PaginationResponse<AiCitySummeryDto>));
+      .getWithQueryParams(`AiComputation/getAICountries`, request)
+      .pipe(map((x) => x as PaginationResponse<AiCountrySummeryDto>));
   }
-  public getAICityPillars(request: AiCitySummeryRequestPdfDto) {
+  public getAICountryPillars(request: AiCountrySummeryRequestPdfDto) {
     return this.http
-      .getWithQueryParams(`AiComputation/getAICityPillars`,request)
-      .pipe(map((x) => x as ResultResponseDto<AiCityPillarResponseDto>));
+      .getWithQueryParams(`AiComputation/getAICountryPillars`,request)
+      .pipe(map((x) => x as ResultResponseDto<AiCountryPillarResponseDto>));
   }
   public getAIPillarQuestions(request: AiPillarQuetionsRequestDto) {
     return this.http
       .getWithQueryParams(`AiComputation/getAIPillarQuestions`, request)
       .pipe(map((x) => x as PaginationResponse<AIEstimatedQuestionScoreDto>));
   }
-  public aiCityDetailsReport(request:AiCitySummeryRequestPdfDto) {
+  public aiCountryDetailsReport(request:AiCountrySummeryRequestPdfDto) {
     return this.http
-      .ImportFile(`AiComputation/aiCityDetailsReport`,request);
+      .ImportFile(`AiComputation/aiCountryDetailsReport`,request);
   }
-  public aiPillarDetailsReport(request:AiCitySummeryRequestPdfDto) {
+  public aiPillarDetailsReport(request:AiCountrySummeryRequestPdfDto) {
     return this.http
       .ImportFile(`AiComputation/aiPillarDetailsReport`,request);
   }
-  public getAICrossCityPillars(ids: number[]) {
-    let payload = { cityIDs: ids };
-    return this.http.post(`AiComputation/getAICrossCityPillars`, payload).pipe(map(x => x as ResultResponseDto<AiCrossCityResponseDto>));;
+  public getAICrossCountryPillars(ids: number[]) {
+    let payload = { countryIDs: ids };
+    return this.http.post(`AiComputation/getAICrossCountryPillars`, payload).pipe(map(x => x as ResultResponseDto<AiCrossCountryResponseDto>));;
   }
-  public changedAiCityEvaluationStatus(payload: ChangedAiCityEvaluationStatusDto) {
-    return this.http.post(`AiComputation/changedAiCityEvaluationStatus`, payload).pipe(map(x => x as ResultResponseDto<boolean>));;
+  public changedAiCountryEvaluationStatus(payload: ChangedAiCountryEvaluationStatusDto) {
+    return this.http.post(`AiComputation/changedAiCountryEvaluationStatus`, payload).pipe(map(x => x as ResultResponseDto<boolean>));;
   }
   public regenerateAiSearch(payload: RegenerateAiSearchDto) {
     return this.http.post(`AiComputation/regenerateAiSearch`, payload).pipe(map(x => x as ResultResponseDto<boolean>));;
@@ -68,9 +74,9 @@ export class AiComputationService {
   public regenerateSinglePillarAiSearch(payload: RegenerateAiSearchDto) {
     return this.http.post(`AiComputation/regeneratePillarAiSearch`, payload).pipe(map(x => x as ResultResponseDto<boolean>));;
   }
-  public aiAllCityDetailsReport(payload:DownloadReportDto) {
+  public aiAllCountryDetailsReport(payload:DownloadReportDto) {
     return this.http
-      .ImportFile(`AiComputation/aiAllCityDetailsReport`,payload);
+      .ImportFile(`AiComputation/aiAllCountryDetailsReport`,payload);
   }
   public aiResultTransfer(payload:AITransferAssessmentRequestDto) {
     return this.http.post(`AiComputation/aiResultTransfer`, payload).pipe(map(x => x as ResultResponseDto<string>));;
@@ -86,26 +92,26 @@ export class AiComputationService {
       .pipe(map((x) => x as ResultResponseDto<string>));
   }
 
-  public getAICityDocuments(request: AiCityDocumentRequestDto) {
+  public getAICountryDocuments(request: AiCountryDocumentRequestDto) {
     return this.http
-      .getWithQueryParams(`AiComputation/getAICityDocuments`, request)
-      .pipe(map((x) => x as PaginationResponse<GetCityDocumentResponseDto>));
+      .getWithQueryParams(`AiComputation/getAICountryDocuments`, request)
+      .pipe(map((x) => x as PaginationResponse<GetCountryDocumentResponseDto>));
   }
 
-  public getAICityPillarDocuments(request: AiCityPillarDocumentRequestDto) {
+  public getAICountryPillarDocuments(request: AiCountryPillarDocumentRequestDto) {
     return this.http
-      .getWithQueryParams(`AiComputation/getAICityPillarDocuments`, request)
-      .pipe(map((x) => x as ResultResponseDto<GetCityPillarDocumentResponseDto[]>));
+      .getWithQueryParams(`AiComputation/getAICountryPillarDocuments`, request)
+      .pipe(map((x) => x as ResultResponseDto<GetCountryPillarDocumentResponseDto[]>));
   }
 
-  public deleteDocument(request: DeleteCityDocumentRequestDto) {
+  public deleteDocument(request: DeleteCountryDocumentRequestDto) {
     return this.http
       .post(`AiComputation/deleteDocument`, request)
       .pipe(map((x) => x as ResultResponseDto<string>));
   }
 
-  public downloadDocument(cityDocumentID: number) {
+  public downloadDocument(countryDocumentID: number) {
     return this.http
-      .ImportFile(`AiComputation/downloadDocument/` + cityDocumentID);
+      .ImportFile(`AiComputation/downloadDocument/` + countryDocumentID);
   }
 }

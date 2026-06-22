@@ -43,12 +43,12 @@
 }
 
 .kpi_td_data div:empty,
-.kpi_sidebar app-view-city-detail .bold_num:empty {
+.kpi_sidebar app-view-country-detail .bold_num:empty {
     display: none;
 }
 
 .kpi_td_data .bold_num,
-::ng-deep .kpi_sidebar app-view-city-detail .bold_num {
+::ng-deep .kpi_sidebar app-view-country-detail .bold_num {
     background: #304a43;
     color: #ffffff;
     padding: 2px 8px;
@@ -58,15 +58,15 @@
     margin-top: 8px;
 }
 
-::ng-deep .kpi_sidebar app-view-city-detail .city_card_outter .city_card_img img {
+::ng-deep .kpi_sidebar app-view-country-detail .city_card_outter .city_card_img img {
     max-width: 300px;
 }
 
-::ng-deep .kpi_sidebar app-view-city-detail .city_card_outter .city_card_inner {
+::ng-deep .kpi_sidebar app-view-country-detail .city_card_outter .city_card_inner {
     padding: 10px 0px;
 }
 
-::ng-deep .kpi_sidebar app-view-city-detail .city_card_outter .city_card_inner .city_cards_h1 {
+::ng-deep .kpi_sidebar app-view-country-detail .city_card_outter .city_card_inner .city_cards_h1 {
     font-size: 24px;
 }
 
@@ -163,7 +163,7 @@
   table-layout: auto; /* keep responsive behavior */
   width: 100%;
 }
-.compare_city_table .city-col {
+.compare_city_table .country-col {
   min-width: 500px;      /* adjust as needed */
   white-space: normal;   /* allow wrapping */
   word-break: break-word;
@@ -183,7 +183,7 @@
     .table_custom_inner {
         overflow-x: auto !important;
     }
-    .table_outer .table td.city-col {
+    .table_outer .table td.country-col {
         min-width: unset !important;
         max-width: 100%;
         width: 400px;
@@ -201,7 +201,7 @@
         
 }
 @media only screen and (max-width:1345px) {
-    .table_outer .table td.city-col {
+    .table_outer .table td.country-col {
         min-width: unset !important;
         max-width: 100%;
         width: 400px;

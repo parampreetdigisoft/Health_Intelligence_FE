@@ -58,11 +58,11 @@ export class EvaluatorResponseViewComponent implements OnInit, OnDestroy {
       assessmentID:this.assessmentID,
       pillarID:this.selectedPillarId
     }
-    this.analystService.getAssessmentQuestoins(payload).subscribe(cities => {
-      this.questionResponse = cities;
-      this.totalRecords = cities.totalRecords;
+    this.analystService.getAssessmentQuestoins(payload).subscribe(countries => {
+      this.questionResponse = countries;
+      this.totalRecords = countries.totalRecords;
       this.currentPage = currentPage;
-      this.pageSize = cities.pageSize;
+      this.pageSize = countries.pageSize;
       this.isLoader = false;
     });
   }

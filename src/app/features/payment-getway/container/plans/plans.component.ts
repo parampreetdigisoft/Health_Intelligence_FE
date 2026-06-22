@@ -63,7 +63,7 @@ export class PlansComponent {
   }
   async makePayment() {
 
-    this.toasterService.showInfo("Veridian Urban Systems is currently at the pilot stage. Login and subscription features are temporarily unavailable while we finalize our email and authentication system.");
+    this.toasterService.showInfo("Africa Health Systems Intelligence Platform (AHSIP) is currently at the pilot stage. Login and subscription features are temporarily unavailable while we finalize our email and authentication system.");
     return
 
     // this.submitAttempted = true;

@@ -3,9 +3,9 @@ import { PaginationRequest } from "./PaginationRequest";
 export interface GetQuestionRequest extends PaginationRequest {
   pillarID?: number;
 }
-export interface GetQuestionByCityMappingRespones {
+export interface GetQuestionByCountryMappingRespones {
   assessmentID: number;
-  userCityMappingID: number;
+  userCountryMappingID: number;
   displayOrder: number;
   submittedPillarDisplayOrder: number;
   pillarID: number;
@@ -14,7 +14,7 @@ export interface GetQuestionByCityMappingRespones {
   questions:AssessmentQuestionResponse[];
 }
 
-export interface GetQuestionByCityRespones extends GetQuestionResponse {
+export interface GetQuestionByCountryRespones extends GetQuestionResponse {
   assessmentID: number;
   pillarDisplayOrder: number;
 }
