@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-
 import { CountryVM } from "../CountryVM";
-=======
-import { CityVM } from "../CityVM";
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { FiveLevelInterpretation } from "../GetAnalyticalLayerResultDto";
 
 export interface GetMutiplekpiLayerResultsDto {
@@ -18,24 +13,14 @@ export interface GetMutiplekpiLayerResultsDto {
   calText4?: string | null;
   calText5?: string | null;
 
-<<<<<<< HEAD
   countries: MutipleCountrieskpiLayerResults[];
-=======
-  cities: MutipleCitieskpiLayerResults[];
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 
   fiveLevelInterpretations: FiveLevelInterpretation[];
 }
 
-<<<<<<< HEAD
 export interface MutipleCountrieskpiLayerResults {
   layerResultID: number;
   countryID: number;
-=======
-export interface MutipleCitieskpiLayerResults {
-  layerResultID: number;
-  cityID: number;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 
   interpretationID?: number | null;
   normalizeValue?: number | null;
@@ -59,9 +44,5 @@ export interface MutipleCitieskpiLayerResults {
 
   aiLastUpdated?: string | null;
 
-<<<<<<< HEAD
   country?: CountryVM;
-=======
-  city?: CityVM;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 }

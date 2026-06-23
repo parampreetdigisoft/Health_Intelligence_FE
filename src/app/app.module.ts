@@ -7,8 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { AuthInterceptor } from './core/http/auth.interceptor';
 import { HttpService } from './core/http/http.service';
 import { SharedModule } from './shared/share.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ChatContainerComponent } from "./shared/chatbox/chat-container/chat-container.component"; 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 
 @NgModule({
   declarations: [
@@ -20,9 +19,8 @@ import { ChatContainerComponent } from "./shared/chatbox/chat-container/chat-con
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    SharedModule,
-    ChatContainerComponent
-],
+    SharedModule
+  ],
   providers: [
     HttpService,
     {

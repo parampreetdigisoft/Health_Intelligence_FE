@@ -65,7 +65,7 @@
 
 .compare_city_table tbody td.action_td table .action_icons a.mat-mdc-tooltip-trigger span {
     display: inline-block;
-    background-color: #397b69;
+    background-color: #14416c;
     padding: 8px 10px;
     white-space: nowrap;
     color: #ffffff;
@@ -83,7 +83,7 @@
 }
 p.btn_spinner {
     display: inline-block;
-    background-color: #397b69;
+    background-color: #003160;
     padding: 8px 10px;
     white-space: nowrap;
     color: #ffffff;
@@ -109,7 +109,7 @@ p.btn_spinner {
 
 ::ng-deep .analyst_multi_select .ng-option-selected {
     background-color: #e8f0ff !important;
-    color: #397b69 !important;
+    color: #003160 !important;
     font-weight: 600;
 }
 
@@ -167,7 +167,7 @@ p.btn_spinner {
     white-space: nowrap;
     padding: 2px 5px !important;
     border-radius: 5px !important;
-    background-color: #397b69 !important;
+    background-color: #003160 !important;
     color: #ffffff !important;
 }
 
@@ -176,6 +176,10 @@ p.btn_spinner {
 }
 
 ::ng-deep .document_sidebar .city_piller {
-    padding-right: 10px;
-    padding-left: 10px;
+    background-color: #f7f7f7;
+    padding: 0px 15px;
+    position: relative;
+    border-radius: 15px;
+    border: 1px solid #e4e4e4;
+    margin-bottom: 15px;
 }

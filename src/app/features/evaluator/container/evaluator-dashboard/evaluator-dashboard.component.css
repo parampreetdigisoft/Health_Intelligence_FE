@@ -117,7 +117,7 @@
 }
 
 .city_piller .input_field .analyst_multi_select .ng-select-container .ng-value-container {
-    padding-left: 0px;
+    padding-left: 5px;
 }
 .city_piller .input_field .analyst_multi_select .ng-select-container .ng-value-container > .ng-input{
     padding-right: 45px;
@@ -167,7 +167,7 @@
 @media only screen and (max-width:1530px){
     .dashboard_number h4 {
         font-size: 20px;
-        line-height: 25px;
+        line-height: 40px;
     }
     .dashboard_number h5 {
         font-size: 16px;

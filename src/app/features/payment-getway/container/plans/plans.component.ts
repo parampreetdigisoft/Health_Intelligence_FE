@@ -63,11 +63,7 @@ export class PlansComponent {
   }
   async makePayment() {
 
-<<<<<<< HEAD
-    this.toasterService.showInfo("Africa Health Systems Intelligence Platform (AHSIP) is currently at the pilot stage. Login and subscription features are temporarily unavailable while we finalize our email and authentication system.");
-=======
-    this.toasterService.showInfo("Veridian Urban Systems is currently at the pilot stage. Login and subscription features are temporarily unavailable while we finalize our email and authentication system.");
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+    this.toasterService.showInfo("Peace Enablers Matrix is currently at the pilot stage. Login and subscription features are temporarily unavailable while we finalize our email and authentication system.");
     return
 
     // this.submitAttempted = true;

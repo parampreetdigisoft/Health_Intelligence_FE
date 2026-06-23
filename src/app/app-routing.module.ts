@@ -39,7 +39,7 @@ const routes: Routes = [
       {
         path: "countryuser",
         loadChildren: () =>
-          import("./features/country-user/country-user.module").then(
+          import("./features/city-user/country-user.module").then(
             (m) => m.CountryUserModule
           ),
         canActivate: [RoleGuard],

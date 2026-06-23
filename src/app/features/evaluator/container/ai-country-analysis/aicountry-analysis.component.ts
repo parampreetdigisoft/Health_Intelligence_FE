@@ -13,12 +13,12 @@ import { AiComputationService } from 'src/app/core/services/ai-computation.servi
 import { PaginationComponent } from 'src/app/shared/pagination/pagination.component';
 import { AiCountrySummeryRequestDto } from 'src/app/core/models/aiVm/AiCountrySummeryRequestDto';
 import { TypingTextComponent } from 'src/app/shared/standAlone/typing-text/typing-text.component';
-import { ViewCountryDetailComponent } from '../../../../shared/standAlone/view-country-detail/view-country-detail.component';
 import { CircularScoreComponent } from 'src/app/shared/standAlone/circular-score/circular-score.component';
 import { SparklineScoreComponent } from 'src/app/shared/standAlone/sparkline-score/sparkline-score.component';
 import { EvaluatorService } from '../../evaluator.service';
 import { AddCommentComponent } from '../../features/add-comment/add-comment.component';
 import { AiCountrySummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiCountrySummeryRequestPdfDto';
+import { ViewCountryDetailComponent } from "src/app/shared/standAlone/view-country-detail/view-country-detail.component";
 
 
 declare var bootstrap: any; // 👈 use Bootstrap JS API
@@ -26,13 +26,13 @@ declare var bootstrap: any; // 👈 use Bootstrap JS API
   selector: 'app-aicountry-analysis',
   standalone: true,
   imports: [TypingTextComponent, CommonModule,
-    ViewCountryDetailComponent, CircularScoreComponent, SparklineScoreComponent,
+    CircularScoreComponent, SparklineScoreComponent,
     PaginationComponent, FormsModule, NgSelectModule, AddCommentComponent,
-    MatTooltipModule],
+    MatTooltipModule, ViewCountryDetailComponent],
   templateUrl: './aicountry-analysis.component.html',
   styleUrl: './aicountry-analysis.component.css'
 })
-export class AICountryAnalysisComponent implements OnInit, OnDestroy {
+export class AICountryAnalaysisComponent implements OnInit, OnDestroy {
     selectedYear = new Date().getFullYear();
   urlBase = environment.apiUrl;
   totalRecords: number = 0;
@@ -77,7 +77,7 @@ export class AICountryAnalysisComponent implements OnInit, OnDestroy {
     this.isLoader = true;
     let payload: AiCountrySummeryRequestDto = {
       sortDirection: SortDirection.DESC,
-      sortBy: 'AIScore',
+      sortBy: 'AIProgress',
       pageNumber: currentPage,
       pageSize: this.pageSize
     }
@@ -111,7 +111,39 @@ export class AICountryAnalysisComponent implements OnInit, OnDestroy {
 
     offcanvas.show();
   }
+  aiCountryDetailsReport(country: AiCountrySummeryDto, selectedIndex: number) {
+    if(this.selectedIndex != -1) return;
+    this.selectedIndex = selectedIndex;
+    let payload: AiCountrySummeryRequestPdfDto = {
+      countryID: country.countryID,
+      year: this.selectedYear
+    }
+    this.aiComputationService.aiCountryDetailsReport(payload).subscribe({
+      next: (blob) => {
+        this.selectedIndex = -1;
+        if (blob) {
+          // Create download link
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `${country.countryName}_Details_${new Date().toISOString().split('T')[0]}.pdf`;
 
+          // Trigger download
+          document.body.appendChild(link);
+          link.click();
+
+          // Cleanup
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+          this.toaster.showSuccess('Report generated successfully')
+        }
+      },
+      error: () => {
+        this.toaster.showError('There is an error occure please try again');
+        this.selectedIndex = -1;
+      }
+    });
+  }
   opendialog(country: AiCountrySummeryDto) {
     this.selectedCountry = country;
     const modalEl = document.getElementById("RegenerateAIScoreModal");
@@ -151,5 +183,16 @@ export class AICountryAnalysisComponent implements OnInit, OnDestroy {
       }
     });
   }
+    customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return (
+      item.countryName?.toLowerCase().includes(term) ||
+      item.countryAliasName?.toLowerCase().includes(term)
+    );
+}
+refresh()
+{
+    this.getAiCountries(this.currentPage);
+}
 
 }

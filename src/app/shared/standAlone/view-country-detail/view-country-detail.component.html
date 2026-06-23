@@ -10,7 +10,7 @@
                 <div class="city_card_img">
                     <img [src]="urlBase+country?.image " [alt]="'Profile Image'" (error)="onImgError($event)" />
                     <div class="score">
-                        AI Score : {{ country?.aiProgress?.toFixed(2) }}%
+                        AI Score : {{ country?.aiProgress?.toFixed(2) }}
 
                     </div>
                 </div>
@@ -28,8 +28,9 @@
                                 </p>
                             </div>
                             <p class="city_cards_disc"> {{country?.countryName}}, situated in {{country?.continent}},
-                                {{country?.region}}, is actively making strides in sustainable development through
-                                continual improvements in governance and infrastructure.</p>                            
+                                 is actively making strides in sustainable development through
+                                continual improvements in governance and infrastructure.</p>
+                           
                         </div>
 
                     </div>
@@ -55,7 +56,7 @@
                         </td>
                         <td style="text-align: center;">
                             <span class="confidence-badge" [ngClass]="(country?.confidenceLevel ?? 'low').toLowerCase()">
-                                {{ country?.confidenceLevel ?? 'NA' }}
+                                {{ country?.confidenceLevel || 'NA' }}
                             </span>
                         </td>
                     </tr>
@@ -72,7 +73,7 @@
                             <div class="kpi_cat_name">Evaluator Progress</div>
                         </td>
                         <td>
-                            <app-circular-score [value]="country?.evaluatorProgress ?? 0"></app-circular-score>
+                            <app-circular-score [value]="country?.evaluatorScore ?? 0"></app-circular-score>
                         </td>
                     </tr>
                     <tr>
@@ -80,7 +81,7 @@
                             <div class="kpi_cat_name">Discrepancy</div>
                         </td>
                         <td>
-                            <app-sparkline-score [value]="country?.discrepancy ?? 0" [sign]="''"></app-sparkline-score>
+                            <app-sparkline-score [value]="country?.discrepancy ?? 0"></app-sparkline-score>
 
                         </td>
                     </tr>
@@ -90,7 +91,7 @@
                         </td>
                         <td>
                             <app-circular-score
-                                [value]="(((country?.aiProgress ?? 0) + (country?.evaluatorProgress ?? 0))/2)"></app-circular-score>
+                                [value]="(((country?.aiProgress ?? 0) + (country?.evaluatorScore ?? 0))/2)"></app-circular-score>
                         </td>
                     </tr>
                 </table>
@@ -107,7 +108,7 @@
             </div>
 
             <div class="cross-pillar">
-                <h5>AI Executive Summary</h5>
+                <h5>Executive Summary</h5>
                 &nbsp;
                 <div *ngIf="country?.evidenceSummary">
                     <app-typing-text [text]="country!.evidenceSummary" [speed]="3" [numberOfWordAfterHideText]="40">
@@ -129,44 +130,189 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr *ngIf="country?.keyDevelopments">
+                        <td><span class="score_label_tab">Key Developments</span></td>
+                        <td>
+                            <app-typing-text 
+                                [text]="country!.keyDevelopments!" 
+                                [speed]="5" 
+                                [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+
+                    <tr *ngIf="country?.criticalRisks">
+                        <td><span class="score_label_tab">Critical Risks</span></td>
+                        <td>
+                            <app-typing-text 
+                                [text]="country!.criticalRisks!" 
+                                [speed]="5" 
+                                [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+
+                    <tr *ngIf="country?.gaps">
+                        <td><span class="score_label_tab">Gaps</span></td>
+                        <td>
+                            <app-typing-text 
+                                [text]="country!.gaps!" 
+                                [speed]="5" 
+                                [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                   
                     <tr>
-                        <td><span class="score_label_tab">Cross Pillar Patterns</span></td>
-                        <td *ngIf="country?.crossPillarPatterns"> <app-typing-text [text]="country!.crossPillarPatterns"
+                        <td><span class="score_label_tab">Structural Evidence</span></td>
+                        <td *ngIf="country?.structuralEvidence"> <app-typing-text [text]="country!.structuralEvidence!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="score_label_tab">Operational Evidence</span></td>
+                        <td *ngIf="country?.operationalEvidence"> <app-typing-text [text]="country!.operationalEvidence!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td><span class="score_label_tab">Outcome Evidence</span></td>
+                        <td *ngIf="country?.outcomeEvidence"> <app-typing-text [text]="country!.outcomeEvidence!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="score_label_tab">Perception Evidence</span></td>
+                        <td *ngIf="country?.perceptionEvidence"> <app-typing-text [text]="country!.perceptionEvidence!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="score_label_tab">Temporal Scope</span></td>
+                        <td *ngIf="country?.temporalScope"> <app-typing-text [text]="country!.temporalScope!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="score_label_tab">Distortion Screening</span></td>
+                        <td *ngIf="country?.distortionScreening"> <app-typing-text [text]="country!.distortionScreening!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="score_label_tab">Political Shock</span></td>
+                        <td *ngIf="country?.politicalShock"> <app-typing-text [text]="country!.politicalShock!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td><span class="score_label_tab">Economic Shock</span></td>
+                        <td *ngIf="country?.economicShock"> <app-typing-text [text]="country!.economicShock!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td><span class="score_label_tab">Narrative Shock</span></td>
+                        <td *ngIf="country?.narrativeShock"> <app-typing-text [text]="country!.narrativeShock!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="score_label_tab">Stress Score Adjustment</span></td>
+                        <td *ngIf="country?.stressScoreAdjustment"> <app-typing-text [text]="country!.stressScoreAdjustment!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="score_label_tab">Inequality Adjustment</span></td>
+                        <td *ngIf="country?.inequalityAdjustment"> <app-typing-text [text]="country!.inequalityAdjustment!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="score_label_tab">Opacity Risk</span></td>
+                        <td *ngIf="country?.opacityRisk"> <app-typing-text [text]="country!.opacityRisk!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="score_label_tab">Non Compensation Note</span></td>
+                        <td *ngIf="country?.nonCompensationNote"> <app-typing-text [text]="country!.nonCompensationNote!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="score_label_tab">Relational Integrity</span></td>
+                        <td *ngIf="country?.relationalIntegrity"> <app-typing-text [text]="country!.relationalIntegrity!"
                                 [speed]="5" [numberOfWordAfterHideText]="7">
                             </app-typing-text>
                         </td>
                     </tr>
                     <tr>
                         <td><span class="score_label_tab">Institutional Capacity</span></td>
-                        <td *ngIf="country?.institutionalCapacity"> <app-typing-text [text]="country!.institutionalCapacity"
+                        <td *ngIf="country?.institutionalCapacity"> <app-typing-text [text]="country!.institutionalCapacity!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="score_label_tab">Primary Source</span></td>
+                        <td *ngIf="country?.primarySource"> <app-typing-text [text]="country!.primarySource!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="score_label_tab">Cross Pillar Patterns</span></td>
+                        <td *ngIf="country?.crossPillarPatterns"> <app-typing-text [text]="country!.crossPillarPatterns!"
+                                [speed]="5" [numberOfWordAfterHideText]="7">
+                            </app-typing-text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="score_label_tab">Institutional Capacity</span></td>
+                        <td *ngIf="country?.institutionalCapacity"> <app-typing-text [text]="country!.institutionalCapacity!"
                                 [speed]="5" [numberOfWordAfterHideText]="7">
                             </app-typing-text>
                         </td>
                     </tr>
                     <tr>
                         <td><span class="score_label_tab">Equity Assessment</span></td>
-                        <td *ngIf="country?.equityAssessment"> <app-typing-text [text]="country!.equityAssessment" [speed]="5"
+                        <td *ngIf="country?.equityAssessment"> <app-typing-text [text]="country!.equityAssessment!" [speed]="5"
                                 [numberOfWordAfterHideText]="7">
                             </app-typing-text>
                         </td>
                     </tr>
                     <tr>
-                        <td><span class="score_label_tab">Sustainability Outlook</span></td>
-                        <td *ngIf="country?.sustainabilityOutlook"> <app-typing-text [text]="country!.sustainabilityOutlook"
+                        <td><span class="score_label_tab">Conflict Risk Outlook</span></td>
+                        <td *ngIf="country?.conflictRiskOutlook"> <app-typing-text [text]="country!.conflictRiskOutlook!"
                                 [speed]="5" [numberOfWordAfterHideText]="7">
                             </app-typing-text>
                         </td>
                     </tr>
                     <tr>
-                        <td><span class="score_label_tab">Strategic Recommendations</span></td>
-                        <td *ngIf="country?.strategicRecommendations"> <app-typing-text
-                                [text]="country!.strategicRecommendations" [speed]="5" [numberOfWordAfterHideText]="7">
+                        <td><span class="score_label_tab">Strategic Recommendation </span></td>
+                        <td *ngIf="country?.strategicRecommendation"> <app-typing-text
+                                [text]="country!.strategicRecommendation!" [speed]="5" [numberOfWordAfterHideText]="7">
                             </app-typing-text>
                         </td>
                     </tr>
                     <tr>
                         <td><span class="score_label_tab">Data Transparency Note</span></td>
-                        <td *ngIf="country?.dataTransparencyNote"> <app-typing-text [text]="country!.dataTransparencyNote"
+                        <td *ngIf="country?.dataTransparencyNote"> <app-typing-text [text]="country!.dataTransparencyNote!"
                                 [speed]="5" [numberOfWordAfterHideText]="7">
                             </app-typing-text>
                         </td>

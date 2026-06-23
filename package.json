@@ -1,5 +1,5 @@
 {
-    "name": "usvi-angular-app",
+    "name": "peace-enablers-frontend",
     "version": "0.0.1",
     "scripts": {
         "ng": "ng",
@@ -27,9 +27,11 @@
         "ag-charts-community": "^12.2.0",
         "apexcharts": "^3.54.1",
         "bootstrap": "^5.3.7",
+        "bootstrap-icons": "^1.13.1",
         "file-saver": "^2.0.5",
         "jwt-decode": "^4.0.0",
-        "ng-apexcharts": "1.8.0",
+        "marked": "^12.0.2",
+        "ng-apexcharts": "^1.8.0",
         "ng-recaptcha": "^13.2.1",
         "ngx-quill": "^25.1.2",
         "ngx-stripe": "^17.2.0",
@@ -37,8 +39,7 @@
         "rxjs": "~7.8.0",
         "tslib": "^2.6.2",
         "xlsx": "^0.18.5",
-        "zone.js": "~0.14.2",
-        "marked": "^12.0.2"
+        "zone.js": "~0.14.2"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^17.0.0",

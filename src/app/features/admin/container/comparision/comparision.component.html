@@ -17,15 +17,9 @@
               {{ year }}
             </option>
           </select>
-<<<<<<< HEAD
           <select [(ngModel)]="selectedCountries" name="countryID" class="form-control" (change)="getResponsesByUserId()">
             <option *ngFor="let country of countries" [value]="country.countryID">
               {{ country.countryName }}
-=======
-          <select [(ngModel)]="selectedCities" name="cityID" class="form-control" (change)="getResponsesByUserId()">
-            <option *ngFor="let city of cities" [value]="city.cityID">
-              {{ city.cityName }}
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
             </option>
           </select>
         </div>
@@ -43,19 +37,15 @@
     <!-- Pagination -->
     <ng-container *ngIf="totalRecords > pageSize">
       <div class="pagination-wrapper">
-        <app-pagination [totalPage]="totalRecords" [currentPage]="currentPage" [pageSize]="pageSize"
-<<<<<<< HEAD
+        <app-pagination [selectedYear]="selectedYear" [totalPage]="totalRecords" [currentPage]="currentPage" [pageSize]="pageSize"
           [isLoader]="isLoader" (pageChange)="compareCountries($event)">
-=======
-          [isLoader]="isLoader" (pageChange)="compareCities($event)">
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         </app-pagination>
       </div>
     </ng-container>
   </div>
   <div class="row justify-content-between align-items-end mb-4">
     <div class="col-md-auto">
-      <h3 class="page_head mt-5 mb-3">Evaluation Details</h3>
+      <h3 class="page_head mt-5 mb-3">Assessment Details</h3>
     </div>
     <div class="col-md-auto" >
       <button class="common_button mb_15" [disabled]="isPillarHistroyDownloading" (click)="exportPillarsHistoryByUserId()">
@@ -172,7 +162,8 @@
       <ng-container *ngIf="pillarColumns?.length == 0 && !isLoader">
         <div class="no_result_found">
           <div class="no_result_found_inner">
-            <h3><i class="fas fa-search"></i> No Result Found</h3>
+            <h3 *ngIf="selectedYear == currentYear"><i class="fas fa-search"></i> No Result Found</h3>
+            <h3 *ngIf="selectedYear != currentYear"><i class="fas fa-search"></i> No result from previous year </h3>
           </div>
         </div>
       </ng-container>

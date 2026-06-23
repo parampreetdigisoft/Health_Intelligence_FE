@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AddQuestionRequest, GetQuestionResponse, QuestionOption } from 'src/app/core/models/QuestonResponse';
+import { AddQuestionRequest, GetQuestionResponse, QuestionOption } from 'src/app/core/models/QuestionResponse';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
@@ -22,17 +22,10 @@ export class AddUpdateQuestionComponent implements OnChanges, OnInit {
   isSubmitted = false;
   alertMsg = '';
   scoreOptions = [
-<<<<<<< HEAD
-    { scoreValue: 100 },
-    { scoreValue: 75 },
-    { scoreValue: 50 },
-    { scoreValue: 25 },
-=======
     { scoreValue: 4 },
     { scoreValue: 3 },
     { scoreValue: 2 },
     { scoreValue: 1 },
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     { scoreValue: 0 }
   ];
   excelData: any[] = [];
@@ -242,6 +235,10 @@ export class AddUpdateQuestionComponent implements OnChanges, OnInit {
         questions.push(question);
       }
       this.excelData = questions;
+      if (this.excelData.length == 0)
+      {
+        this.alertMsg = "The uploaded file does not contain any valid records.";
+      }
     };
 
     reader.readAsBinaryString(target.files[0]);

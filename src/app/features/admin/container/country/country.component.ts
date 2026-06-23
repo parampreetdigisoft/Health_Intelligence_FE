@@ -1,21 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AdminService } from '../../admin.service';
-import { PaginationUserRequest } from 'src/app/core/models/PaginationRequest';
+import { PaginationCountryRequest, PaginationUserRequest } from 'src/app/core/models/PaginationRequest';
 import { BulkAddCountryDto, CountryVM } from '../../../../core/models/CountryVM';
 import { PaginationResponse } from 'src/app/core/models/PaginationResponse';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { SortDirection } from 'src/app/core/enums/SortDirection';
 import { environment } from 'src/environments/environment';
-import { AiComputationService } from 'src/app/core/services/ai-computation.service';
 import { ExportCountryWithOptionDto } from 'src/app/core/models/ExportCountryWithOptionDto';
-import { DocumentFormat } from 'src/app/core/enums/DocumentFormat';
-import { DownloadReportDto } from 'src/app/core/models/aiVm/downloadReportDto';
+import { AiComputationService } from 'src/app/core/services/ai-computation.service';
+import { DownloadReportDto } from 'src/app/core/models/aiVm/DownloadReportDto';
+import { DocumentFormat } from 'src/app/core/enums/documentFormat';
 declare var bootstrap: any;
 @Component({
   selector: 'app-country',
   templateUrl: './country.component.html',
-  styleUrls: ['./country.component.css']
+  styleUrl: './country.component.css'
 })
 export class CountryComponent implements OnInit, OnDestroy {
   urlBase = environment.apiUrl;
@@ -32,33 +32,33 @@ export class CountryComponent implements OnInit, OnDestroy {
   selectedCountries: CountryVM[] = [];
   isReportExporting: boolean = false;
   private selectedCountryIds = new Set<number>();
+  searchableCountries: CountryVM[] = [];
+  filterCountry!: number;
 
-  constructor(private adminService: AdminService, private toaster: ToasterService,
-    private userService: UserService, private aiComputationService: AiComputationService) { }
+  constructor(private adminService: AdminService, private toaster: ToasterService, private userService: UserService,
+    private aiComputationService: AiComputationService
+  ) { }
 
   ngOnInit(): void {
     this.getCountries(1);
-    this.getAllCountriesByUserId();
+    this.getCountryUserCountries();
   }
 
   getCountries(currentPage: number = 1) {
     this.countriesResponse = undefined;
     this.isLoader = true;
-    let payload: PaginationUserRequest = {
+    let payload: PaginationCountryRequest = {
       sortDirection: SortDirection.DESC,
       sortBy: 'score',
       pageNumber: currentPage,
-      pageSize: this.pageSize,
-      userId: this.userService?.userInfo?.userID
+      pageSize: this.pageSize
+    }
+
+    if (this.filterCountry > 0) {
+      payload.countryID = this.filterCountry;
     }
 
     this.adminService.getCountries(payload).subscribe(countries => {
-      // ✅ Restore selection state for countries on this page
-      countries.data.forEach(country => {
-        country.selected = this.selectedCountryIds.has(country.countryID);
-      });
-      this.countriesResponse = countries;
-
       this.countriesResponse = countries;
       this.totalRecords = countries.totalRecords;
       this.currentPage = currentPage;
@@ -69,8 +69,27 @@ export class CountryComponent implements OnInit, OnDestroy {
   }
 
   editCountry(country: CountryVM | null) {
-    this.selectedCountry = country ?? null;
+    this.selectedCountry = country;
   }
+  getCountryUserCountries() {
+    this.adminService
+      .getAllCountriesByUserId(this.userService.userInfo.userID ?? 0)
+      .subscribe({
+        next: (res) => {
+          if (res.succeeded) {
+            this.searchableCountries = res.result ?? [];
+          } else {
+            this.toaster.showError(res.errors.join(", "));
+          }
+        },
+        error: () => {
+          this.isLoader = false;
+          this.toaster.showError("There is an error occure please try again");
+        },
+      });
+  }
+
+
   deleteCountry() {
     if (this.selectedCountry === null) {
       this.toaster.showError('No country selected for deletion');
@@ -110,20 +129,6 @@ export class CountryComponent implements OnInit, OnDestroy {
         this.toaster.showError('Failed to edit country');
       }
     });
-  }
-  getAllCountriesByUserId() {
-    this.adminService
-      .getAllCountriesByUserId(this.userService?.userInfo?.userID)
-      .subscribe({
-        next: (res) => {
-          this.countries = res.result || [];
-          if (this.countries) {
-            //this.selectedCountryID = this.countries?.length > 0 ? this.countries[0].countryID : null
-          } else {
-            this.toaster.showWarning("No country assigned");
-          }
-        },
-      });
   }
 
   opendialog() {
@@ -205,9 +210,9 @@ export class CountryComponent implements OnInit, OnDestroy {
         const url = window.URL.createObjectURL(res);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `Countries _Progress_${formattedDate}.xlsx`;
+        a.download = `Countries_Progress_${formattedDate}.xlsx`;
         a.click();
-        this.toaster.showSuccess("Countries downloaded successfully");
+        this.toaster.showSuccess("Pillars History downloaded successfully");
       },
       error: () => {
         this.isExporting = false;
@@ -216,6 +221,47 @@ export class CountryComponent implements OnInit, OnDestroy {
     });
   }
 
+  aiAllCountryDetailsReport(format: string = 'pdf') {
+
+    if (!this.selectedCountries.length) {
+      this.toaster.showWarning('Please select at least one country');
+      return;
+    }
+
+    this.isReportExporting = true;
+
+    const payload: DownloadReportDto = {
+      countryIDs: this.selectedCountries.map(x => x.countryID),
+      format: format
+    };
+
+    this.aiComputationService.aiAllCountriesDetailReport(payload).subscribe({
+      next: (blob) => {
+        this.isReportExporting = false;
+        if (blob.size > 0) {
+          const ext = format == DocumentFormat.Pdf ? 'pdf' : 'docx';
+
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `All_Countries_Details_${new Date().toISOString().split('T')[0]}.${ext}`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+          this.toaster.showSuccess('Report generated successfully');
+        } else {
+          this.toaster.showWarning(
+            'No data available for the selected country or the PDF could not be generated.'
+          );
+        }
+      },
+      error: () => {
+        this.toaster.showError('There is an error occured, please try again');
+        this.isReportExporting = false;
+      }
+    });
+  }
   get isAllCurrentPageSelected(): boolean {
     const currentData = this.countriesResponse?.data ?? [];
     return (
@@ -256,8 +302,7 @@ export class CountryComponent implements OnInit, OnDestroy {
       );
     }
   }
-
-  CountrySelected(event: any, country: CountryVM) {
+  countrySelected(event: any, country: CountryVM) {
     const isChecked = event.target.checked;
     country.selected = isChecked;
 
@@ -273,47 +318,11 @@ export class CountryComponent implements OnInit, OnDestroy {
       );
     }
   }
-
-  aiAllCountryDetailsReport(format: string = 'pdf') {
-
-    if (!this.selectedCountries.length) {
-      this.toaster.showWarning('Please select at least one country to export the report.');
-      return;
-    }
-
-    this.isReportExporting = true;
-
-    const payload: DownloadReportDto = {
-      countryIDs: this.selectedCountries.map(x => x.countryID),
-      format: format
-    };
-
-    this.aiComputationService.aiAllCountryDetailsReport(payload).subscribe({
-      next: (blob) => {
-        this.isReportExporting = false;
-        if (blob.size > 0) {
-          const ext = format == DocumentFormat.Pdf ? 'pdf' : 'docx';
-
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = `All_Countries_Details_${new Date().toISOString().split('T')[0]}.${ext}`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          window.URL.revokeObjectURL(url);
-          this.toaster.showSuccess('Report generated successfully');
-        } else {
-          this.toaster.showWarning(
-            'No data available for the selected country or the PDF could not be generated.'
-          );
-        }
-      },
-      error: () => {
-        this.toaster.showError('There is an error occured, please try again');
-        this.isReportExporting = false;
-      }
-    });
+  customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return (
+      item.countryName?.toLowerCase().includes(term) ||
+      item.countryAliasName?.toLowerCase().includes(term)
+    );
   }
-
 }

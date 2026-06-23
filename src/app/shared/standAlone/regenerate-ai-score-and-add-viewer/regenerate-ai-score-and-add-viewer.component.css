@@ -38,7 +38,7 @@
   opacity: 0.8;
 }
 
-/* City Info */
+/* Country Info */
 .details_list strong {
   font-weight: 600;
   color: #374151;
@@ -121,6 +121,6 @@ h5 {
 }
 
 .form-switch input:checked {
-  background-color: #304a43 !important;
-  border-color: #304a43;
+  background-color: #003160 !important;
+  border-color: #003160;
 }

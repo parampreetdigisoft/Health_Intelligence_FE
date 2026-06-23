@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "usvi-angular-app": {
+    "health-intelligence-app": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/usvi-angular-app",
+            "outputPath": "dist/health-intelligence-app",
             "allowedCommonJsDependencies": [
               "file-saver",
               "quill-delta"
@@ -33,6 +33,7 @@
               "node_modules/quill/dist/quill.snow.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "src/styles.css"
             ],
             "scripts": [
@@ -68,18 +69,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "usvi-angular-app:build"
+            "buildTarget": "health-intelligence-app:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "usvi-angular-app:build:production"
+              "buildTarget": "health-intelligence-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "usvi-angular-app:build"
+            "buildTarget": "health-intelligence-app:build"
           }
         },
         "test": {

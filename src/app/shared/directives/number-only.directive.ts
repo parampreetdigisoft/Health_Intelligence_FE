@@ -4,93 +4,41 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
   selector: '[appNumberOnly]'
 })
 export class NumberOnlyDirective {
-
-  // ✅ FIX: removed 'g' flag
-  private regex: RegExp = /^-?\d*\.?\d{0,2}$/;
+  // ✅ Allow optional leading '-' and up to 2 decimal places
+  private regex: RegExp = new RegExp(/^-?\d*\.?\d{0,2}$/g);
 
   private specialKeys: Array<string> = [
-    'Backspace', 'Tab', 'End', 'Home',
-    'ArrowLeft', 'ArrowRight', 'Delete'
+    'Backspace', 'Tab', 'End', 'Home', 'ArrowLeft', 'ArrowRight', 'Delete'
   ];
 
   constructor(private el: ElementRef) {}
 
   @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
-
-    // ✅ Allow: Ctrl/Cmd + A/C/V/X
-    if (
-      (event.ctrlKey || event.metaKey) &&
-      ['a', 'c', 'v', 'x'].includes(event.key.toLowerCase())
-    ) {
+    // Always allow special keys
+    if (this.specialKeys.indexOf(event.key) !== -1) {
       return;
     }
 
-    // ✅ Allow navigation keys
-    if (this.specialKeys.includes(event.key)) {
-      return;
-    }
-
-    const input = this.el.nativeElement;
-    const current: string = input.value;
-    const position = input.selectionStart;
-
+    const current: string = this.el.nativeElement.value;
+    const position = this.el.nativeElement.selectionStart;
     const next: string = [
       current.slice(0, position),
       event.key === 'Decimal' ? '.' : event.key,
       current.slice(position)
     ].join('');
 
-    // ✅ Allow minus only at start
+    // ✅ Allow minus only at the beginning
     if (event.key === '-') {
+      // If cursor not at start or '-' already exists, block it
       if (position !== 0 || current.includes('-')) {
         event.preventDefault();
       }
       return;
     }
 
-    // ✅ Validate input
-    if (next && !this.regex.test(next)) {
-      event.preventDefault();
-    }
-  }
-
-  // ✅ Handle Paste
-  @HostListener('paste', ['$event'])
-  onPaste(event: ClipboardEvent) {
-    const clipboardData = event.clipboardData?.getData('text') || '';
-
-    const input = this.el.nativeElement;
-    const current: string = input.value;
-    const position = input.selectionStart;
-
-    const next = [
-      current.slice(0, position),
-      clipboardData,
-      current.slice(position)
-    ].join('');
-
-    if (!this.regex.test(next)) {
-      event.preventDefault();
-    }
-  }
-
-  // ✅ Optional: Handle Drag-Drop
-  @HostListener('drop', ['$event'])
-  onDrop(event: DragEvent) {
-    const text = event.dataTransfer?.getData('text') || '';
-
-    const input = this.el.nativeElement;
-    const current: string = input.value;
-    const position = input.selectionStart;
-
-    const next = [
-      current.slice(0, position),
-      text,
-      current.slice(position)
-    ].join('');
-
-    if (!this.regex.test(next)) {
+    // ✅ Validate against regex (numbers and optional decimal)
+    if (next && !String(next).match(this.regex)) {
       event.preventDefault();
     }
   }

@@ -10,7 +10,7 @@
         </div>
         <div class="col-md-auto">
           <img
-            [src]="imagePreview ? imagePreview :(userinfo?.profileImagePath ? urlBase+userinfo?.profileImagePath : 'assets/images/default-profile.png')"
+            [src]="userinfo?.profileImagePath ? urlBase+userinfo?.profileImagePath : 'assets/images/default-profile.png'"
             class="pp_pic" (error)="onImgError($event)" [alt]="'Profile Image'" />
         </div>
       </div>
@@ -29,30 +29,26 @@
             </div>
           </div>
           <div class="input_field">
-            <label class="form-label">Email</label>
-            <input type="email" formControlName="email"  placeholder="name@example.com" class="form-control" />
-
-            @if ( userForm.get('email')?.invalid && (userForm.get('email')?.touched || isSubmitted)) 
-            {
-              @if (userForm.get('email')?.errors?.['required']) {
-                <div class="error-msg">Email is required.</div>
-              }
-              @else if (userForm.get('email')?.errors?.['email']) {
-                <div class="error-msg">Please enter a valid email.</div>
-              }
-            }
+            <label>Email.*</label>
+            <input type="email"  formControlName="email" class="form-control" />
+            <div class="error-msg" *ngIf="userForm.get('email')?.touched || isSubmitted">
+                <span *ngIf="userForm.get('email')?.errors?.['required']">Email is
+                                        required.</span>
+                <span *ngIf="userForm.get('email')?.errors?.['email']">Invalid email
+                                        format.</span>
+                <span *ngIf="userForm.get('email')?.errors?.['emailExists']">Email is
+                                        already taken.</span>
+            </div>
           </div>
-
-
           <div class="input_field">
             <label>Phone No.*</label>
-            <input type="text" appNumberOnly formControlName="phone" placeholder="Enter phone number"
-              class="form-control" />
+            <input type="text" formControlName="phone" placeholder="Enter phone number"
+              class="form-control"  minlength="10" maxlength="15" (keypress)="numberOnly($event)" />
             <div class="error-msg" *ngIf="
                 userForm.get('phone')?.invalid &&
                 (userForm.get('phone')?.touched || isSubmitted)
               ">
-              phone number is required.
+              Phone number is required.
             </div>
           </div>
           <div class="input_field">
@@ -74,12 +70,8 @@
             </small>
           </div>
           <!-- Submit -->
-           <button
-            type="submit"
-            [disabled]="userForm.invalid || loading || !userForm.dirty "
-            class="common_button w-100 mt-4"
-          >
-            Update
+          <button type="submit" class="common_button w-100 mt-4" [disabled]="userForm.invalid">
+            {{ "Update" }}
             <span *ngIf="loading" class="spinner-border spinner-border-sm ms-2"></span>
           </button>
         </form>

@@ -1,28 +1,15 @@
-<<<<<<< HEAD
-
 import { CountryVM } from "./CountryVM";
-=======
-import { CityVM } from "./CityVM";
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { PaginationUserRequest } from "./PaginationRequest";
 
 export interface GetAnalyticalLayerRequestDto extends PaginationUserRequest {
   layerID?: number ;
-<<<<<<< HEAD
   countryID?:number;
-=======
-  cityID?:number;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   year?:number;
 }
 
 export interface GetAnalyticalLayerResultDto extends AnalyticalLayerResponseDto {
   layerResultID: number;
-<<<<<<< HEAD
   countryID: number;
-=======
-  cityID: number;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   interpretationID?: number | null;
   normalizeValue?: number | null;
   calValue1?: number ;
@@ -42,11 +29,7 @@ export interface GetAnalyticalLayerResultDto extends AnalyticalLayerResponseDto 
   aiLastUpdated?: string; 
 
   fiveLevelInterpretations: FiveLevelInterpretation[];
-<<<<<<< HEAD
   country?: CountryVM | null;
-=======
-  city?: CityVM | null;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 }
 
 export interface AnalyticalLayerResponseDto {
@@ -67,7 +50,6 @@ export interface FiveLevelInterpretation {
   minRange: number;
   maxRange: number;
   condition: string;
-  descriptor: string;
-  urbanSignal: string;
+  descriptor: string;  
   strategicAction: string;
 }

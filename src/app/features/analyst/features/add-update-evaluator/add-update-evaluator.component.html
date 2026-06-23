@@ -43,26 +43,27 @@
                                         required.</span>
                                     <span *ngIf="evaluatorForm.get('email')?.errors?.['email']">Invalid email
                                         format.</span>
+                                        <span *ngIf="evaluatorForm.get('email')?.errors?.['emailExists']">Email is
+                                        already taken.</span>
                                 </div>
                             </div>
 
                             <div class="input_field">
                                 <label>Phone No.*</label>
-                                <input type="text" formControlName="phone" appNumberOnly
-                                    placeholder="Enter phone number" class="form-control">
+                                <input type="text" formControlName="phone"
+                                    placeholder="Enter phone number" class="form-control"  minlength="10" maxlength="15" (keypress)="numberOnly($event)">
                                 <div class="error-msg"
                                     *ngIf="evaluatorForm.get('phone')?.invalid && (evaluatorForm.get('phone')?.touched || isSubmitted)">
-                                    phone number is required.
+                                    Phone number is required.
                                 </div>
                             </div>
-<<<<<<< HEAD
-                            <!-- Country Multi-Select -->
+                            <!-- country Multi-Select -->
                             <div class="input_field">
-                                <label>Assign Country *</label>
+                                <label>Assign country *</label>
                                 <ng-select [items]="countries" bindValue="countryID" bindLabel="countryName"
                                     formControlName="country" [multiple]="true" class="form-control analyst_multi_select"
                                     [searchable]="true"
-                                    [placeholder]="evaluatorForm.get('country')?.invalid ? 'Assign Country' : ''">
+                                    [placeholder]="evaluatorForm.get('country')?.invalid ? 'Assign country' : ''">
 
                                     <ng-template ng-label-tmp let-item="item">
                                         {{ item.countryName +', '}}
@@ -70,34 +71,13 @@
 
                                     <ng-template ng-option-tmp let-item="item">
                                         {{ item.countryName }} {{ item.continent }}
-=======
-                            <!-- City Multi-Select -->
-                            <div class="input_field">
-                                <label>Assign City *</label>
-                                <ng-select [items]="cities" bindValue="cityID" bindLabel="cityName"
-                                    formControlName="city" [multiple]="true" class="form-control analyst_multi_select"
-                                    [searchable]="true"
-                                    [placeholder]="evaluatorForm.get('city')?.invalid ? 'Assign City' : ''">
-
-                                    <ng-template ng-label-tmp let-item="item">
-                                        {{ item.cityName +', '}}
-                                    </ng-template>
-
-                                    <ng-template ng-option-tmp let-item="item">
-                                        {{ item.cityName }} {{ item.state }}
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
                                     </ng-template>
                                 </ng-select>
 
 
                                 <div class="error-msg"
-<<<<<<< HEAD
                                     *ngIf="evaluatorForm.get('country')?.invalid && (isSubmitted || evaluatorForm.get('country')?.touched)">
                                     Please select at least one country.
-=======
-                                    *ngIf="evaluatorForm.get('city')?.invalid && (isSubmitted || evaluatorForm.get('city')?.touched)">
-                                    Please select at least one city.
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
                                 </div>
                             </div>
 

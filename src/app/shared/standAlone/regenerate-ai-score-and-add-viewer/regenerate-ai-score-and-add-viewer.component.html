@@ -4,7 +4,6 @@
       <button type="button" (click)="closeModel()" class="btn-close" data-bs-dismiss="modal"
         aria-label="Close"></button>
 
-<<<<<<< HEAD
       <h4 class="modal_head">Country AI Investigation Level</h4>
 
       <form [formGroup]="assesmentForm" (ngSubmit)="onSubmit()">
@@ -12,17 +11,7 @@
         <!-- Country Info -->
         <div class="details_list">
           <strong>Country:</strong>
-          <span *ngIf="country">{{ country.countryName }}</span>
-=======
-      <h4 class="modal_head">City AI Investigation Level</h4>
-
-      <form [formGroup]="assesmentForm" (ngSubmit)="onSubmit()">
-
-        <!-- City Info -->
-        <div class="details_list">
-          <strong>City:</strong>
-          <span *ngIf="city">{{ city.cityName }}, {{ city.state }} ({{ city.country }})</span>
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+          <span *ngIf="country">{{ country.countryName }} ({{ country.continent }})</span>
         </div>
 
         <!-- AI Import Options -->
@@ -30,7 +19,7 @@
 
         <div class="details_list" *ngFor="let opt of aiOptions">
           <span>{{ opt.label }}</span>
-          <span><small>Estimated {{ opt.time }} min</small></span>
+          <span><small>Estimated {{ opt.time }}</small></span>
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" [formControlName]="opt.control" />
           </div>
@@ -51,17 +40,10 @@
             </ng-template>
           </ng-select>
         </div>
-<<<<<<< HEAD
         <div class="input_field mt-4" *ngIf="country?.comment">
           <label>Evaluator Comment</label>
             <small>
               {{country?.comment}}
-=======
-        <div class="input_field mt-4" *ngIf="city?.comment">
-          <label>Evaluator Comment</label>
-            <small>
-              {{city?.comment}}
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
             </small>
         </div>
 

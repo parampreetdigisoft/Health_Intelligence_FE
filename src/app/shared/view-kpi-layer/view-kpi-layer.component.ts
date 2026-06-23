@@ -28,20 +28,14 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
 
   @Input() selectedLayer?: GetAnalyticalLayerResultDto | null = null;
   urlBase = environment.apiUrl;
-<<<<<<< HEAD
   get country() {
     return this.selectedLayer?.country;
-=======
-  get city() {
-    return this.selectedLayer?.city;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   }
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions!: Partial<ChartOptions>;
 
 
   ngOnInit(): void {
-
   }
   ngOnChanges(changes: SimpleChanges): void {
     this.ApexGetPieOptions();
@@ -134,14 +128,14 @@ export class ViewKpiLayerComponent implements OnInit, OnChanges {
             total: {
               show: true,
               label: "Manual vs AI",
-              formatter: () => `${manual}/ ${ai}`
+              formatter: () => `${manual} / ${ai}`
             }
           }
         }
       },
       fill: {
         type: "solid",
-        colors: ["#304a43", "#d1eae1"] // Manual, AI
+        colors: ["#003160", "#d6ebc4"] // Manual, AI
       },
       stroke: {
         lineCap: "round"

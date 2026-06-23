@@ -54,7 +54,7 @@ export class AiCountryComparisonComponent implements OnInit {
   highestPillar?: PillarValueDto;
   lowestPillar?: PillarValueDto;
   avgScore?: number;
-
+  showLimitMessage:boolean= false;
   constructor(
     private analystService: AnalystService,
     private userService: UserService,
@@ -74,6 +74,13 @@ export class AiCountryComparisonComponent implements OnInit {
 
   pillarChanged() {
     this.$pillarChanged.next(true);
+    if (this.selectedCountries.length > 5) {
+      // Remove the last selected country to prevent selecting more than 6
+      this.selectedCountries = this.selectedCountries.slice(0, 6);
+      this.showLimitMessage = true;
+      return;
+    }
+    this.showLimitMessage = false;
   }
   getPillarName(pillarId: number): string {
     return this.pillars.find(p => p.pillarID === pillarId)?.pillarName ?? '';
@@ -399,12 +406,12 @@ export class AiCountryComparisonComponent implements OnInit {
             `;
 
           // Get all countries' scores for this category
-          const countryScores: Array<{ name: string, score: number, color: string, index: number }> = [];
+          const cityScores: Array<{ name: string, score: number, color: string, index: number }> = [];
 
           (this.compareCountryResponseDto?.series ?? []).forEach((countryData, idx) => {
             const score = countryData.data[dataPointIndex];
             const colors = colorPalette[idx % colorPalette.length];
-            countryScores.push({
+            cityScores.push({
               name: countryData.name,
               score: score,
               color: colors.primary,
@@ -413,10 +420,10 @@ export class AiCountryComparisonComponent implements OnInit {
           });
 
           // Sort by score (highest first)
-          countryScores.sort((a, b) => b.score - a.score);
+          cityScores.sort((a, b) => b.score - a.score);
 
           // Display each country's score
-          countryScores.forEach((country, rank) => {
+          cityScores.forEach((country, rank) => {
             const rankEmoji = rank === 0 ? '🥇' : rank === 1 ? '🥈' : rank === 2 ? '🥉' : `${rank + 1}.`;
             const scoreColor = country.score >= 80 ? '#059669' : country.score >= 60 ? '#d97706' : '#dc2626';
 
@@ -473,9 +480,9 @@ export class AiCountryComparisonComponent implements OnInit {
           });
 
           // Add statistics footer
-          const avgScore = countryScores.reduce((sum, country) => sum + country.score, 0) / countryScores.length;
-          const maxScore = countryScores[0].score;
-          const minScore = countryScores[countryScores.length - 1].score;
+          const avgScore = cityScores.reduce((sum, country) => sum + country.score, 0) / cityScores.length;
+          const maxScore = cityScores[0].score;
+          const minScore = cityScores[cityScores.length - 1].score;
           const spread = maxScore - minScore;
 
           tooltipHtml += `
@@ -549,7 +556,7 @@ export class AiCountryComparisonComponent implements OnInit {
     this.radarChartOptions = radarOptions;
   }
 
-  getCountryScore(countryID: number, isAi: boolean = false): string {
+  getCityScore(countryID: number, isAi: boolean = false): string {
     const country = this.countries?.find(c => c.countryID === countryID);
     if (isAi) {
       return country?.aiScore?.toFixed(2) || '0';
@@ -571,7 +578,7 @@ export class AiCountryComparisonComponent implements OnInit {
   private calculatePillarCards(): void {
     if (!this.chartTableData?.length) return;
 
-    /* MAX COUNTRY */
+    /* MAX CITY */
     this.maxCountry = [...this.chartTableData]
       .sort((a, b) => a.value - b.value)
       .pop();

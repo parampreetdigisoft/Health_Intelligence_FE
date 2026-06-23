@@ -34,8 +34,8 @@
         <td>{{((currentPage-1) * pageSize ) +(i+1)}}</td>
         <td>{{question.pillarName}}</td>
         <td>{{question.questionText}}</td>
-        <td class="score_col">{{question.score !=null ? (question.score.toFixed(1) + ' - ') : ''}} {{question.questionOptionText}}</td>
-        <td>
+        <td class="score_col">{{question.score !=null ? question.score+' - ' : ''}} {{question.questionOptionText}}</td>
+				<td>
 					<div [class.collapsed]="!question.showComment"
 						class="desc">
 						{{question.justification}}

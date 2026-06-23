@@ -57,14 +57,14 @@ export class ViewCountryDetailComponent implements OnChanges {
     this.router.navigate([`/${this.userService.userInfo?.role?.toLowerCase()}/ai/kpi-analysis`], {
       queryParams: {
         countryID: this.country?.countryID,
-        year:this.country?.scoringYear
+        year:this.country?.year
       }
     });
   }
 
   ApexGetPieOptions() {
     const aiProgress = this.country?.aiProgress ?? 0;
-    const evaluatorProgress = this.country?.evaluatorProgress ?? 0;
+    const evaluatorProgress = this.country?.evaluatorScore ?? 0;
     const discrepancy = this.country?.discrepancy ?? 0;
     const avgProgress = (aiProgress + evaluatorProgress) / 2;
 

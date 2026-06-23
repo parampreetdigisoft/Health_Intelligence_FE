@@ -3,5 +3,5 @@ export interface AiCountrySummeryRequestPdfDto {
   year: number;
   pillarID?: number;
   format?:string;
-  reportType?:string;
+   reportType?:string;
 }

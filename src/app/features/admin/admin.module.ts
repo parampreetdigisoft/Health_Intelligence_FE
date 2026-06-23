@@ -3,20 +3,12 @@ import { CommonModule } from '@angular/common';
 import { AdminComponent } from './component/admin.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { SharedModule } from 'src/app/shared/share.module';
-<<<<<<< HEAD
 import { CountryComponent } from './container/country/country.component';
-=======
-import { CityComponent } from './container/city/city.component';
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { PillarComponent } from './container/pillar/pillar.component';
 import { QuestionComponent } from './container/question/question.component';
 import { AssesmentComponent } from './container/assesment/assesment.component';
 import { AddUpdateAnalystComponent } from './features/add-update-analyst/add-update-analyst.component';
-<<<<<<< HEAD
-import { AddUpdateCountryComponent } from './features/add-update-country/add-update-country.component';
-=======
-import { AddUpdateCityComponent } from './features/add-update-city/add-update-city.component';
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+
 import { AnalystViewComponent } from './container/analyst-view/analyst-view.component';
 import { AddUpdateQuestionComponent } from './features/add-update-question/add-update-question.component';
 import { EvaluatoinResponseViewComponent } from './container/evaluatoin-response-view/evaluatoin-response-view.component';
@@ -27,31 +19,28 @@ import { ComparisionComponent } from './container/comparision/comparision.compon
 import { TransterAssessmentComponent } from './features/transter-assessment/transter-assessment.component';
 import { KpiComparisionComponent } from './container/kpi-comparision/kpi-comparision.component';
 import { KpiLayersComponent } from './container/kpi-layers/kpi-layers.component';
+import { AddUpdateCountryComponent } from './features/add-update-country/add-update-country.component';
+import { CountryUserViewComponent } from './container/country-user-view/country-user-view.component';
+import { AddUpdateCountryUserComponent } from './features/add-update-country-user/add-update-country-user.component';
 
 @NgModule({
   declarations: [
     AdminComponent,
-<<<<<<< HEAD
     CountryComponent,
-=======
-    CityComponent,
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     PillarComponent,
     QuestionComponent,
     AssesmentComponent,
     AddUpdateAnalystComponent,
-<<<<<<< HEAD
     AddUpdateCountryComponent,
-=======
-    AddUpdateCityComponent,
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     AnalystViewComponent,
     AddUpdateQuestionComponent,
     EvaluatoinResponseViewComponent,
     UpdatePillarComponent,
     AdminDashboardComponent,
     ComparisionComponent,
-    TransterAssessmentComponent
+    TransterAssessmentComponent,
+    CountryUserViewComponent,
+    AddUpdateCountryUserComponent
   ],
   imports: [
     CommonModule,

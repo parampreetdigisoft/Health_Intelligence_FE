@@ -21,7 +21,7 @@ export interface EarlyWarningItem {
 }
 
 export interface CountryExecutiveSlidesResult {
-   country: CountryRankingResponseDto;
+  country: CountryRankingResponseDto;
 
   recentPerformance: PerformanceSummary;
 
@@ -40,17 +40,17 @@ export interface CountryRankingResponseDto {
   countryID: number;
   countryName: string;
   region: string;
-  state: string;
-  country:string;
+  continent: string;
   totalCountry: number;
   countryRank: number;
   totalCountryInRegion: number;
-  countryAIScore?: number;
+  regionRank: number;
+  countryAIScore: number;
   dataYear?: number;
-  pillars: PillarsUserHistoryResponseDto[];
+  pillars: PillarsUserHistroyResponseDto[];
 }
 
-export interface PillarsUserHistoryResponseDto {
+export interface PillarsUserHistroyResponseDto {
   pillarID: number;
   pillarName: string;
   imagePath: string;

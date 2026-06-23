@@ -74,7 +74,7 @@ app-admin-dashboard app-ag-bar:nth-child(3) {
     z-index: 1;
     top: -105px;
     right: -120px;
-    background-color: rgb(122 194 174 / 20%);
+    background-color: rgb(207 207 207 / 25%);
 }
 .dashboard_card:before {
     content: '';
@@ -84,7 +84,7 @@ app-admin-dashboard app-ag-bar:nth-child(3) {
     width: 210px;
     height: 210px;
     z-index: -1;
-    background-color: rgb(122 194 174 / 10%);
+    background-color: rgb(207 207 207 / 15%);
     top: -145px;
     right: -55px;
 }
@@ -178,7 +178,7 @@ app-admin-dashboard app-ag-bar:nth-child(3) {
 @media only screen and (max-width:1530px){
     .dashboard_number h4 {
         font-size: 20px;
-        line-height: 30px;
+        line-height: 40px;
     }
     .dashboard_number h5 {
         font-size: 16px;
@@ -190,15 +190,10 @@ app-admin-dashboard app-ag-bar:nth-child(3) {
     .content_area .inner_content_area{
         padding: 30px !important;
     }
-    .city_piller > .align-items-end {
-        grid-gap: 10px 0;
-    }
 }
 
-@media only screen and (max-width:1330px){
-    
-    .content_area .inner_content_area {
-        padding: 30px 0px!important;
+@media only screen and (max-width:1300px){
+     .content_area .inner_content_area {
+        padding: 20px;
     }
-    
 }

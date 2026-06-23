@@ -13,11 +13,7 @@ export class TransterAssessmentComponent {
   @Output() assesmentChange = new EventEmitter<TransferAssessmentRequestDto>();
   @Output() closeModal = new EventEmitter<boolean>();
   @Input() loading: boolean = false;
-<<<<<<< HEAD
-  @Input() userofSelectedCountryResponse: GetAssessmentResponse[] = [];
-=======
-  @Input() userofSelecteCityResponse: GetAssessmentResponse[] = [];
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+  @Input() userOfSelectedCountryResponse: GetAssessmentResponse[] = [];
   selectedUserAssesment: GetAssessmentResponse | null = null;
   isSubmitted = false;
   assesmentForm!: FormGroup;

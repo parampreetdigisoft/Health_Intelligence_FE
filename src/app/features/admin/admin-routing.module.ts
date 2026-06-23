@@ -2,22 +2,16 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { AdminComponent } from "./component/admin.component";
-<<<<<<< HEAD
 import { CountryComponent } from "./container/country/country.component";
-=======
-import { CityComponent } from "./container/city/city.component";
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { PillarComponent } from "./container/pillar/pillar.component";
 import { QuestionComponent } from "./container/question/question.component";
 import { AssesmentComponent } from "./container/assesment/assesment.component";
 import { AnalystViewComponent } from "./container/analyst-view/analyst-view.component";
 import { AdminDashboardComponent } from "./container/admin-dashboard/admin-dashboard.component";
 import { ComparisionComponent } from "./container/comparision/comparision.component";
-<<<<<<< HEAD
-=======
 import { KpiLayersComponent } from "./container/kpi-layers/kpi-layers.component";
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { EvaluatoinResponseViewComponent } from "./container/evaluatoin-response-view/evaluatoin-response-view.component";
+import { CountryUserViewComponent } from "./container/country-user-view/country-user-view.component";
 
 const routes: Routes = [
   {
@@ -26,20 +20,13 @@ const routes: Routes = [
     children: [
       { path: "", redirectTo: "dashboard", pathMatch: "full" },
       { path: "dashboard", component: AdminDashboardComponent },
-<<<<<<< HEAD
       { path: "country", component: CountryComponent },
-=======
-      { path: "city", component: CityComponent },
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       { path: "analyst", component: AnalystViewComponent },
+      { path: "countryuser", component: CountryUserViewComponent },
       { path: "pillar", component: PillarComponent },
       { path: "question", component: QuestionComponent },
       { path: "assesment", component: AssesmentComponent },
-<<<<<<< HEAD
       { path: "assesment/:roleID/:countryID", component: AssesmentComponent },
-=======
-      { path: "assesment/:roleID/:cityID", component: AssesmentComponent },
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       {
         path: "assessment-result/:assessmentID/:userName",
         component: EvaluatoinResponseViewComponent,
@@ -61,34 +48,19 @@ const routes: Routes = [
           ),
       },
       {
-<<<<<<< HEAD
         path: "ai/country-analysis",
         loadComponent: () =>
-          import("./container/ai-country-analysis/aicountry-analysis.component").then(
-            (m) => m.AICountryAnalysisComponent
-=======
-        path: "ai/city-analysis",
-        loadComponent: () =>
-          import("./container/ai-city-analysis/aicity-analysis.component").then(
-            (m) => m.AICityAnalaysisComponent
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+          import("./container/ai-country-analysis/ai-country-analysis.component").then(
+            (m) => m.AICountryAnalaysisComponent
           ),
       },
 
       {
-<<<<<<< HEAD
         path: "ai/country-comparison",
         loadComponent: () =>
           import(
             "./container/ai-country-comparison/ai-country-comparison.component"
           ).then((m) => m.AiCountryComparisonComponent),
-=======
-        path: "ai/city-comparison",
-        loadComponent: () =>
-          import(
-            "./container/ai-city-comparison/ai-city-comparison.component"
-          ).then((m) => m.AiCityComparisonComponent),
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       },
       {
         path: "ai/questions-analysis",
@@ -102,13 +74,6 @@ const routes: Routes = [
         loadComponent: () =>
           import("./container/ai-kpi-analysis/kpianalysis.component").then(
             (m) => m.KPIAnalysisComponent
-          ),
-      },
-      {
-        path: "blogs",
-        loadComponent: () =>
-          import("./container/blog/blog.component").then(
-            (m) => m.BlogComponent
           ),
       },
       {

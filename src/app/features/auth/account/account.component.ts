@@ -5,11 +5,7 @@ import { filter, map, mergeMap, Subject } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { AuthService } from '../auth.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
-<<<<<<< HEAD
 import { CountryUserSignUpDto } from '../model/CountryUserSignUpDto';
-=======
-import { CityUserSignUpDto } from '../model/CityUserSignUpDto';
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { CommonService } from 'src/app/core/services/common.service';
 import { StorageKeyEnum } from 'src/app/core/enums/StorageKeyEnum';
 
@@ -72,13 +68,9 @@ export class AccountComponent implements OnInit {
           .subscribe({
             next: (res) => {
               this.loading = false;
-              if (res.succeeded) {
+              if (res.succeeded) {               
                 if (res.result?.userID) {
-<<<<<<< HEAD
                   if ((this.roleName === 'clientPortalLogin' && res?.result?.role == 'CountryUser') || (this.roleName === 'login' && res?.result?.role != 'CountryUser')) {
-=======
-                  if ((this.roleName === 'clientPortalLogin' && res?.result?.role == 'CityUser') || (this.roleName === 'login' && res?.result?.role != 'CityUser')) {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
                     this.toasterService.showSuccess('Login successful');
                     this.userService.RedirectBasedOnRole();
                   }
@@ -132,20 +124,12 @@ export class AccountComponent implements OnInit {
       }
     }
   }
-<<<<<<< HEAD
-  public countryUserSignUp(event: CountryUserSignUpDto) {
-=======
-  public cityUserSignUp(event: CityUserSignUpDto) {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+  public cityUserSignUp(event: CountryUserSignUpDto) {
     if (!this.loading) {
       if (event) {
         this.loading = true;
         this.authService
-<<<<<<< HEAD
-          .countryUserSignUp(event)
-=======
           .cityUserSignUp(event)
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           .subscribe({
             next: (res) => {
               this.loading = false;
@@ -194,12 +178,12 @@ export class AccountComponent implements OnInit {
       this.loading = true;
       this.authService.confirmMail(event)
         .subscribe({
-          next: (res) => {
+          next: (res:any) => {           
             this.loading = false;
             if (res.succeeded) {
               this.isSuccess = true;
-              this.toasterService.showSuccess(res.messages.join(", "));
-              this.refreshToken();
+              this.toasterService.showSuccess(res.messages.join(", "));             
+             this.refreshToken();             
             }
             else {
               this.toasterService.showError(res.errors.join(","));

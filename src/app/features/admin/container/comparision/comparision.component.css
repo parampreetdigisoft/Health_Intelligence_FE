@@ -224,7 +224,7 @@ min-width: max-content;
 }
 
 .score_col {
-    color: #7AC2AE !important;
+    color: #77bd3e !important;
     font-weight: 700 !important;
 }
 
@@ -244,20 +244,6 @@ min-width: max-content;
   letter-spacing: 0.5px;
 }
 
-.evaluater_design table tr th:first-child, .evaluater_design table tr td:first-child {
-    width: 500px !important;
-    max-width: 100% !important;
-}
-.evaluater_design table {
+::ng-deep .evaluater_design tbody tr td .question_name_single {
     width: 100%;
-    table-layout: fixed;
-}
-
-.evaluater_design table tr th:first-child, .evaluater_design table tr td:first-child {
-    width: 500px !important;
-    max-width: 100% !important;
-}
-.evaluater_design table {
-    width: 100%;
-    table-layout: fixed;
 }

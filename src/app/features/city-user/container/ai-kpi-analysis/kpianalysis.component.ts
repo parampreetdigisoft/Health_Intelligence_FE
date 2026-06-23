@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { SharedModule } from 'src/app/shared/share.module';
-import { ChartTableRowDto, CompareCityResponseDto } from "src/app/core/models/CompareCityResponseDto";
+import { ChartTableRowDto, CompareCountryResponseDto } from "src/app/core/models/CompareCountryResponseDto";
 import { environment } from "src/environments/environment";
-import { CityVM } from 'src/app/core/models/CityVM';
+import { CountryVM } from 'src/app/core/models/CountryVM';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { ToasterService } from 'src/app/core/services/toaster.service';
-import { CityUserService } from 'src/app/features/city-user/city-user.service';
+import { CountryUserService } from 'src/app/features/city-user/country-user.service';
 import { AiComputationService } from 'src/app/core/services/ai-computation.service';
-import { AiCityPillarResponseDto, AiCityPillarVM } from 'src/app/core/models/aiVm/AiCityPillarResponseDto';
+import { AiCountryPillarResponseDto, AiCountryPillarVM } from 'src/app/core/models/aiVm/AiCountryPillarResponseDto';
 declare var bootstrap: any; // 👈 use Bootstrap JS API
 
 import {
@@ -29,9 +29,8 @@ import { SparklineScoreComponent } from 'src/app/shared/standAlone/sparkline-sco
 import { ActivatedRoute, Router } from '@angular/router';
 import { AITrustLevelVM } from 'src/app/core/models/aiVm/AITrustLevelVM';
 import { ViewAiPillarDetailsComponent } from '../../features/view-ai-pillar-details/view-ai-pillar-details.component';
-import { AiCitySummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiCitySummeryRequestPdfDto';
+import { AiCountrySummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiCountrySummeryRequestPdfDto';
 import { CommonService } from 'src/app/core/services/common.service';
-import { DocumentFormat } from 'src/app/core/enums/DocumentFormat';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -62,19 +61,19 @@ export class KPIAnalysisComponent implements OnInit {
   currentYear = new Date().getFullYear();
   selectedYear = this.currentYear;
   pillers: PillarsVM[] = [];
-  selectedCity?: number;
-  cities: CityVM[] | null = [];
+  selectedCountry?: number;
+  countries: CountryVM[] | null = [];
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions: Partial<ChartOptions> = {};
-  aiCityPillarResponseDto: AiCityPillarResponseDto | null = null;
-  selectedAiCityPillar: AiCityPillarVM | null = null;
+  aiCountryPillarResponseDto: AiCountryPillarResponseDto | null = null;
+  selectedAiCountryPillar: AiCountryPillarVM | null = null;
   isLoader: boolean = false;
   chartTableData: ChartTableRowDto[] = [];
   selectedIndex: number = -1;
   aiTrustLevels: AITrustLevelVM[] = [];
 
   constructor(
-    private cityUserService: CityUserService,
+    private countryUserService: CountryUserService,
     private toaster: ToasterService,
     private aiComputationService: AiComputationService,
     private router: Router,
@@ -88,15 +87,15 @@ export class KPIAnalysisComponent implements OnInit {
   ngOnInit(): void {
     this.isLoader = true;
     this.route.queryParams.subscribe(params => {
-      let cid = +params['cityID'] || null;
+      let cid = +params['countryID'] || null;
       let sYear = +params['year'] || this.selectedYear;
 
       if (cid) {
-        this.selectedCity = Number(cid);
+        this.selectedCountry = Number(cid);
         this.selectedYear = Number(sYear);
       }
     });
-    this.getCityUserCities();
+    this.getCountryUserCountries();
     this.getAITrustLevels();
   }
   getAITrustLevels() {
@@ -105,45 +104,44 @@ export class KPIAnalysisComponent implements OnInit {
     });
   }
 
-  getCityUserCities() {
-    this.cityUserService.getCityUserCities().subscribe({
+  getCountryUserCountries() {
+    this.countryUserService.getCountryUserCountries().subscribe({
       next: (p) => {
 
-        this.cities = p.result || [];
-        if (this.cities?.length && !this.selectedCity) {
-          this.selectedCity = this.cities[0].cityID;
+        this.countries = p.result || [];
+        if (this.countries?.length && !this.selectedCountry) {
+          this.selectedCountry = this.countries[0].countryID;
         }
-        this.getAICityPillars();
+        this.getAICountryPillars();
       },
       error: () => {
         this.toaster.showError("There is an error please Try again");
-        this.getAICityPillars();
+        this.getAICountryPillars();
       }
     });
   }
 
-  getAICityPillars() {
-    if (!this.selectedCity) {
-      this.toaster.showWarning("Please select at least one city to view data.");
+  getAICountryPillars() {
+    if (!this.selectedCountry) {
+      this.toaster.showWarning("Please select at least one country to view data.");
       return;
     }
     this.isLoader = true;
-    let payload: AiCitySummeryRequestPdfDto = {
-      cityID: this.selectedCity,
-      year: this.selectedYear,
-      format:"pdf"
+    let payload: AiCountrySummeryRequestPdfDto = {
+      countryID: this.selectedCountry,
+      year: this.selectedYear
     }
-    this.cityUserService.getAICityPillars(payload).subscribe({
+    this.countryUserService.getAICountryPillars(payload).subscribe({
       next: (res) => {
         this.isLoader = false;
         if (res.succeeded && res.result != null) {
-          this.aiCityPillarResponseDto = res.result;
+          this.aiCountryPillarResponseDto = res.result;
 
           this.buildPillarComparisonChart();
         }
         else {
-          this.toaster.showInfo("No comparison data available for the selected cities.");
-          this.aiCityPillarResponseDto=null;
+          this.toaster.showInfo("No comparison data available for the selected countries.");
+          this.aiCountryPillarResponseDto=null;
           this.buildPillarComparisonChart();
         }
       },
@@ -158,73 +156,70 @@ export class KPIAnalysisComponent implements OnInit {
     (event.target as HTMLImageElement).src = 'assets/images/Frame 1321315029.png';
   }
 
-  viewDetails(pillar: AiCityPillarVM) {
-    this.selectedAiCityPillar = pillar;
+  viewDetails(pillar: AiCountryPillarVM) {
+    this.selectedAiCountryPillar = pillar;
     const sidebarEl = document.getElementById('kpiLayerSidebar');
     const offcanvas = new bootstrap.Offcanvas(sidebarEl);
 
     // Clear selection when sidebar closes
     sidebarEl?.addEventListener('hidden.bs.offcanvas', () => {
-      this.selectedAiCityPillar = null;
+      this.selectedAiCountryPillar = null;
       this.cdr.detectChanges();
     }, { once: true });
 
     offcanvas.show();
   }
 
-  viewQuestions(pillar: AiCityPillarVM) {
-    this.router.navigate(['/cityuser/ai/questions-analysis'], {
+  viewQuestions(pillar: AiCountryPillarVM) {
+    this.router.navigate(['/countryuser/ai/questions-analysis'], {
       queryParams: {
-        cityID: this.selectedCity,
+        countryID: this.selectedCountry,
         pillarID: pillar.pillarID,
         year:this.selectedYear
       }
     });
   }
-  aiPillarDetailsReport(city: AiCityPillarVM, selectedIndex: number, format: string) {
-      if (this.selectedIndex != -1) return;
-      this.selectedIndex = selectedIndex;
-      let payload: AiCitySummeryRequestPdfDto = {
-        cityID: city.cityID,
-        year: this.selectedYear,
-        pillarID: city.pillarID,
-        format:format
-      }
-      this.aiComputationService.aiPillarDetailsReport(payload).subscribe({
-        next: (blob) => {
-          this.selectedIndex = -1;
-          if (blob) {
-            // Create download link
-            const ext = format == DocumentFormat.Pdf ? 'pdf' : 'docx';          
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-  
-            link.download = `${city.pillarName}_Details_${new Date().toISOString().split('T')[0]}..${ext}`;
-  
-            // Trigger download
-            document.body.appendChild(link);
-            link.click();
-  
-            // Cleanup
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-            this.toaster.showSuccess('Report generated successfully')
-          }
-        },
-        error: () => {
-          this.toaster.showError('There is an error occure please try again');
-          this.selectedIndex = -1;
-        }
-      });
+  aiPillarDetailsReport(country: AiCountryPillarVM, selectedIndex: number) {
+    if(this.selectedIndex != -1) return;
+    this.selectedIndex = selectedIndex;
+    let payload: AiCountrySummeryRequestPdfDto = {
+      countryID: country.countryID,
+      year: this.selectedYear,
+      pillarID: country.pillarID
     }
+    this.aiComputationService.aiPillarDetailsReport(payload).subscribe({
+      next: (blob) => {
+        this.selectedIndex = -1;
+        if (blob) {
+          // Create download link
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `${country.pillarName}_Details_${new Date().toISOString().split('T')[0]}.pdf`;
+
+          // Trigger download
+          document.body.appendChild(link);
+          link.click();
+
+          // Cleanup
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+          this.toaster.showSuccess('Report generated successfully')
+        }
+      },
+      error: () => {
+        this.toaster.showError('There is an error occure please try again');
+        this.selectedIndex = -1;
+      }
+    });
+  }
 
   buildPillarComparisonChart() {
     const getLockedScore = (pillarId: number) => {
       return 15 + (pillarId * 7) % 20;
     };
 
-    const data = [...(this.aiCityPillarResponseDto?.pillars ?? [])].sort(
+    const data = [...(this.aiCountryPillarResponseDto?.pillars ?? [])].sort(
       (a, b) => Number(b.isAccess) - Number(a.isAccess)
     );
 
@@ -266,7 +261,7 @@ export class KPIAnalysisComponent implements OnInit {
         style: {
           fontSize: '11px',
           fontWeight: 700,
-          colors: ['#2f4841']
+          colors: ['#32288f']
         },
         background: {
           enabled: true,
@@ -274,7 +269,7 @@ export class KPIAnalysisComponent implements OnInit {
           padding: 6,
           borderRadius: 4,
           borderWidth: 1,
-          borderColor: '#79a89b',
+          borderColor: '#7f8feb',
           opacity: 0.95
         }
       },
@@ -282,7 +277,7 @@ export class KPIAnalysisComponent implements OnInit {
       stroke: {
         curve: 'smooth',
         width: 3,
-        colors: ['#4a7167']
+        colors: ['#425cf0']
       },
 
       fill: {
@@ -295,17 +290,17 @@ export class KPIAnalysisComponent implements OnInit {
           colorStops: [
             {
               offset: 0,
-              color: '#79a89b',
+              color: '#5975c2',
               opacity: 0.8
             },
             {
               offset: 50,
-              color: '#8eb5ab',
+              color: '#78bef7',
               opacity: 0.5
             },
             {
               offset: 100,
-              color: '#a2c3ba',
+              color: '#a5bef5',
               opacity: 0.2
             }
           ]
@@ -330,7 +325,7 @@ export class KPIAnalysisComponent implements OnInit {
           style: {
             fontSize: '11px',
             fontWeight: 500,
-            colors: '#6b7280'
+            colors: '#2153b8'
           }
         },
         axisBorder: {
@@ -345,11 +340,11 @@ export class KPIAnalysisComponent implements OnInit {
 
       yaxis: {
         title: {
-          text: 'Progress',
+          text: 'Score',
           style: {
             fontSize: '13px',
             fontWeight: 600,
-            color: '#4b5563'
+            color: '#83b0ee'
           }
         },
         min: 0,
@@ -359,7 +354,7 @@ export class KPIAnalysisComponent implements OnInit {
           formatter: (val) => val >= 0 ? `${Math.round(val)}` : '',
           style: {
             fontSize: '12px',
-            colors: '#6b7280'
+            colors: '#3b5281'
           }
         }
       },
@@ -597,7 +592,7 @@ export class KPIAnalysisComponent implements OnInit {
                   position: relative;
                 ">
                   <div style="
-                    width: ${progressPercent};
+                    width: ${progressPercent}%;
                     height: 100%;
                     background: linear-gradient(90deg, ${progressColor} 0%, ${progressColor}cc 100%);
                     border-radius: 10px;
@@ -691,8 +686,16 @@ export class KPIAnalysisComponent implements OnInit {
   PillarColorByScore(pillar: any): string {
     let score = pillar.aiProgress;
     const colors = [
-      "#a2c3ba", "#8eb5ab", "#79a89b", "#649b8c", "#578679",
-      "#4a7167", "#3c5d54", "#2f4841", "#21342f", "#141f1c"
+      "#E3ECF7", // very light blue
+      "#C9DBF0",
+      "#AFC9E9",
+      "#95B8E2",
+      "#7BA6DB",
+      "#6195D4",
+      "#4A7FC2",
+      "#345FA3",
+      "#1F3F7A",
+      "#0D2B4D"  // deep navy (highest)
     ];
 
     if (score === null || score === undefined || isNaN(score)) {

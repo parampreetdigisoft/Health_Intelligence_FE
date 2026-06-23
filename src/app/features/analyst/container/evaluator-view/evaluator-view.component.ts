@@ -1,9 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-<<<<<<< HEAD
 import { CountryVM } from '../../../../core/models/CountryVM';
-=======
-import { CityVM } from '../../../../core/models/CityVM';
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { PaginationResponse } from 'src/app/core/models/PaginationResponse';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -25,11 +21,7 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
   totalRecords: number = 0;
   pageSize: number = 10;
   currentPage: number = 1
-<<<<<<< HEAD
   countries: CountryVM[] | null = [];
-=======
-  cities: CityVM[] | null = [];
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   isLoader: boolean = false;
   isOpendialog: boolean = false;
   selectedIndex?:number;
@@ -37,29 +29,19 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getEvaluator();
-<<<<<<< HEAD
     this.getAllCountriesByUserId();
   }
 
   getAllCountriesByUserId() {
     this.analystService.getAllCountriesByUserId(this.userService?.userInfo?.userID).subscribe({
       next: (res) => {
-        this.countries = res.result;
-=======
-    this.getAllCitiesByUserId();
-  }
-
-  getAllCitiesByUserId() {
-    this.analystService.getAllCitiesByUserId(this.userService?.userInfo?.userID).subscribe({
-      next: (res) => {
-        this.cities = res.result;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+        this.countries = res.result;     
       }
     });
   }
 
   getEvaluator(currentPage: number = 1) {
-    this.evaluatorResponse = undefined;
+        this.evaluatorResponse = undefined;
     this.isLoader = true;
     let payload: GetUserByRoleRequestDto = {
       sortDirection: 'asc',
@@ -91,11 +73,7 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
       userId: this.selectedEvaluator?.userID,
       assignedByUserId: this.userService.userInfo.userID
     }
-<<<<<<< HEAD
     this.analystService.unAssignCountry(payload).subscribe({
-=======
-    this.analystService.unAssignCity(payload).subscribe({
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       next: (res) => {
         if (res.succeeded) {
           this.getEvaluator();
@@ -105,11 +83,7 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
         }
       },
       error: () => {
-<<<<<<< HEAD
         this.toaster.showError('Failed to un-assigned country');
-=======
-        this.toaster.showError('Failed to un-assigned city');
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       }
     });
   }
@@ -123,11 +97,7 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
       password: "",
       role: UserRoleValue.Evaluator,
       invitedUserID: this.userService.userInfo?.userID ?? 0,
-<<<<<<< HEAD
       countryID: analyst.countries.map((x) => x.countryID),
-=======
-      cityID: analyst.cities.map((x) => x.cityID),
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       userID: analyst.userID,
     };
     this.addUpdateEvaluator(payload);
@@ -135,7 +105,7 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
   addUpdateEvaluator(evaluator: UpdateInviteUserDto | null) {
     if (!evaluator) {
       return;
-    }
+    }    
     this.loading = true;
     let payload: UpdateInviteUserDto = {
       fullName: evaluator.fullName,
@@ -144,11 +114,7 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
       password: evaluator.password,
       role: UserRoleValue.Evaluator,
       invitedUserID: this.userService.userInfo?.userID ?? 0,
-<<<<<<< HEAD
       countryID: evaluator.countryID,
-=======
-      cityID: evaluator.cityID,
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       userID: evaluator.userID
     }
 
@@ -156,13 +122,12 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
       this.analystService.editEvaluator(payload).subscribe({
         next: (res) => {
           this.closeModal();
-          if (res.succeeded) {
-            this.getEvaluator(this.currentPage);
+          if (res.succeeded) {           
             this.toaster.showSuccess(res?.messages.join(', '));
-
           } else {
             this.toaster.showError(res?.errors.join(', '));
           }
+           this.getEvaluator(this.currentPage);
         },
         error: () => {
           this.closeModal();
@@ -174,12 +139,12 @@ export class EvaluatorViewComponent implements OnInit, OnDestroy {
       this.analystService.addEvaluator(payload).subscribe({
         next: (res) => {
           this.closeModal();
-          if (res.succeeded) {
-            this.getEvaluator();
+          if (res.succeeded) {           
             this.toaster.showSuccess(res?.messages.join(', '));
           } else {
             this.toaster.showError(res?.errors.join(', '));
           }
+           this.getEvaluator();
         },
         error: () => {
           this.closeModal();

@@ -5,6 +5,7 @@
     position: sticky;
     top: 0;
     z-index: 99;
+    padding-top: 0;
 }
 
 .vui_header_inner
@@ -27,7 +28,7 @@
 
 .vui_dashboard_logo img
 {
-    width: 115px;
+    width: 215px;
 }
 
 .user_detail > ul
@@ -213,10 +214,4 @@ display: block;
 {
         width: 20px;
     height: auto;
-}
-
-@media only screen and (max-width:1330px) {
-    .vui_header {
-        padding: 0px;
-    }
 }

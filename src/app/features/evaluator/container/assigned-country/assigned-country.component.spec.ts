@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssignedCityComponent } from './assigned-country.component';
+import { AssignedCountryComponent } from './assigned-country.component';
 
 describe('AssignedCityComponent', () => {
-  let component: AssignedCityComponent;
-  let fixture: ComponentFixture<AssignedCityComponent>;
+  let component: AssignedCountryComponent;
+  let fixture: ComponentFixture<AssignedCountryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -12,7 +12,7 @@ describe('AssignedCityComponent', () => {
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(AssignedCityComponent);
+    fixture = TestBed.createComponent(AssignedCountryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

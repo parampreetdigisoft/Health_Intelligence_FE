@@ -21,15 +21,9 @@
 								</span>
 							</div>
 							<div class="dashboard_number">
-<<<<<<< HEAD
 								<h4>Total Country</h4>
 								<h5>
 									{{ countryHistory?.totalCountry ?? 0 }}
-=======
-								<h4>Total City</h4>
-								<h5>
-									{{ cityHistory?.totalCity ?? 0 }}
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 								</h5>
 							</div>
 						</div>
@@ -65,11 +59,7 @@
 							<div class="dashboard_number">
 								<h4>Analyst</h4>
 								<h5>
-<<<<<<< HEAD
 									{{ countryHistory?.totalAnalyst ?? 0 }}
-=======
-									{{ cityHistory?.totalAnalyst ?? 0 }}
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 								</h5>
 							</div>
 						</div>
@@ -93,11 +83,7 @@
 							<div class="dashboard_number">
 								<h4>Evaluator</h4>
 								<h5>
-<<<<<<< HEAD
 									{{ countryHistory?.totalEvaluator ?? 0 }}
-=======
-									{{ cityHistory?.totalEvaluator ?? 0 }}
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 								</h5>
 							</div>
 						</div>
@@ -107,53 +93,30 @@
 		</div>
 	</div>
 	<div class="city_piller">
-		<div class="row align-items-end align-items-center">
+		<div class="row justify-content-between align-items-end">
 			<div class="col-md-auto">
 				<div class="input_field">
-<<<<<<< HEAD
 					<label>Select Country *</label>
 
 
 					<ng-select [items]="countries"
-					    [searchFn]="customSearchFn"
 						[searchable]="true"
 						[placeholder]="selectedCountries == '' ? 'Select Country' : ''"
 						[(ngModel)]="selectedCountries"
 						(change)="getCountryPillarHistory()"
 						bindValue="countryID"
 						bindLabel="countryName"
-=======
-					<label>Select City *</label>
-
-
-					<ng-select [items]="cities"
-					    [searchFn]="customSearchFn"
-						[searchable]="true"
-						[placeholder]="selectedCities == '' ? 'Select City' : ''"
-						[(ngModel)]="selectedCities"
-						(change)="getCityPillarHistory()"
-						bindValue="cityID"
-						bindLabel="cityName"
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 						class="form-control analyst_multi_select">
 						<ng-template ng-label-tmp
 							let-item="item "
 							class="select_item">
-<<<<<<< HEAD
 							{{ item.countryName }}
-=======
-							{{ item.cityName }}
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 						</ng-template>
 
 
 						<ng-template ng-option-tmp
 							let-item="item">
-<<<<<<< HEAD
 							{{ item.countryName }}, {{ item.continent }}
-=======
-							{{ item.cityName }}, {{ item.state }}
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 						</ng-template>
 					</ng-select>
 				</div>
@@ -194,20 +157,12 @@
 					</span>
 				</div>
 			</div>
-			<div class="col-md d-flex justify-content-end gap-2">
-<<<<<<< HEAD
-				<button [disabled]="!countryQuestionHistoryReponse?.pillars?.length"
+			<div class="col-md d-flex justify-content-end gap-2 mb-3">
+				<button *ngIf="countryQuestionHistoryResponse?.pillars?.length"
 					[matTooltip]=" 'Go to the AI analysis page to review detailed country insights and scores'"
 					(click)="goToCountryAnalysis()"
 					class="common_button">
 					AI Country Insights
-=======
-				<button [disabled]="!cityQuestionHistoryReponse?.pillars?.length"
-					[matTooltip]=" 'Go to the AI analysis page to review detailed city insights and scores'"
-					(click)="goToCityAnalysis()"
-					class="common_button">
-					AI City Insights
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 					<svg xmlns="http://www.w3.org/2000/svg"
 						width="20"
 						height="20"
@@ -221,15 +176,9 @@
 					</svg>
 				</button>
 
-<<<<<<< HEAD
-				<button [disabled]="!countryQuestionHistoryReponse?.pillars?.length"
+				<button *ngIf="countryQuestionHistoryResponse?.pillars?.length"
 				    [matTooltip]=" 'Export pillar details'"
 					(click)="ExportCountryPillar()"
-=======
-				<button [disabled]="!cityQuestionHistoryReponse?.pillars?.length"
-				    [matTooltip]=" 'Export pillar details'"
-					(click)="ExportCityPillar()"
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 					class="common_button d-flex align-items-center">
 					Export
 					<svg xmlns="http://www.w3.org/2000/svg"
@@ -270,11 +219,7 @@
 	<div *ngIf="chartOptions?.series"
 		class="apx_chart_new">
 		<div class="card_heading">
-<<<<<<< HEAD
 			<h3>Country Overview</h3>
-=======
-			<h3>City Overview</h3>
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 		</div>
 		<apx-chart [series]="chartOptions.series!"
 			[chart]="chartOptions.chart!"

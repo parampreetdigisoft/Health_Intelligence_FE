@@ -1,11 +1,7 @@
 
 <app-header></app-header>
 <div class="main_area">
-<<<<<<< HEAD
-  @if(countryUser===currentUser()?.role && pendingTier == currentUser()?.tier){
-=======
   @if(cityUser===currentUser()?.role && pendingTier == currentUser()?.tier){
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     
   }
   @else {
@@ -19,6 +15,10 @@
     </router-outlet>
   </div>
 </div>
-<!-- @if((currentUser()?.role !== evaluator && cityUser!==currentUser()?.role) || (cityUser===currentUser()?.role && pendingTier != currentUser()?.tier)){
-  <app-chat-container></app-chat-container>    
+
+<!-- 
+// ai assisstant only available for admin, analyst or paid user only
+@if((currentUser()?.role !== evaluator && cityUser!==currentUser()?.role) || (cityUser===currentUser()?.role && pendingTier != currentUser()?.tier)){
+   <app-chat-container></app-chat-container>    
 } -->
+

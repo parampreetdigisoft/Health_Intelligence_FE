@@ -59,7 +59,8 @@ export class UserService {
       createdAt: data.createdAt,
       isEmailConfirmed: data.isEmailConfirmed,
       isLoggedIn: data.isLoggedIn,
-      tier: user.tier
+      tier: user.tier ,
+      pillars:user.pillars     
     };
     this.userInfo = currentData;
   }
@@ -139,13 +140,8 @@ export class UserService {
         case UserRole.Evaluator.toLowerCase():
           this.router.navigate(['/evaluator/dashboard'], { state: { role: UserRole.Evaluator } });
           break;
-<<<<<<< HEAD
         case UserRole.CountryUser.toLowerCase():
           this.router.navigate(['/countryuser/dashboard'], { state: { role: UserRole.CountryUser } });
-=======
-        case UserRole.CityUser.toLowerCase():
-          this.router.navigate(['/cityuser/dashboard'], { state: { role: UserRole.CityUser } });
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           break;
         default:
           this.router.navigate(['/']);
@@ -156,11 +152,7 @@ export class UserService {
   logout() {
     let role = this.userInfo?.role;
     let url = '/auth/clientPortalLogin';
-<<<<<<< HEAD
     if (role && role?.toLowerCase() !== UserRole.CountryUser.toLowerCase()) {
-=======
-    if (role && role?.toLowerCase() !== UserRole.CityUser.toLowerCase()) {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       url = '/auth/login';
     }
     localStorage.removeItem(StorageKeyEnum.UserInfo);

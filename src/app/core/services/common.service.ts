@@ -6,13 +6,8 @@ import { UserService } from "./user.service";
 import { BehaviorSubject, catchError, from, map, Observable, switchMap, tap } from "rxjs";
 import { HttpService } from "../http/http.service";
 import { UpdateUserResponseDto, UserInfo } from "../models/UserInfo";
-<<<<<<< HEAD
 import { CountryVM } from "../models/CountryVM";
 import { GetNearestCountryRequestDto } from "../models/GetNearestCountryRequestDto";
-=======
-import { CityVM } from "../models/CityVM";
-import { GetNearestCityRequestDto } from "../models/GetNearestCityRequestDto";
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { ToasterService } from "./toaster.service";
 
 @Injectable({
@@ -26,32 +21,19 @@ export class CommonService {
 
   constructor(private http: HttpService, private userService: UserService, private toaster: ToasterService) { }
 
-<<<<<<< HEAD
   public getAllCountryByLocation(): Observable<ResultResponseDto<CountryVM[]>> {
     const payload: GetNearestCountryRequestDto = {
-=======
-  public getAllCityByLocation(): Observable<ResultResponseDto<CityVM[]>> {
-    const payload: GetNearestCityRequestDto = {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       userID: this.userService.userInfo.userID,
       latitude: this.latitude,
       longitude: this.longitude,
     };
 
     return this.http
-<<<<<<< HEAD
       .getWithQueryParams('Country/getAllCountryByLocation', payload)
       .pipe(map((x) => x as ResultResponseDto<CountryVM[]>));
   }
 
   public getUserNearestCountry(): Observable<ResultResponseDto<CountryVM[]>> {
-=======
-      .getWithQueryParams('City/getAllCityByLocation', payload)
-      .pipe(map((x) => x as ResultResponseDto<CityVM[]>));
-  }
-
-  public getUserNearestCity(): Observable<ResultResponseDto<CityVM[]>> {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     if (navigator.geolocation) {
       return from(
         new Promise<GeolocationPosition>((resolve, reject) => {
@@ -61,33 +43,19 @@ export class CommonService {
         switchMap((position) => {
           this.latitude = position.coords.latitude;
           this.longitude = position.coords.longitude;
-<<<<<<< HEAD
           return this.getAllCountryByLocation();
-=======
-          return this.getAllCityByLocation();
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         }),
         catchError((error) => {
           console.error('Geolocation error:', error);
           this.toaster.showError(
-<<<<<<< HEAD
             'Location access denied or unavailable. Showing all countries.'
           );
           return this.getAllCountryByLocation(); // fallback
-=======
-            'Location access denied or unavailable. Showing all cities.'
-          );
-          return this.getAllCityByLocation(); // fallback
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         })
       );
     } else {
       this.toaster.showError('Geolocation not supported by this browser.');
-<<<<<<< HEAD
       return this.getAllCountryByLocation();
-=======
-      return this.getAllCityByLocation();
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     }
   }
 
@@ -190,57 +158,72 @@ export class CommonService {
     }
     return years;
   }
-<<<<<<< HEAD
   public getLatitudeLongitude(country: any) {
-    return this.http
-      .getExternalApi('https://nominatim.openstreetmap.org/search', country)
-=======
-  public getLatitudeLongitude(city: any) {
-    return this.http
-      .getExternalApi('https://nominatim.openstreetmap.org/search', city)
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
-      .pipe(map((x) => x as any[]));
-  }
+  const params = {
+    q: country,
+    format: 'json',
+    limit: 1
+  };
+
+  return this.http
+    .getExternalApi('https://nominatim.openstreetmap.org/search', params)
+    .pipe(map((x) => x as any[]));
+}
   getGeneratedTime(utcDate: string | Date | null | undefined): string {
-    if (!utcDate) return 'NA';
+  if (!utcDate) return 'NA';
 
-    // 🔑 Ensure UTC parsing
-    const utc =
-      typeof utcDate === 'string' && !utcDate.endsWith('Z') ? utcDate + 'Z' : utcDate;
+  // Ensure UTC parsing for string dates
+  let parsedInput = utcDate;
 
-    const generatedDate = new Date(utc);
-    const now = new Date();
-
-    const diffMs = now.getTime() - generatedDate.getTime();
-    const diffMinutes = Math.floor(diffMs / (1000 * 60));
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-    // Less than 1 minute
-    if (diffMinutes < 10) {
-      return 'Just now';
-    }
-
-    // Less than 1 hour
-    if (diffMinutes < 60) {
-      return `${diffMinutes} min`;
-    }
-
-    // Less than 24 hours
-    if (diffHours < 24) {
-      const remainingMinutes = diffMinutes % 60;
-      return remainingMinutes > 0
-        ? `${diffHours} hr ${remainingMinutes} min`
-        : `${diffHours} hr`;
-    }
-
-    // 24 hours or more → show days + hours
-    const remainingHours = diffHours % 24;
-    return remainingHours > 0
-      ? `${diffDays} day ${remainingHours} hr`
-      : `${diffDays} day`;
+  if (typeof utcDate === 'string') {
+    parsedInput = utcDate.endsWith('Z') ? utcDate : utcDate + 'Z';
   }
-    researchStatusClass(date: Date | string | null | undefined): string {
+
+  const generatedDate = new Date(parsedInput);
+
+  // Invalid JS date check
+  if (isNaN(generatedDate.getTime())) return 'NA';
+
+  // Ignore .NET MinValue (0001-01-01)
+  if (generatedDate.getFullYear() <= 1) return 'NA';
+
+  const now = new Date();
+
+  const diffMs = now.getTime() - generatedDate.getTime();
+
+  // If future date, treat as NA
+  if (diffMs < 0) return 'NA';
+
+  const diffMinutes = Math.floor(diffMs / (1000 * 60));
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  // Less than 10 minutes
+  if (diffMinutes < 10) {
+    return 'Just now';
+  }
+
+  // Less than 1 hour
+  if (diffMinutes < 60) {
+    return `${diffMinutes} min`;
+  }
+
+  // Less than 24 hours
+  if (diffHours < 24) {
+    const remainingMinutes = diffMinutes % 60;
+    return remainingMinutes > 0
+      ? `${diffHours} hr ${remainingMinutes} min`
+      : `${diffHours} hr`;
+  }
+
+  // 1 day or more
+  const remainingHours = diffHours % 24;
+
+  return remainingHours > 0
+    ? `${diffDays} day${diffDays > 1 ? 's' : ''} ${remainingHours} hr`
+    : `${diffDays} day${diffDays > 1 ? 's' : ''}`;
+}
+  researchStatusClass(date: Date | string | null | undefined): string {
   if (!date) return 'old';
 
   const parsedDate = new Date(date);
@@ -274,77 +257,74 @@ isValidDate(date: any): boolean {
 }
   get PillarColors() {
     return [
-      "#a2c3ba",
-      "#8eb5ab",
-      "#79a89b",
-      "#649b8c",
-      "#578679",
-      "#4a7167",
-      "#3c5d54",
-      "#2f4841",
-      "#21342f",
-      "#141f1c",
+      "#AFC6D9", // light (but visible)
+      "#8FB1C9",
+      "#6F9CB9",
+      "#4F86A8",
+
+      "#3A6F96", // strong mid
+      "#2F5E87",
+      "#245078",
+
+      "#1A4269",
+      "#12365A",
+      "#003160"  // base (strong highlight)
     ];
   }
-  get radarColors() {
-    return [
-      {
-        primary: '#1b2b27',
-        light: '#4b615b',
-        gradient: 'rgba(20, 31, 28, 0.25)'
-      },
-
-      {
-        primary: '#04775a',
-        light: '#7fa39a',
-        gradient: 'rgba(74, 113, 103, 0.25)'
-      },
-      {
-        primary: '#649b8c',
-        light: '#94beb4',
-        gradient: 'rgba(100, 155, 140, 0.25)'
-      },
-      {
-        primary: '#2f4841',
-        light: '#637f78',
-        gradient: 'rgba(47, 72, 65, 0.25)'
-      },
-      {
-        primary: '#a2c3ba',
-        light: '#c7ddd7',
-        gradient: 'rgba(162, 195, 186, 0.25)'
-      },
-      {
-        primary: '#8eb5ab',
-        light: '#b6d1ca',
-        gradient: 'rgba(142, 181, 171, 0.25)'
-      },
-      {
-        primary: '#79a89b',
-        light: '#a6c8bf',
-        gradient: 'rgba(121, 168, 155, 0.25)'
-      },
-
-      {
-        primary: '#578679',
-        light: '#89b0a6',
-        gradient: 'rgba(87, 134, 121, 0.25)'
-      },
-
-      {
-        primary: '#3c5d54',
-        light: '#6f9188',
-        gradient: 'rgba(60, 93, 84, 0.25)'
-      },
-
-      {
-        primary: '#141f1c',
-        light: '#4b615b',
-        gradient: 'rgba(20, 31, 28, 0.25)'
-      }
-    ];
-  }
-
+ get radarColors() {
+  return [
+    {
+      primary: '#0f172a',   // very dark navy
+      light: '#475569',
+      gradient: 'rgba(15, 23, 42, 0.25)'
+    },
+    {
+      primary: '#1e3a8a',   // strong indigo
+      light: '#64748b',
+      gradient: 'rgba(30, 58, 138, 0.25)'
+    },
+    {
+      primary: '#2563eb',   // vivid blue (highlight)
+      light: '#93c5fd',
+      gradient: 'rgba(37, 99, 235, 0.25)'
+    },
+    {
+      primary: '#38bdf8',   // cyan-blue (break monotony)
+      light: '#bae6fd',
+      gradient: 'rgba(56, 189, 248, 0.25)'
+    },
+    {
+      primary: '#1d4ed8',   // bold royal blue
+      light: '#a5b4fc',
+      gradient: 'rgba(29, 78, 216, 0.25)'
+    },
+    {
+      primary: '#0ea5e9',   // sky blue
+      light: '#7dd3fc',
+      gradient: 'rgba(14, 165, 233, 0.25)'
+    },
+    {
+      primary: '#4338ca',   // bluish violet (important contrast)
+      light: '#c7d2fe',
+      gradient: 'rgba(67, 56, 202, 0.25)'
+    },
+    {
+      primary: '#0369a1',   // deep cyan
+      light: '#67e8f9',
+      gradient: 'rgba(3, 105, 161, 0.25)'
+    },
+    {
+      primary: '#1e40af',   // classic blue
+      light: '#93c5fd',
+      gradient: 'rgba(30, 64, 175, 0.25)'
+    },
+    {
+      primary: '#312e81',   // dark indigo (anchor)
+      light: '#818cf8',
+      gradient: 'rgba(49, 46, 129, 0.25)'
+    }
+  ];
+}
 
   get kpiColors() {
     return [

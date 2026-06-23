@@ -1,10 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { AdminService } from "../../admin.service";
-<<<<<<< HEAD
 import { CountryVM } from "../../../../core/models/CountryVM";
-=======
-import { CityVM } from "../../../../core/models/CityVM";
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { PaginationResponse } from "src/app/core/models/PaginationResponse";
 import { ToasterService } from "src/app/core/services/toaster.service";
 import { UserService } from "src/app/core/services/user.service";
@@ -28,20 +24,12 @@ declare var bootstrap: any;
 export class AnalystViewComponent implements OnInit, OnDestroy {
   isLoader: boolean = false;
   selectedAnalyst: GetUserByRoleResponse | null = null;
-<<<<<<< HEAD
-  selectedCountry: CountryVM | null = null;
-=======
-  selectedCity: CityVM | null = null;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+  selectedCity: CountryVM | null = null;
   analystResponse: PaginationResponse<GetUserByRoleResponse> | undefined;
   totalRecords: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
-<<<<<<< HEAD
   countries: CountryVM[] | null = [];
-=======
-  cities: CityVM[] | null = [];
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   loading: boolean = false;
   isOpendialog: boolean = false;
   roleId: number | any = 0;
@@ -49,11 +37,7 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
   selectedIndex?:number;
   rolesList = [
     { name: "Evaluator", role: UserRoleValue.Evaluator },
-<<<<<<< HEAD
-    { name: "CityUser", role: UserRoleValue.CountryUser },
-=======
-    { name: "CityUser", role: UserRoleValue.CityUser },
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+    { name: "CountryUser", role: UserRoleValue.CountryUser },
   ];
 
   constructor(
@@ -69,7 +53,6 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
       this.selectedRoleID = this.roleId;
     });
     this.getAnalyst();
-<<<<<<< HEAD
     this.getAllCountriesByUserId();
   }
 
@@ -78,18 +61,7 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
       .getAllCountriesByUserId(this.userService?.userInfo?.userID)
       .subscribe({
         next: (res) => {
-          this.countries = res.result;
-=======
-    this.getAllCitiesByUserId();
-  }
-
-  getAllCitiesByUserId() {
-    this.adminService
-      .getAllCitiesByUserId(this.userService?.userInfo?.userID)
-      .subscribe({
-        next: (res) => {
-          this.cities = res.result;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+          this.countries = res.result;          
         },
       });
   }
@@ -106,7 +78,7 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
     if (!this.roleId) {
       payload.getUserRole = UserRoleValue.Analyst;
     }
-    this.adminService.getAnalyst(payload).subscribe((anaylist) => {
+    this.adminService.getUserListByRole(payload).subscribe((anaylist) => {
       this.analystResponse = anaylist;
       this.totalRecords = anaylist.totalRecords;
       this.currentPage = currentPage;
@@ -116,7 +88,7 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
   }
 
   editAnalyst(analyst: GetUserByRoleResponse | null, isOpen: boolean = true) {
-    this.selectedAnalyst = analyst;
+    this.selectedAnalyst = analyst;  
     if (isOpen) {
       this.opendialog();
     }
@@ -150,11 +122,7 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
       password: "",
       role: UserRoleValue.Analyst,
       invitedUserID: this.userService.userInfo?.userID ?? 0,
-<<<<<<< HEAD
       countryID: analyst.countries.map((x) => x.countryID),
-=======
-      cityID: analyst.cities.map((x) => x.cityID),
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       userID: analyst.userID,
     };
     this.addUpdateAnalyst(payload);
@@ -172,24 +140,20 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
       password: analyst.password,
       role: UserRoleValue.Analyst,
       invitedUserID: this.userService.userInfo?.userID ?? 0,
-<<<<<<< HEAD
       countryID: analyst.countryID,
-=======
-      cityID: analyst.cityID,
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       userID: analyst.userID,
     };
 
     if (analyst.userID > 0) {
-      this.adminService.editAnalyst(payload).subscribe({
+      this.adminService.editUser(payload).subscribe({
         next: (res) => {
           this.closeModal();
-          if (res.succeeded) {
-            this.getAnalyst(this.currentPage);
+          if (res.succeeded) {           
             this.toaster.showSuccess(res?.messages.join(", "));
           } else {
             this.toaster.showError(res?.errors.join(", "));
           }
+           this.getAnalyst(this.currentPage);
         },
         error: () => {
           this.closeModal();
@@ -200,12 +164,12 @@ export class AnalystViewComponent implements OnInit, OnDestroy {
       this.adminService.addAnalyst(payload).subscribe({
         next: (res) => {
           this.closeModal();
-          if (res.succeeded) {
-            this.getAnalyst();
+          if (res.succeeded) {           
             this.toaster.showSuccess(res?.messages.join(", "));
-          } else {
+          } else {            
             this.toaster.showError(res?.errors.join(", "));
           }
+          this.getAnalyst();
         },
         error: () => {
           this.closeModal();

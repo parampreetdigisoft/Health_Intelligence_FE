@@ -1,4 +1,5 @@
-import { TieredAccessPlanValue } from "../enums/TieredAccessPlan";
+import {  TieredAccessPlanValue } from "../enums/TieredAccessPlan";
+import { PillarsVM } from "./PillersVM";
 
 export interface UserInfo extends PublicUserResponse,PublicUserLocalStorageResponse {
   tokenExpirationDate: Date;
@@ -9,6 +10,7 @@ export interface PublicUserResponse {
   fullName: string;
   email: string;
   phone?: string | null;
+  tier?:TieredAccessPlanValue | TieredAccessPlanValue.Pending;
   isDeleted: boolean;
   role: string;
   createdBy?: number | null;
@@ -17,6 +19,7 @@ export interface PublicUserResponse {
   isEmailConfirmed: boolean;
   isLoggedIn: boolean;
   is2FAEnabled?: boolean;
+  pillars?:number[]|[];
 }
 export interface PublicUserLocalStorageResponse {
   isActive: boolean;
@@ -49,17 +52,14 @@ export interface LoginResponse {
 export interface GetAssignUserDto {
   userID: number;
   searchUserID?: number;
-<<<<<<< HEAD
   countryID?: number;
-=======
-  cityID?: number;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 }
 export interface UpdateUserResponseDto {
   userID: number;
   fullName: string;
+  email:string;
   phone: string;
-  email: string;
   profileImagePath: string;
-  tier:TieredAccessPlanValue
+  tier:TieredAccessPlanValue;
+  pillars:number[]|[];
 }

@@ -1,11 +1,6 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
-<<<<<<< HEAD
-import { CountryHistoryDto, GetCountriesSubmitionHistoryReponseDto, GetCountryQuestionHistoryReponseDto, UserCountryRequstDto } from 'src/app/core/models/CountryHistoryDto';
+import { CountryHistoryDto, GetCountriesSubmitionHistoryResponseDto, GetCountryQuestionHistoryResponseDto, UserCountryRequestDto } from 'src/app/core/models/countryHistoryDto';
 import { CountryVM } from 'src/app/core/models/CountryVM';
-=======
-import { CityHistoryDto, GetCitiesSubmitionHistoryReponseDto, GetCityQuestionHistoryReponseDto, UserCityRequstDto } from 'src/app/core/models/cityHistoryDto';
-import { CityVM } from 'src/app/core/models/CityVM';
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { EvaluatorService } from '../../evaluator.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -38,17 +33,10 @@ export type ChartOptions = {
 export class EvaluatorDashboardComponent {
   currentYear = new Date().getFullYear();
   selectedYear = this.currentYear;
-<<<<<<< HEAD
   countries: CountryVM[] | null = [];
   selectedCountries: number | any = '';
   countryHistory: CountryHistoryDto | null = null;
-  countryQuestionHistoryReponse: GetCountryQuestionHistoryReponseDto | null = null;
-=======
-  cities: CityVM[] | null = [];
-  selectedCities: number | any = '';
-  cityHistory: CityHistoryDto | null = null;
-  cityQuestionHistoryReponse: GetCityQuestionHistoryReponseDto | null = null;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+  countryQuestionHistoryResponse: GetCountryQuestionHistoryResponseDto | null = null;
   @ViewChild("chartPillar") chartPillar!: ChartComponent;
   public chartPillarOptions: any = {};
   isLoader: boolean = false;
@@ -58,26 +46,16 @@ export class EvaluatorDashboardComponent {
   constructor(private evaluatorService: EvaluatorService, private toaster: ToasterService, private userService: UserService, public commonService: CommonService) { }
   ngOnInit(): void {
     this.isLoader = true;
-<<<<<<< HEAD
     this.getAllCountriesByUserId();
     this.GetCountryHistory();
   }
   yearChanged() {
     this.GetCountryHistory();
     this.getCountryQuestionHistory();
-=======
-    this.getAllCitiesByUserId();
-    this.GetCityHistory();
-  }
-  yearChanged() {
-    this.GetCityHistory();
-    this.getCityQuestionHistory();
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   }
 
   ngAfterViewInit() { }
 
-<<<<<<< HEAD
   getAllCountriesByUserId() {
     this.evaluatorService.getAllCountriesByUserId(this.userService?.userInfo?.userID).subscribe({
       next: (res) => {
@@ -87,43 +65,24 @@ export class EvaluatorDashboardComponent {
           this.isLoader = true;
           this.selectedCountries = this.countries[0].countryID;
           this.getCountryQuestionHistory();
-=======
-  getAllCitiesByUserId() {
-    this.evaluatorService.getAllCitiesByUserId(this.userService?.userInfo?.userID).subscribe({
-      next: (res) => {
-        this.isLoader = false;
-        this.cities = res.result;
-        if (this.cities && this.cities.length > 0) {
-          this.isLoader = true;
-          this.selectedCities = this.cities[0].cityID;
-          this.getCityQuestionHistory();
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         }
       }
     });
   }
 
-<<<<<<< HEAD
   GetCountryHistory() {
     this.evaluatorService.getCountryHistory(this.userService?.userInfo?.userID ?? 0, this.commonService.getStartOfYearLocal(this.selectedYear)).subscribe({
       next: (res) => {
         this.countryHistory = res.result;
-=======
-  GetCityHistory() {
-    this.evaluatorService.getCityHistory(this.userService?.userInfo?.userID ?? 0, this.commonService.getStartOfYearLocal(this.selectedYear)).subscribe({
-      next: (res) => {
-        this.cityHistory = res.result;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         this.GetApexPieOptions();
       }
     });
   }
-<<<<<<< HEAD
   getCountryQuestionHistory() {
     if (this.userService?.userInfo?.userID == null || !this.selectedCountries || this.selectedCountries === '' || this.selectedCountries == null) {
       return;
     }
-    let request: UserCountryRequstDto = {
+    let request: UserCountryRequestDto = {
       userID: this.userService?.userInfo?.userID ?? 0,
       countryID: this.selectedCountries,
       updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear)
@@ -131,26 +90,9 @@ export class EvaluatorDashboardComponent {
     this.evaluatorService.getCountryQuestionHistory(request).subscribe({
       next: (res) => {
         this.isLoader = false;
-        this.countryQuestionHistoryReponse = res;
-        if (this.countryQuestionHistoryReponse) {
-          this.GetPillarBarOptions(this.countryQuestionHistoryReponse);
-=======
-  getCityQuestionHistory() {
-    if (this.userService?.userInfo?.userID == null || !this.selectedCities || this.selectedCities === '' || this.selectedCities == null) {
-      return;
-    }
-    let request: UserCityRequstDto = {
-      userID: this.userService?.userInfo?.userID ?? 0,
-      cityID: this.selectedCities,
-      updatedAt: this.commonService.getStartOfYearLocal(this.selectedYear)
-    }
-    this.evaluatorService.getCityQuestionHistory(request).subscribe({
-      next: (res) => {
-        this.isLoader = false;
-        this.cityQuestionHistoryReponse = res;
-        if (this.cityQuestionHistoryReponse) {
-          this.GetPillarBarOptions(this.cityQuestionHistoryReponse);
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+        this.countryQuestionHistoryResponse = res;
+        if (this.countryQuestionHistoryResponse) {
+          this.GetPillarBarOptions(this.countryQuestionHistoryResponse);
         }
       },
       error: (err) => {
@@ -159,11 +101,7 @@ export class EvaluatorDashboardComponent {
     });
   }
 
-<<<<<<< HEAD
-  GetPillarBarOptions(history: GetCountryQuestionHistoryReponseDto) {
-=======
-  GetPillarBarOptions(history: GetCityQuestionHistoryReponseDto) {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+  GetPillarBarOptions(history: GetCountryQuestionHistoryResponseDto) {
     let colors = this.commonService.PillarColors;
     const rawMax = Math.max(...history.pillars.map(p => p.scoreProgress));
     const maxNumber = Math.ceil(rawMax / 10) * 10;
@@ -182,7 +120,7 @@ export class EvaluatorDashboardComponent {
 
     // Generate short names with duplicate handling
     const shortNames = this.generateUniqueShortNames(data.map(d => d.pillarName));
-
+     const chartHeight = data.length * 38;
     // Prepare data for ApexCharts
     const categories = shortNames;
     const seriesData = data.map((d, index) => ({
@@ -205,7 +143,7 @@ export class EvaluatorDashboardComponent {
       }],
       chart: {
         type: 'bar',
-        height: 500,
+        height: chartHeight,
         fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
         background: 'transparent',
         toolbar: {
@@ -228,7 +166,7 @@ export class EvaluatorDashboardComponent {
       plotOptions: {
         bar: {
           horizontal: true,
-          borderRadius: 8,
+          borderRadius: 5,
           borderRadiusApplication: 'end',
           barHeight: '70%',
           distributed: true,
@@ -263,7 +201,7 @@ export class EvaluatorDashboardComponent {
       xaxis: {
         categories: categories,
         title: {
-          text: 'Score',
+          text: 'Score ',
           style: {
             fontSize: '14px',
             fontWeight: 700,
@@ -526,17 +464,10 @@ export class EvaluatorDashboardComponent {
   }
 
   GetApexPieOptions() {
-<<<<<<< HEAD
     const total = this.countryHistory?.totalCountry ?? 0;
     const active = this.countryHistory?.activeCountry ?? 0;
     const inprogress = this.countryHistory?.inprocessCountry ?? 0;
     const complete = this.countryHistory?.compeleteCountry ?? 0;
-=======
-    const total = this.cityHistory?.totalCity ?? 0;
-    const active = this.cityHistory?.activeCity ?? 0;
-    const inprogress = this.cityHistory?.inprocessCity ?? 0;
-    const complete = this.cityHistory?.compeleteCity ?? 0;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 
     this.chartOptions = {
       series: [
@@ -588,11 +519,7 @@ export class EvaluatorDashboardComponent {
             },
             total: {
               show: true,
-<<<<<<< HEAD
               label: "Total Country",
-=======
-              label: "Total City",
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
               formatter: (value: any) => {
                 return `${total}`;
               },
@@ -600,12 +527,8 @@ export class EvaluatorDashboardComponent {
           }
         }
       },
-      colors: ["#303131", "#2ee9ca","#2d5e56", "#aaadad"],
-<<<<<<< HEAD
+      colors: ["#003160", "#c2dbf5","#77bd3e", "#6c8fb5"],
       labels: ["Total Country", "Active", "InProgress", "Completed"],
-=======
-      labels: ["Total City", "Active", "InProgress", "Completed"],
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       legend: {
         show: true,
         floating: true,
@@ -625,21 +548,12 @@ export class EvaluatorDashboardComponent {
       }
     };
   }
-<<<<<<< HEAD
   ExportCountryPillar() {
     let country = this.countries?.find((x) => x.countryID == this.selectedCountries);
-    if (this.countryQuestionHistoryReponse?.pillars && country) {
-      var exportData = this.countryQuestionHistoryReponse?.pillars.map((x) => {
+    if (this.countryQuestionHistoryResponse?.pillars && country) {
+      var exportData = this.countryQuestionHistoryResponse?.pillars.map((x) => {
         return {
-          CountryName: country?.countryName,
-=======
-  ExportCityPillar() {
-    let city = this.cities?.find((x) => x.cityID == this.selectedCities);
-    if (this.cityQuestionHistoryReponse?.pillars && city) {
-      var exportData = this.cityQuestionHistoryReponse?.pillars.map((x) => {
-        return {
-          CityName: city?.cityName,
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+          countryName: country?.countryName,
           PillarName: x.pillarName,
           Score: x.scoreProgress?.toFixed(2),
           AnsweredQuestion: x.ansQuestion,
@@ -648,11 +562,7 @@ export class EvaluatorDashboardComponent {
       });
       this.commonService.exportExcel(exportData);
     } else {
-<<<<<<< HEAD
       this.toaster.showWarning("Please select country to export the records");
-=======
-      this.toaster.showWarning("Please select city to export the records");
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     }
   }
 }

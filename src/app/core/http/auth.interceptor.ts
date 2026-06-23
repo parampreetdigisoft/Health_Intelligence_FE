@@ -24,11 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const user = JSON.parse(localStorage.getItem(StorageKeyEnum.UserInfo) || '{}') as UserInfo;
 
     if (!(request.url.endsWith('register') || request.url.endsWith('login') || request.url.endsWith('confirmMail') || request.url.endsWith('twofaVerification') || request.url.endsWith('reSendLoginOtp') || request.url.endsWith('forgotPassword') ||
-<<<<<<< HEAD
       request.url.endsWith('changePassword') || request.url.endsWith('getAllCountries') || request.url.endsWith('CountryUserSignUp') || request.url.includes('search'))) {
-=======
-      request.url.endsWith('changePassword') || request.url.endsWith('getAllCities') || request.url.endsWith('CityUserSignUp') || request.url.includes('search'))) {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       if (user?.token) {
         request = request.clone({
           setHeaders: {

@@ -7,11 +7,7 @@
    <app-login (UserLogin)="login($event)" [loading]="loading" [role]="role"></app-login>
 </div>
 <div *ngIf="roleName==='sign-up'">
-<<<<<<< HEAD
-       <app-sign-up (submitsignUpDetail)="countryUserSignUp($event)" [loading]="loading" [isSuccess]="isSuccess"></app-sign-up>
-=======
        <app-sign-up (submitsignUpDetail)="cityUserSignUp($event)" [loading]="loading" [isSuccess]="isSuccess"></app-sign-up>
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 </div>
 <div *ngIf="roleName==='forgot-password'">
        <app-forgot-password (forgotPassword)="sendEmail($event)" [loading]="loading" [isSuccess]="isSuccess"></app-forgot-password>

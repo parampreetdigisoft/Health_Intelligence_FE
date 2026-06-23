@@ -80,7 +80,8 @@ import { ChatContainerComponent } from "./chatbox/chat-container/chat-container.
     MatSortModule,
     MatTooltipModule,
     ViewKpiLayerComponent,
-    NgApexchartsModule
+    NgApexchartsModule,
+    ChatContainerComponent
   ],
 })
 export class SharedModule {}

@@ -10,6 +10,23 @@
     flex-wrap: wrap;
     grid-gap: 10px;
 }
+.low {
+    background-color: #ffcccc;
+    color: #b30000;
+    border: 1px solid #ff4d4d !important;
+}
+
+.medium {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffe69c !important;
+}
+
+.high {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #75d69c !important;
+}
 
 .input_flex select {
     flex: 1;
@@ -43,21 +60,13 @@
 }
 
 .kpi_td_data div:empty,
-<<<<<<< HEAD
-.kpi_sidebar app-view-country-detail .bold_num:empty {
-=======
 .kpi_sidebar app-view-city-detail .bold_num:empty {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     display: none;
 }
 
 .kpi_td_data .bold_num,
-<<<<<<< HEAD
-::ng-deep .kpi_sidebar app-view-country-detail .bold_num {
-=======
 ::ng-deep .kpi_sidebar app-view-city-detail .bold_num {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
-    background: #304a43;
+    background: #003160;
     color: #ffffff;
     padding: 2px 8px;
     border-radius: 0.5rem;
@@ -66,17 +75,6 @@
     margin-top: 8px;
 }
 
-<<<<<<< HEAD
-::ng-deep .kpi_sidebar app-view-country-detail .city_card_outter .city_card_img img {
-    max-width: 300px;
-}
-
-::ng-deep .kpi_sidebar app-view-country-detail .city_card_outter .city_card_inner {
-    padding: 10px 0px;
-}
-
-::ng-deep .kpi_sidebar app-view-country-detail .city_card_outter .city_card_inner .city_cards_h1 {
-=======
 ::ng-deep .kpi_sidebar app-view-city-detail .city_card_outter .city_card_img img {
     max-width: 300px;
 }
@@ -86,7 +84,6 @@
 }
 
 ::ng-deep .kpi_sidebar app-view-city-detail .city_card_outter .city_card_inner .city_cards_h1 {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     font-size: 24px;
 }
 
@@ -118,9 +115,9 @@
     justify-content: flex-start;
 }
 
-.compare_city_table tbody td.action_td table .action_icons  span {
+.compare_city_table tbody td.action_td table .action_icons span {
     display: inline-block;
-    background-color: #397b69;
+    background-color: #003160;
     padding: 8px 10px;
     white-space: nowrap;
     color: #ffffff;
@@ -133,7 +130,7 @@
 
 ::ng-deep .analyst_multi_select .ng-option-selected {
   background-color: #e8f0ff !important;
-  color: #304a43 !important;
+  color: #003160 !important;
   font-weight: 600;
 }
 
@@ -175,7 +172,7 @@
     white-space: nowrap;
     padding: 2px 5px !important;
     border-radius: 5px !important;
-    background-color: #304a43 !important;
+    background-color: #003160 !important;
     color: #ffffff !important;
 }
 
@@ -183,11 +180,7 @@
   table-layout: auto; /* keep responsive behavior */
   width: 100%;
 }
-<<<<<<< HEAD
-.compare_city_table .country-col {
-=======
 .compare_city_table .city-col {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   min-width: 500px;      /* adjust as needed */
   white-space: normal;   /* allow wrapping */
   word-break: break-word;
@@ -207,11 +200,7 @@
     .table_custom_inner {
         overflow-x: auto !important;
     }
-<<<<<<< HEAD
-    .table_outer .table td.country-col {
-=======
     .table_outer .table td.city-col {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         min-width: unset !important;
         max-width: 100%;
         width: 400px;
@@ -229,11 +218,7 @@
         
 }
 @media only screen and (max-width:1345px) {
-<<<<<<< HEAD
-    .table_outer .table td.country-col {
-=======
     .table_outer .table td.city-col {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         min-width: unset !important;
         max-width: 100%;
         width: 400px;

@@ -29,7 +29,6 @@
         </div>
         <div class="col-md-3">
             <div class="compare_select input_field input_flex">
-<<<<<<< HEAD
                 <ng-select [items]="countryList" bindValue="countryID" bindLabel="countryName" [searchable]="true"
                     class="form-control analyst_multi_select" [placeholder]="!selectedCountryID? 'Select Countries' :''"
                     [(ngModel)]="selectedCountryID" (change)="GetAnalyticalLayerResults()">
@@ -38,18 +37,7 @@
                     </ng-template>
 
                     <ng-template ng-option-tmp let-item="item">
-                        {{ item.countryName }}, {{ item.continent }} ({{ item.score?.toFixed(1) || 'NA'}})
-=======
-                <ng-select [items]="cityList" bindValue="cityID" bindLabel="cityName" [searchable]="true"
-                    class="form-control analyst_multi_select" [placeholder]="!selectedCityID? 'Select Cities' :''"
-                    [(ngModel)]="selectedCityID" (change)="GetAnalyticalLayerResults()">
-                    <ng-template ng-label-tmp let-item="item" class="select_item">
-                        {{ item.cityName }}
-                    </ng-template>
-
-                    <ng-template ng-option-tmp let-item="item">
-                        {{ item.cityName }}, {{ item.state }} ({{ item.score?.toFixed(1) || 'NA'}})
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+                        {{ item.countryName }}, ({{ item.score?.toFixed(1) || 'NA'}})
                     </ng-template>
                 </ng-select>
 
@@ -65,18 +53,10 @@
             <thead>
                 <tr>
                     <th>S.No.</th>
-<<<<<<< HEAD
                     <th>Country</th>
-=======
-                    <th>City</th>
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
                     <th>Kpi Layer</th>
-                    <th>Condition</th>
-                    <th>Category1</th>
-                    <th>Category2</th>
-                    <th>Category3</th>
-                    <th>Category4 </th>
-                    <th>Category5 </th>
+                    <th>Condition</th>                    
+                    <th>KPI Achievement</th>
                     <th class="action_th">Actions</th>
                 </tr>
             </thead>
@@ -86,11 +66,7 @@
 
                     <td>
                         <div class="kpi_city kpi_td_data">
-<<<<<<< HEAD
                             <p>{{ kpi.country?.countryName }}</p> ({{ kpi.country?.continent }})
-=======
-                            <p>{{ kpi.city?.cityName }}</p> ({{ kpi.city?.country }})
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
                         </div>
                     </td>
                     <td>
@@ -102,44 +78,12 @@
                         <div class="kpi_layaer kpi_td_data">
                             <p>{{ getConditionByid(kpi) }} </p>
                         </div>
-                    </td>
-                    <td>
-                        <div class="kpi_cat01 kpi_td_data">
-                            <app-sparkline-score [value]="kpi.calValue1 ?? 0" [sign]="kpi.layerID==110 ?'' :''"
-                                [tooltipText]="'Evaluation : ' + (kpi.calText1 || '')"></app-sparkline-score>
-                            <app-sparkline-score [value]="kpi.aiCalValue1 ?? 0" [sign]="kpi.layerID==110 ?'' :''"
-                                [tooltipText]="'Ai : '+ (kpi.calText1 || '')"></app-sparkline-score>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="kpi_cat02 kpi_td_data">
-                            <app-sparkline-score [value]="kpi.calValue2 ?? 0" [sign]="kpi.layerID==110 ?'' :''"
-                                [tooltipText]="'Evaluation :' + (kpi.calText2 || '')"></app-sparkline-score>
-                            <app-sparkline-score [value]="kpi.aiCalValue2 ?? 0" [sign]="kpi.layerID==110 ?'' :''"
-                                [tooltipText]="'Ai : '+ (kpi.calText2 || '')"></app-sparkline-score>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="kpi_cat03 kpi_td_data">
-                            <app-sparkline-score [value]="kpi.calValue3 ?? 0" [sign]="kpi.layerID==110 ?'' :''"
-                                [tooltipText]="'Evaluation : ' + (kpi.calText3 || '')"></app-sparkline-score>
-                            <app-sparkline-score [value]="kpi.aiCalValue3 ?? 0" [sign]="kpi.layerID==110 ?'' :''"
-                                [tooltipText]="'Ai : ' + (kpi.calText3 || '')"></app-sparkline-score>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="kpi_cat04 kpi_td_data">
-                            <app-sparkline-score [value]="kpi.calValue4 ?? 0" [sign]="kpi.layerID==110 ?'' :''"
-                                [tooltipText]="'Evaluation : ' + (kpi.calText4 || '')"></app-sparkline-score>
-                            <app-sparkline-score [value]="kpi.aiCalValue4 ?? 0" [sign]="kpi.layerID==110 ?'' :''"
-                                [tooltipText]="'Ai : ' + (kpi.calText4 || '')"></app-sparkline-score>
-                        </div>
-                    </td>
+                    </td>                    
                     <td>
                         <div class="kpi_cat05 kpi_td_data">
-                            <app-circular-score [value]="kpi.calValue5  ?? 0" 
+                            <app-circular-score [value]="kpi.calValue5  ?? 0"
                                 [tooltipText]="'Evaluation : ' + (kpi.calText5 || '')"></app-circular-score>
-                            <app-circular-score [value]="kpi.aiCalValue5  ?? 0" 
+                            <app-circular-score [value]="kpi.aiCalValue5  ?? 0"
                                 [tooltipText]="'Ai : ' + (kpi.calText5 || '')"></app-circular-score>
                         </div>
                     </td>
@@ -165,7 +109,7 @@
             </tbody>
         </table>
     </div>
-    <app-pagination [totalPage]="totalRecords" [currentPage]="currentPage" [pageSize]="pageSize" [isLoader]="isLoader"
+    <app-pagination [selectedYear]="selectedYear" [totalPage]="totalRecords" [currentPage]="currentPage" [pageSize]="pageSize" [isLoader]="isLoader"
         (pageChange)="GetAnalyticalLayerResults($event)"></app-pagination>
 </div>
 

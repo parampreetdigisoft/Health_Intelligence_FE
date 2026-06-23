@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class HttpService {
   private urlBase = environment.apiUrl + '/api';
-  private headers = new HttpHeaders({ 'Content-Type': 'application/json' } || { 'Content-Type': 'text' });
+  private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
   private options = { headers: this.headers };
 
   constructor(private http: HttpClient) { }
@@ -19,26 +19,15 @@ export class HttpService {
       message: '',
       code: error.status
     };
-
-    if (error?.error?.message) {
-      err.message = error.error.message;
-    }
-
-    else if (typeof error.error === 'string') {
+    if ('string' === typeof error.error) {
       err.message = error.error;
-    }
-
-    else if (error?.error?.errors?.Password?.length > 0) {
+    } else if (error?.error?.errors?.Password && error.error.errors.Password.length > 0) {
       err.message = error.error.errors.Password[0];
+    } else {
+      err.message = 'Something went wrong.'
     }
 
-    else if (error.message) {
-      err.message = error.message;
-    }
-    else {
-      err.message = 'Something went wrong.';
-    }
-    return throwError(() => err);
+    return throwError(err);
   }
 
   public get(url: string, params = null) {
@@ -50,16 +39,14 @@ export class HttpService {
       catchError(this.handleError)
     );
   }
-  public getExternalApi(url: string, params = null) {
-    const options = { headers: this.headers, params: null, };
-    if (params) {
-      options.params = params;
-    }
-    return this.http.get(url + this.getQueryString(params)).pipe(
-      catchError(this.handleError)
-    );
-  }
-
+  public getExternalApi(url: string, params?: any) {
+  return this.http.get(url, {
+    headers: this.headers,
+    params: params
+  }).pipe(
+    catchError(this.handleError)
+  );
+}
   public getWithQueryParams(url: string, params: any = null) {
     const options = { headers: this.headers, params: null, };
     if (params) {
@@ -97,11 +84,11 @@ export class HttpService {
       catchError(this.handleError)
     );
   }
-  public ImportFile(url: string, params: any = null) {
-    let query = params ? this.getQueryString(params) : '';
-    url = `${this.urlBase}/${url}${query}`;
-    return this.http.get(url, {
-      responseType: 'blob'
+  public ImportFile(url: string,params:any = null) {
+    let query =params ? this.getQueryString(params) :'';
+    url =`${this.urlBase}/${url}${query}`;
+    return this.http.get(url ,{
+      responseType: 'blob' 
     }).pipe(
       catchError(this.handleError)
     );
@@ -125,18 +112,9 @@ export class HttpService {
 
   getQueryString = (obj: any) => {
     const qp = new URLSearchParams();
-
-    Object.keys(obj).forEach(key => {
-      const value = obj[key];
-
-      if (Array.isArray(value)) {
-        value.forEach(v => qp.append(key, v));
-      } else if (value !== null && value !== undefined) {
-        qp.append(key, value);
-      }
+    Object.keys(obj).forEach(el => {
+      qp.set(el, obj[el]);
     });
-
-    const query = qp.toString();
-    return query ? `?${query}` : '';
-  };
+    return '?' + qp.toString();
+  }
 }

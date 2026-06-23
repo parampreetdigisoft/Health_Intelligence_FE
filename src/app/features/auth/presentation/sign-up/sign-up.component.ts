@@ -1,16 +1,9 @@
 declare const FB: any;
 import { AuthService } from '../../auth.service';
-<<<<<<< HEAD
 import { CountryVM } from 'src/app/core/models/CountryVM';
 import { environment } from 'src/environments/environment';
 import { UserRoleValue } from 'src/app/core/enums/UserRole';
 import { CountryUserSignUpDto } from '../../model/CountryUserSignUpDto';
-=======
-import { CityVM } from 'src/app/core/models/CityVM';
-import { environment } from 'src/environments/environment';
-import { UserRoleValue } from 'src/app/core/enums/UserRole';
-import { CityUserSignUpDto } from '../../model/CityUserSignUpDto';
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { AfterViewInit, ChangeDetectorRef, Component, input, OnInit, output, signal } from '@angular/core';
@@ -22,19 +15,11 @@ import { AfterViewInit, ChangeDetectorRef, Component, input, OnInit, output, sig
 })
 export class SignUpComponent implements OnInit, AfterViewInit {
   signupForm: FormGroup;
-<<<<<<< HEAD
   submitsignUpDetail = output<CountryUserSignUpDto>();
   loading = input<boolean>(false);
   isSuccess = input<boolean>(false);
   externalLogin = signal<CountryUserSignUpDto | null>(null);
   countries = signal<CountryVM[]>([]);
-=======
-  submitsignUpDetail = output<CityUserSignUpDto>();
-  loading = input<boolean>(false);
-  isSuccess = input<boolean>(false);
-  externalLogin = signal<CityUserSignUpDto | null>(null);
-  cities = signal<CityVM[]>([]);
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   captchaToken: string | null = null;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private toasterService: ToasterService,private cdr: ChangeDetectorRef) {
@@ -50,13 +35,9 @@ export class SignUpComponent implements OnInit, AfterViewInit {
 
   }
   ngOnInit(): void {
-    //this.getCities();
+    //this.getCountries();
   }
-<<<<<<< HEAD
   externalLoginForm(external: CountryUserSignUpDto) {
-=======
-  externalLoginForm(external: CityUserSignUpDto) {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     this.externalLogin.set(external);
     this.signupForm.patchValue({
         fullName:external.fullName,
@@ -81,19 +62,11 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     };
   }
 
-<<<<<<< HEAD
   getCountries() {
     this.authService.getAllCountries().subscribe({
       next: (res) => {
         if (res.succeeded && res.result) {
           this.countries.set(res.result);
-=======
-  getCities() {
-    this.authService.getAllCities().subscribe({
-      next: (res) => {
-        if (res.succeeded && res.result) {
-          this.cities.set(res.result);
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         }
         else {
           this.toasterService.showError("Please refresh page and try again");
@@ -109,20 +82,12 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     this.authService.initGoogleButton('googleBtn', (response) => {
       const user = JSON.parse(atob(response.credential.split('.')[1]));
       if (user?.name && user?.email) {
-<<<<<<< HEAD
         let payload: CountryUserSignUpDto = {
-=======
-        let payload: CityUserSignUpDto = {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           fullName: user.name,
           email: user.email,
           phone: '',
           password: '',
-<<<<<<< HEAD
           role: UserRoleValue.CountryUser,
-=======
-          role: UserRoleValue.CityUser,
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
           isConfrimed: true,
           is2FAEnabled :false
         };
@@ -148,20 +113,12 @@ export class SignUpComponent implements OnInit, AfterViewInit {
         if (response.authResponse) {
           FB.api('/me', { fields: 'name,email,picture' }, (user: any) => {
             if (user?.name && user?.email) {
-<<<<<<< HEAD
               let payload: CountryUserSignUpDto = {
-=======
-              let payload: CityUserSignUpDto = {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
                 fullName: user.name,
                 email: user.email,
                 phone: '',
                 password: '',
-<<<<<<< HEAD
                 role: UserRoleValue.CountryUser,
-=======
-                role: UserRoleValue.CityUser,
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
                 isConfrimed: true,
                 is2FAEnabled :false
               };
@@ -191,20 +148,12 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       return;
     }
     let f = this.signupForm.value;
-<<<<<<< HEAD
     let payload: CountryUserSignUpDto = {
-=======
-    let payload: CityUserSignUpDto = {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       fullName: f?.fullName,
       email: f?.email,
       phone: f?.phone,
       password: f?.password,
-<<<<<<< HEAD
       role: UserRoleValue.CountryUser,
-=======
-      role: UserRoleValue.CityUser,
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       isConfrimed: this.externalLogin() !=null ,
       is2FAEnabled :f?.is2FAEnabled
     };

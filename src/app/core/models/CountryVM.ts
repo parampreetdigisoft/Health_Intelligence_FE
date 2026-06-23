@@ -8,25 +8,24 @@ export interface CountryVM extends AddUpdateCountryDto {
   userCountryMappingID?:number;
   score?: number;
   progress?: number;
-  aiScore?: number;
+  aiScore?: number; 
   selected:boolean;
 }
 export interface AddUpdateCountryDto {
   countryID: number;
   countryName: string;
-  countryAliasName?: string;
+  continent: string;  
   countryCode: string;
   region: string;
-  continent: string;
   imageFile: string;
   imageUrl: string;
   longitude: number;
   latitude: number;
-  population: number;
-  income: number;
-  livingCost: number;
-  purchasingPower: number;
-  peerCountriesIDs: number;
+  population:number;
+  income:number;
+  countryAliasName :string; 
+  peerCountryIDs?: number[]; 
+  developmentCategory?:string  
 }
 
 export interface BulkAddCountryDto {

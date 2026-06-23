@@ -1,9 +1,5 @@
 /* ==============================================================
-<<<<<<< HEAD
-   AHI Aevum · Redesigned Chat — Full-Width, No Double Sidebar
-=======
-   VUI Aevum · Redesigned Chat — Full-Width, No Double Sidebar
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+   PEM Aevum · Redesigned Chat — Full-Width, No Double Sidebar
    Pure CSS  |  No global variables  |  PeaceMappers Brand
    ============================================================== */
 
@@ -17,7 +13,9 @@
   height: calc(100vh - 146px);
   min-height: 0;
   overflow: hidden;
-  font-family: 'DM Sans', sans-serif;  
+  font-family: 'DM Sans', sans-serif;
+  /* border-radius: 15px;
+  border: 1px solid #77bd3e3b; */
 }
 
 .pem-chat_header {
@@ -395,7 +393,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    color: #7AC2AE;
+    color: #77bd3e;
     padding: 0 8px 0 10px;
 }
 
@@ -653,7 +651,7 @@
   height: 100%;
   width: 35%;
   border-radius: inherit;
-  background:  #7AC2AE;
+  background:  #77bd3e;
   transition: width 0.4s ease;
 }
 
@@ -705,8 +703,8 @@
 }
 
 .cb__session-btn:hover {
-  background: #397b69;
-  border-color: #397b69;
+  background: #0a4a82;
+  border-color: #0a4a82;
   box-shadow: 0 6px 18px rgba(0, 49, 96, 0.22);
 }
 
@@ -1292,7 +1290,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #7AC2AE;
+  color: #77bd3e;
   margin-bottom: 8px;
 }
 
@@ -1411,7 +1409,7 @@
 }
 
 .analysis-modal__nav-btn:hover {
-  border-color: #7AC2AE;
+  border-color: #77bd3e;
   background: #f5ffee;
 }
 
@@ -1420,7 +1418,7 @@
   padding: 10px 22px;
   border: none;
   border-radius: 8px;
-  background: #397b69;
+  background: #003160;
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -1429,7 +1427,7 @@
 }
 
 .analysis-modal__done:hover {
-  background: #397b69;
+  background: #002647;
 }
 
 .analysis-modal__done:active {
@@ -1563,7 +1561,7 @@
   /* min-height: 100%; */
   box-sizing: border-box;
   margin-bottom: auto;
-   overflow: auto;
+  overflow: auto;
 }
 
 .chat-messages__anchor {
@@ -1633,7 +1631,7 @@
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #7AC2AE;
+  color: #77bd3e;
 }
 
 .workspace-empty__headline {
@@ -1699,7 +1697,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #7AC2AE, #397b69);
+  background: linear-gradient(135deg, #77bd3e, #003160);
   flex-shrink: 0;
 }
 
@@ -1843,11 +1841,11 @@
 }
 
 .brief--intel .brief__role {
-  color: #397b69;
+  color: #77bd3e;
 }
 
 .brief--query .brief__role {
-  color: #397b69;
+  color: #003160;
 }
 
 .brief__time {
@@ -1872,7 +1870,7 @@
 }
 
 .brief--query .brief__body {
-  background: linear-gradient(135deg, #397b69 0%, #7AC2AE 100%);
+  background: linear-gradient(135deg, #003160 0%, #0a4a82 100%);
   color: #f8fafc;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 28px rgba(0, 49, 96, 0.2);
@@ -1882,7 +1880,7 @@
   background: rgba(255, 255, 255, 0.94);
   color: #1e293b;
   border: 1px solid rgba(0, 49, 96, 0.08);
-  border-left: 3px solid #7AC2AE;
+  border-left: 3px solid #77bd3e;
   box-shadow: 0 4px 20px rgba(0, 49, 96, 0.06);
 }
 
@@ -1891,7 +1889,7 @@
   display: inline-block;
   width: 2px;
   height: 1em;
-  background: linear-gradient(180deg, #7AC2AE, #397b69);
+  background: linear-gradient(180deg, #77bd3e, #5a9e30);
   border-radius: 1px;
   margin-left: 3px;
   vertical-align: text-bottom;
@@ -1970,7 +1968,7 @@
   display: block;
   height: 100%;
   width: 40%;
-  background: linear-gradient(90deg, #7AC2AE, #397b69);
+  background: linear-gradient(90deg, #77bd3e, #003160);
   border-radius: inherit;
   animation: synthesisSweep 1.4s ease-in-out infinite;
 }
@@ -2103,7 +2101,7 @@
 
 .markdown-body blockquote,
 .markdown-body .md-quote {
-  border-left: 3px solid #7AC2AE;
+  border-left: 3px solid #77bd3e;
   background: linear-gradient(135deg, rgba(119, 189, 62, 0.07), rgba(119, 189, 62, 0.02));
   border-radius: 0 10px 10px 0;
   padding: 10px 14px;
@@ -2213,7 +2211,7 @@
 .suggestion-category {
   font-size: 10px;
   font-weight: 700;
-  color: #7AC2AE;
+  color: #77bd3e;
   text-transform: uppercase;
   letter-spacing: 0.07em;
 }
@@ -2226,7 +2224,7 @@
 }
 
 .suggestion-item:hover .suggestion-text {
-  color: #397b69;
+  color: #0a2e5c;
 }
 
 .input-shell {
@@ -2270,7 +2268,7 @@
   height: 10px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: #7AC2AE;
+  background: #77bd3e;
   box-shadow: 0 0 0 0 rgba(119, 189, 62, 0.45);
   animation: inputPulse 1.4s ease-in-out infinite;
 }
@@ -2304,7 +2302,7 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #7AC2AE;
+  background: #77bd3e;
   animation: inputDotBounce 1.2s ease-in-out infinite;
 }
 
@@ -2459,7 +2457,7 @@
     padding-bottom: 10px;
     margin-bottom: 10px;
 }
-.peace-score {
+.health-score {
     display: flex;
     flex-wrap: wrap;
 }
@@ -2687,8 +2685,8 @@ aside.pem-sidebar {
     background: transparent;
     padding: 9px 20px;
     text-align: center;
-    border: 1px solid #7AC2AE;
-    color: #7AC2AE;
+    border: 1px solid #77bd3e;
+    color: #77bd3e;
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
@@ -2730,7 +2728,7 @@ aside.pem-sidebar {
   content: '';
   position: absolute;
   inset: 0;
-  background: #397b69;
+  background: var(--pillar-color);
   opacity: 0.28;
   mix-blend-mode: multiply;
   pointer-events: none;
@@ -2745,7 +2743,6 @@ aside.pem-sidebar {
   position: relative;
   z-index: 1;
   padding: 2px;
-  
 }
 
 .pillar-item{
@@ -2818,7 +2815,7 @@ aside.pem-sidebar {
   width: 32px;
   height: 32px;
   border: 3px solid rgba(0, 49, 96, 0.12);
-  border-top-color: #7AC2AE;
+  border-top-color: #77bd3e;
   border-radius: 50%;
   animation: sidebarSpin 0.75s linear infinite;
 }
@@ -3573,6 +3570,7 @@ aside.pem-sidebar {
     padding: 0 10px;
   }
 }
+
 /* ── Emerging trends (AT A GLANCE) ─────────────────────────── */
 .stats-card.emerging-trends {
   padding: 20px;
@@ -3796,7 +3794,7 @@ aside.pem-sidebar {
   gap: 5px;
   font-size: 12px;
   font-weight: 600;
-  color: #397b69;
+  color: #003160;
   text-decoration: none;
   padding: 6px 10px;
   border-radius: 8px;
@@ -3837,17 +3835,17 @@ aside.pem-sidebar {
   font-weight: 600;
   cursor: pointer;
   color: #fff;
-  background: #397b69;
+  background: #003160;
   transition: background 0.2s ease;
 }
 
 .emerging-trends__retry:hover {
-  background: #2f5e52;
+  background: #004a8f;
 }
 
 @media only screen and (max-width: 1550px) {
   .stats-card.emerging-trends {
-    padding: 20px;
+    padding: 5px;
   }
 
   .stats-card.emerging-trends .trend-card__title {
@@ -3867,6 +3865,7 @@ aside.pem-sidebar {
     animation: none;
   }
 }
+
 /* ── Live pillar signals (KEY PILLARS) ─────────────────────── */
 .pillar-signals-card {
   padding: 20px;
@@ -3955,13 +3954,13 @@ aside.pem-sidebar {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: #397b69;
+  background: #003160;
 }
 
 .pillar-signal-card__id {
   font-size: 11px;
   font-weight: 700;
-  color: #397b69;
+  color: #003160;
 }
 
 .pillar-signal-card__meta-head {
@@ -4080,6 +4079,6 @@ aside.pem-sidebar {
   font-size: 12px;
   font-weight: 600;
   color: #fff;
-  background: #397b69;
+  background: #003160;
   cursor: pointer;
 }

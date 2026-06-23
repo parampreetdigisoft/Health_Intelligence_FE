@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver';
 import { CommonService } from 'src/app/core/services/common.service';
 import { debounceTime } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { CountryUserService } from 'src/app/features/country-user/country-user.service';
+import { CountryUserService } from 'src/app/features/city-user/country-user.service';
 
 @Component({
   selector: 'app-add-update-country',
@@ -30,13 +30,21 @@ export class AddUpdateCountryComponent implements OnChanges, OnInit {
   alertMsg = '';
   imageError: string = '';
   imageFile: File | null = null;
-  countryList: CountryVM[] = []; 
+  countryList: CountryVM[] = [];
 
-  constructor(private fb: FormBuilder, private commonService: CommonService, private countryUserService: CountryUserService,) { }
+  categories: string[] = [
+    'Developed Countries',
+    'Economies in Transition',
+    'Developing Countries',
+    'Least Developed Countries (LDCs)'
+  ];
+
+  constructor(private fb: FormBuilder, private commonService: CommonService, private cityuserService: CountryUserService,) { }
 
   ngOnInit(): void {
     this.initializeForm();
-    this.getAllCountries();   
+    this.getAllCountries();
+    console.log(this.country);
   }
 
   initializeForm() {
@@ -50,7 +58,9 @@ export class AddUpdateCountryComponent implements OnChanges, OnInit {
       longitude: [this.country?.longitude, Validators.required],
       population: [this.country?.population, Validators.required],
       income: [this.country?.income, Validators.required],
-      countryAliasName: [this.country?.countryAliasName ?? ''],      
+      countryAliasName: [this.country?.countryAliasName ?? ''],
+      category: [this.country?.developmentCategory,Validators.required],
+      countries: [this.country?.peerCountryIDs || []],
       imageFile: ['']
     });
     this.onFormChange();
@@ -101,8 +111,8 @@ export class AddUpdateCountryComponent implements OnChanges, OnInit {
     //this.initializeForm();
   }
   getAllCountries() {
-    this.countryUserService.getAllCountries().subscribe({
-      next: (res:any) => {
+    this.cityuserService.getAllCountries().subscribe({
+      next: (res) => {
         if (res.succeeded) {          
           this.countryList = res.result ?? [];
         }
@@ -198,7 +208,8 @@ export class AddUpdateCountryComponent implements OnChanges, OnInit {
     Latitude: "Enter Latitude",
     Longitude: "Enter Longitude",
     Population: "Enter Population",
-    Income: "Enter Income",    
+    Income: "Enter Income",
+    DevelopmentCategory: "Enter one category - " + this.categories.join(", ")
   };
 
   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([sampleRow], { header: headers });
@@ -324,7 +335,7 @@ export class AddUpdateCountryComponent implements OnChanges, OnInit {
           return;
         }
         // ✅ Construct DTO
-        const dto = { countryName,countryAliasName, continent, region, countryCode, latitude, longitude, population, income } as CountryVM;
+        const dto = { countryName,countryAliasName, continent, region, countryCode, latitude, longitude, population, income,  developmentCategory } as CountryVM;
         excelData.push(dto);
       }
 
@@ -359,4 +370,3 @@ export class AddUpdateCountryComponent implements OnChanges, OnInit {
     (event.target as HTMLImageElement).src = 'assets/images/noImageAvailable.png';
   }
 }
-

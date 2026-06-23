@@ -7,11 +7,11 @@
     <div class="cross-pillar_outter">
         <div class="integrate_outter">
             <div class="integrate_list">
-                <app-sparkline-score [value]="pillar?.aiProgress ?? 0" [sign]="''"></app-sparkline-score>
+                <app-sparkline-score [value]="pillar?.aiProgress ?? 0"></app-sparkline-score>
             </div>
 
             <div class="cross-pillar">
-                <h5>Executive Summary</h5>
+                <h5>Evidence Summary</h5>
                 &nbsp;
                 <div *ngIf="pillar?.evidenceSummary">
                     <app-typing-text [text]="pillar!.evidenceSummary ?? ''" [speed]="10"
@@ -23,8 +23,8 @@
             <div class="cross-pillar">
                 <h5>Red Flags</h5>
                 &nbsp;
-                <div *ngIf="pillar?.redFlags">
-                    <app-typing-text [text]="pillar!.redFlags ?? ''" [speed]="10" [numberOfWordAfterHideText]="10">
+                <div *ngIf="pillar?.redFlag">
+                    <app-typing-text [text]="pillar!.redFlag ?? ''" [speed]="10" [numberOfWordAfterHideText]="10">
                     </app-typing-text>
                 </div>
             </div>
@@ -85,7 +85,9 @@
                         </td>
                         <td [matTooltip]="getLabelDesById(s?.trustLevel ?? 0)"> {{getLabelById(s?.trustLevel ?? 0)}}
                         </td>
-                        <td> {{s?.dataYear ?? ''}}</td>
+                        <td> 
+                            {{ (s?.dataYear ?? 0) > 0 ? s?.dataYear : 'NA' }}
+                        </td>
                         <td *ngIf="s?.dataExtract"> <app-typing-text [text]="s!.dataExtract  ?? ''" [speed]="5"
                                 [numberOfWordAfterHideText]="7">
                             </app-typing-text>

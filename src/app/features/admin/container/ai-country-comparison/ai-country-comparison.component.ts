@@ -13,8 +13,8 @@ import { CommonModule } from '@angular/common';
 import { debounceTime, Subject } from 'rxjs';
 import { AdminService } from '../../admin.service';
 import { UserService } from 'src/app/core/services/user.service';
-import { UserRole } from 'src/app/core/enums/UserRole';
 import { ChatService } from 'src/app/core/services/chat.service';
+import { UserRole } from 'src/app/core/enums/UserRole';
 import { Router } from '@angular/router';
 import { UtcToLocalTooltipDirective } from 'src/app/shared/directives/utc-to-local-tooltip.directive';
 export type ChartOptions = {
@@ -36,7 +36,7 @@ export type ChartOptions = {
 @Component({
   selector: 'app-ai-country-comparison',
   standalone: true,
- imports: [CommonModule, SharedModule, CircularScoreComponent,UtcToLocalTooltipDirective],
+  imports: [CommonModule, SharedModule, CircularScoreComponent,UtcToLocalTooltipDirective],
   templateUrl: './ai-country-comparison.component.html',
   styleUrl: './ai-country-comparison.component.css'
 })
@@ -58,7 +58,7 @@ export class AiCountryComparisonComponent implements OnInit {
   highestPillar?: PillarValueDto;
   lowestPillar?: PillarValueDto;
   avgScore?: number;
-
+  showLimitMessage:boolean= false;
   constructor(
     private adminService: AdminService,
     private userService: UserService,
@@ -80,6 +80,13 @@ export class AiCountryComparisonComponent implements OnInit {
 
   pillarChanged() {
     this.$pillarChanged.next(true);
+    if (this.selectedCountries.length > 5) {
+      // Remove the last selected country to prevent selecting more than 6
+      this.selectedCountries = this.selectedCountries.slice(0, 6);
+      this.showLimitMessage = true;
+      return;
+    }
+    this.showLimitMessage = false;
   }
   getPillarName(pillarId: number): string {
     return this.filterPillars.find(p => p.pillarID === pillarId)?.pillarName ?? '';
@@ -215,14 +222,14 @@ export class AiCountryComparisonComponent implements OnInit {
           },
           export: {
             csv: {
-              filename: 'cross-country-comparison',
+              filename: 'cross-city-comparison',
               headerCategory: 'Category',
             },
             svg: {
-              filename: 'cross-country-radar'
+              filename: 'cross-city-radar'
             },
             png: {
-              filename: 'cross-country-radar'
+              filename: 'cross-city-radar'
             }
           }
         },
@@ -423,7 +430,7 @@ export class AiCountryComparisonComponent implements OnInit {
           // Sort by score (highest first)
           countryScores.sort((a, b) => b.score - a.score);
 
-          // Display each country's score
+          // Display each city's score
           countryScores.forEach((country, rank) => {
             const rankEmoji = rank === 0 ? '🥇' : rank === 1 ? '🥈' : rank === 2 ? '🥉' : `${rank + 1}.`;
             const scoreColor = country.score >= 80 ? '#059669' : country.score >= 60 ? '#d97706' : '#dc2626';
@@ -470,7 +477,7 @@ export class AiCountryComparisonComponent implements OnInit {
               ">
                 <div style="
                   height: 100%; 
-                  width: ${country.score}; 
+                  width: ${country.score}%; 
                   background: linear-gradient(90deg, ${country.color}, ${colorPalette[country.index].light});
                   border-radius: 3px;
                   transition: width 0.3s ease;
@@ -579,7 +586,7 @@ export class AiCountryComparisonComponent implements OnInit {
   private calculatePillarCards(): void {
     if (!this.chartTableData?.length) return;
 
-    /* MAX COUNTRY */
+    /* MAX CITY */
     this.maxCountry = [...this.chartTableData]
       .sort((a, b) => a.value - b.value)
       .pop();
@@ -615,7 +622,7 @@ export class AiCountryComparisonComponent implements OnInit {
     return Math.round(avg * 100) / 100 + '';
   }
 
-  viewVUIAveumCrossComparision(){
+  viewPEMAveumCrossComparision(){
     this.chatService.crossComparisionCountryIDs.next(this.selectedCountries);
     this.router.navigate(['/admin/aevum'], { state: { role: UserRole.Admin } });
   }

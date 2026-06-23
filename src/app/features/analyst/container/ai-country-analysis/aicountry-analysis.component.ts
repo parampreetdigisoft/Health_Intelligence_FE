@@ -19,14 +19,14 @@ import { TypingTextComponent } from 'src/app/shared/standAlone/typing-text/typin
 import { CircularScoreComponent } from 'src/app/shared/standAlone/circular-score/circular-score.component';
 import { ChangedAiCountryEvaluationStatusDto } from 'src/app/core/models/aiVm/ChangedAiCountryEvaluationStatusDto';
 import { SparklineScoreComponent } from 'src/app/shared/standAlone/sparkline-score/sparkline-score.component';
-import { ViewCountryDetailComponent } from '../../../../shared/standAlone/view-country-detail/view-country-detail.component';
+
 import { GetAssignUserDto, PublicUserResponse } from 'src/app/core/models/UserInfo';
 import { RegenerateAiSearchDto } from 'src/app/core/models/aiVm/RegenerateAiSearchDto';
 import { UtcToLocalTooltipDirective } from 'src/app/shared/directives/utc-to-local-tooltip.directive';
 import { AiCountrySummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiCountrySummeryRequestPdfDto';
 import { RegenerateAiScoreAndAddViewerComponent } from 'src/app/shared/standAlone/regenerate-ai-score-and-add-viewer/regenerate-ai-score-and-add-viewer.component';
 import { ActivatedRoute } from '@angular/router';
-import { UserDataShareService } from 'src/app/core/services/user-data-share.service';
+import { ViewCountryDetailComponent } from 'src/app/features/city-user/features/view-country-detail/view-country-detail.component';
 
 declare var bootstrap: any; // 👈 use Bootstrap JS API
 @Component({
@@ -37,9 +37,9 @@ declare var bootstrap: any; // 👈 use Bootstrap JS API
     PaginationComponent, FormsModule, NgSelectModule, PromptComponent, RegenerateAiScoreAndAddViewerComponent,
     MatTooltipModule, UtcToLocalTooltipDirective],
   templateUrl: './aicountry-analysis.component.html',
-  styleUrls: ['./aicountry-analysis.component.css']
+  styleUrl: './aicountry-analysis.component.css'
 })
-export class AICountryAnalysisComponent implements OnInit, OnDestroy {
+export class AICountryAnalaysisComponent implements OnInit, OnDestroy {
   currentYear = new Date().getFullYear();
   selectedYear = this.currentYear;
   urlBase = environment.apiUrl;
@@ -49,16 +49,13 @@ export class AICountryAnalysisComponent implements OnInit, OnDestroy {
   isLoader: boolean = false;
   loading: boolean = false;
   aiCountries: AiCountrySummeryDto[] = []
-  selectedCountry?: AiCountrySummeryDto | null = null;
+ selectedCountry?: AiCountrySummeryDto | null = null;
   countries: CountryVM[] | null = [];
   filterCountry!: number;
   selectedIndex: number = -1;
   selectedChangedStatusIndex: number = -1;
   evaluatorList: PublicUserResponse[] = [];
   isOpenResearchBox: boolean = false;
-  isExporting: boolean = false;
-  showRegenerateMissingQuestionsOption:boolean = false;
-
   constructor(private aiComputationService: AiComputationService, private analystService: AnalystService,
     private toaster: ToasterService, private userService: UserService, private cdr: ChangeDetectorRef, public commonService: CommonService,private route:ActivatedRoute ) { }
 
@@ -69,7 +66,7 @@ export class AICountryAnalysisComponent implements OnInit, OnDestroy {
       }
     });
     this.getCountryUserCountries();
-    this.getAiCountries();
+    this.getaiCountries();
   }
 
   ngOnDestroy(): void {
@@ -77,7 +74,7 @@ export class AICountryAnalysisComponent implements OnInit, OnDestroy {
     document.body.style.paddingRight = '';
   }
   yearChanged() {
-    this.getAiCountries();
+    this.getaiCountries();
   }
   getCountryUserCountries() {
     this.analystService.getAllCountriesByUserId(this.userService.userInfo.userID ?? 0).subscribe({
@@ -96,11 +93,11 @@ export class AICountryAnalysisComponent implements OnInit, OnDestroy {
     });
   }
 
-  getAiCountries(currentPage: any = 1) {
+  getaiCountries(currentPage: any = 1) {
     this.isLoader = true;
     let payload: AiCountrySummeryRequestDto = {
       sortDirection: SortDirection.DESC,
-      sortBy: 'AIScore',
+      sortBy: 'AIProgress',
       pageNumber: currentPage,
       pageSize: this.pageSize,
       year:this.selectedYear
@@ -137,6 +134,41 @@ export class AICountryAnalysisComponent implements OnInit, OnDestroy {
     offcanvas.show();
   }
 
+  aiCountryDetailsReport(country: AiCountrySummeryDto, selectedIndex: number) {
+    if (this.selectedIndex != -1) return;
+    this.selectedIndex = selectedIndex;
+
+    let payload: AiCountrySummeryRequestPdfDto = {
+      countryID: country.countryID,
+      year: this.selectedYear
+    }
+    this.aiComputationService.aiCountryDetailsReport(payload).subscribe({
+      next: (blob) => {
+        this.selectedIndex = -1;
+        if (blob) {
+          // Create download link
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `${country.countryName}_Details_${new Date().toISOString().split('T')[0]}.pdf`;
+
+          // Trigger download
+          document.body.appendChild(link);
+          link.click();
+
+          // Cleanup
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+          this.toaster.showSuccess('Report generated successfully')
+        }
+      },
+      error: () => {
+        this.toaster.showError('There is an error occure please try again');
+        this.selectedIndex = -1;
+      }
+    });
+  }
+
   selectCountryToChangedStatus(country: AiCountrySummeryDto, selectedIndex: number) {
     this.selectedChangedStatusIndex = selectedIndex;
     this.selectedCountry = country;
@@ -152,7 +184,7 @@ export class AICountryAnalysisComponent implements OnInit, OnDestroy {
         next: (res) => {
           this.selectedChangedStatusIndex = -1;
           if (res.succeeded) {
-            this.getAiCountries();
+            this.getaiCountries();
             this.toaster.showSuccess(res.messages.join(", "));
           } else {
             this.toaster.showError(res.errors.join(", "));
@@ -175,9 +207,6 @@ export class AICountryAnalysisComponent implements OnInit, OnDestroy {
   opendialog(country: AiCountrySummeryDto) {
     this.isOpenResearchBox = true;
     this.selectedCountry = country;
-        this.showRegenerateMissingQuestionsOption =
-  (country.aiCompletionRate ?? 0) > 0 &&
-  (country.aiCompletionRate ?? 0) < 100;
     this.getUsersAssignedToCountry();
     setTimeout(() => {
       const modalEl = document.getElementById("RegenerateAIScoreModal");
@@ -228,7 +257,7 @@ export class AICountryAnalysisComponent implements OnInit, OnDestroy {
       this.aiComputationService.regenerateAiSearch(payload).subscribe({
         next: (res) => {
           this.loading = false;
-          this.getAiCountries();
+          this.getaiCountries();
           this.selectedChangedStatusIndex = -1;
           if (res.succeeded) {
             this.toaster.showSuccess(res.messages.join(", "));
@@ -249,4 +278,18 @@ export class AICountryAnalysisComponent implements OnInit, OnDestroy {
       this.closeModal();
     }
   }
+  
+    customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return (
+      item.countryName?.toLowerCase().includes(term) ||
+      item.countryAliasName?.toLowerCase().includes(term)
+    );
+}
+
+refresh()
+{
+    this.getaiCountries(this.currentPage);
+}
+
 }

@@ -1,6 +1,6 @@
 <div class="heading_area">
 	<div class="row justify-content-between align-items-center">
-		<div class="col-md">
+		<div class="col-md-auto">
 			<h3 class="page_head">
 				Cross-Country Performance Comparison
 			</h3>
@@ -8,6 +8,7 @@
 				Compare multiple countries across all evaluation categories
 			</p>
 		</div>
+
 
 
 		<div class="col-md-3 ms-auto">
@@ -30,6 +31,7 @@
 						</span>
 
 
+
 						<span *ngIf="selectedPillars.length > 1"
 							class="selexted_piller">
 							{{ getPillarName(selectedPillars[0]) }} +{{ selectedPillars.length - 1 }}
@@ -37,11 +39,13 @@
 					</ng-template>
 
 
+
 					<ng-template ng-option-tmp
 						let-item="item">
 						{{ item.pillarName }}
 					</ng-template>
 				</ng-select>
+
 
 
 			</div>
@@ -64,6 +68,7 @@
 					</ng-template>
 
 
+
 					<ng-template ng-option-tmp
 						let-item="item">
 						{{ item.countryName }}, {{ item.continent }} ({{ item.score?.toFixed(1) || 'NA'}})
@@ -71,12 +76,18 @@
 				</ng-select>
 
 
+
+			</div>
+			<div *ngIf="showLimitMessage"
+				class="limit-exceed-message"
+				style="color: red; font-size: 14px; margin-top: 5px;">
+				You can only select up to 5 countries. Please remove some countries to add more.
 			</div>
 		</div>
 		<div class="col-md-auto">
 			<button *ngIf="selectedCountries.length"
-				[matTooltip]="'View AHI Aevum Comparison'"
-				(click)="viewVUIAveumCrossComparision()"
+				[matTooltip]="'View PEM Aevum Comparison'"
+				(click)="viewPEMAveumCrossComparision()"
 				class="common_button d-flex align-items-center">
 			
 			   <svg width="20"
@@ -95,9 +106,13 @@
 			</button>
 		</div>
 
+
+
+
 	</div>
 </div>
 <ng-container *ngIf="!isLoader">
+
 
 
 	<div class="comparison-wrapper">
@@ -150,6 +165,7 @@
 									<div class="dashboard_number">
 
 
+
 										<div class="card_ttile">
 											<h4>
 												{{ highestPillar.pillarName }}
@@ -195,6 +211,7 @@
 									<span>
 
 
+
 										<svg width="26"
 											height="19"
 											viewBox="0 0 26 23"
@@ -221,10 +238,12 @@
 						</div>
 
 
+
 					</div>
 				</div>
 			</div>
 		</div>
+
 
 
 		<div class="chart-section">
@@ -246,6 +265,7 @@
 				</apx-chart>
 			</div>
 		</div>
+
 
 
 	</div>
@@ -292,7 +312,6 @@
 				</tr>
 			</thead>
 
-
 			<tbody>
 				<tr *ngFor="let piller of pillarWiseData"
 					[matTooltip]="piller.isAccess ? '' : 'Upgrade your plan to access this feature.'"
@@ -325,6 +344,7 @@
 								<app-circular-score [value]="value.value"></app-circular-score>
 
 
+
 							</div>
 						</td>
 					</ng-container>
@@ -333,6 +353,7 @@
 		</table>
 	</div>
 </ng-container>
+
 
 
 <div *ngIf="isLoader"

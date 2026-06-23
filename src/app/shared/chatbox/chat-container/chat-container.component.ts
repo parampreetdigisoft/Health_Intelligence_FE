@@ -21,29 +21,22 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { ChatMessage } from 'src/app/core/models/chat/ChatMessage';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
-
+import { CountryVM } from 'src/app/core/models/CountryVM';
 import { AIAssistantFAQDto } from 'src/app/core/models/chat/AIAssistantFAQDto';
-
+import {
+  CountryExecutiveSlidesResult,
+  PillarsUserHistroyResponseDto,
+} from 'src/app/core/models/chat/ChatCountryExecutiveSlidesResponse';
+import {
+  ChatEmergingTrendsResponse,
+  EmergingTrendCountryCard
+} from 'src/app/core/models/chat/EmergingTrendsResponse';
+import {
+  PillarLiveSignalCard,
+  PillarLiveSignalsResult,
+} from 'src/app/core/models/chat/PillarLiveSignalsResponse';
 import { CommonService } from 'src/app/core/services/common.service';
 import { environment } from 'src/environments/environment';
-<<<<<<< HEAD
-import { CountryExecutiveSlidesResult, PillarsUserHistoryResponseDto } from 'src/app/core/models/chat/ChatCountryExecutiveSlidesResponse';
-import { CountryVM } from 'src/app/core/models/CountryVM';
-
-import { UserService } from 'src/app/core/services/user.service';
-import { UserRole } from 'src/app/core/enums/UserRole';
-import { ChatEmergingTrendsResponse, EmergingTrendCountryCard } from 'src/app/core/models/chat/EmergingTrendsResponse';
-import { PillarLiveSignalCard, PillarLiveSignalsResult } from 'src/app/core/models/chat/PillarLiveSignalsResponse';
-import { CountryUserService } from 'src/app/features/country-user/country-user.service';
-=======
-import { CityExecutiveSlidesResult, PillarsUserHistoryResponseDto } from 'src/app/core/models/chat/ChatCityExecutiveSlidesResponse';
-import { CityVM } from 'src/app/core/models/CityVM';
-import { CityUserService } from 'src/app/features/city-user/city-user.service';
-import { UserService } from 'src/app/core/services/user.service';
-import { UserRole } from 'src/app/core/enums/UserRole';
-import { ChatEmergingTrendsResponse, EmergingTrendCityCard } from 'src/app/core/models/chat/EmergingTrendsResponse';
-import { PillarLiveSignalCard, PillarLiveSignalsResult } from 'src/app/core/models/chat/PillarLiveSignalsResponse';
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
 
 @Component({
   selector: 'app-chat-container',
@@ -59,12 +52,6 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   protected chatService = inject(ChatService);
   private cdr = inject(ChangeDetectorRef);
   private commonService = inject(CommonService);
-<<<<<<< HEAD
-   protected countryUserService = inject(CountryUserService);
-=======
-   protected cityUserService = inject(CityUserService);
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
-  protected userService = inject(UserService);
 
   // ─── View refs ────────────────────────────────────────────────────────────
   @ViewChild('messagesContainer') messagesContainer!: ElementRef<HTMLDivElement>;
@@ -76,38 +63,28 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   showSuggestions = signal(false);
   showContextPanel = signal(true);
   unreadCount = signal(0);
-<<<<<<< HEAD
-  countrySlide :CountryExecutiveSlidesResult|null = null;
+  contrySlide: CountryExecutiveSlidesResult | null = null;
   countrySlidesLoading = signal(false);
-=======
-  citySlide :CityExecutiveSlidesResult|null = null;
-  citySlidesLoading = signal(false);
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
-  urlBase = environment.apiUrl;
   emergingTrends = signal<ChatEmergingTrendsResponse | null>(null);
   emergingTrendsLoading = signal(false);
   emergingTrendsError = signal<string | null>(null);
   selectedTrendCode = signal<string | null>(null);
-   pillarLiveSignals = signal<PillarLiveSignalsResult | null>(null);
+  pillarLiveSignals = signal<PillarLiveSignalsResult | null>(null);
   pillarLiveSignalsLoading = signal(false);
   pillarLiveSignalsError = signal<string | null>(null);
   selectedPillarSignalId = signal<number | null>(null);
+  urlBase = environment.apiUrl;
 
   // ─── Service signal aliases ───────────────────────────────────────────────
   protected isOpen = this.chatService.isOpen;
   protected isTyping = this.chatService.isTyping;
   protected messages = this.chatService.messages;
-<<<<<<< HEAD
   protected selectedCountry = this.chatService.selectedCountry;
-=======
-  protected selectedCity = this.chatService.selectedCity;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   protected selectedPillar = this.chatService.selectedPillar;
   isExpanded = true;
 
   // ─── Computed ─────────────────────────────────────────────────────────────
   protected hasContext = computed(() =>
-<<<<<<< HEAD
     !!this.chatService.selectedCountry() || !!this.chatService.selectedPillar()
   );
 
@@ -116,16 +93,6 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     const p = this.chatService.selectedPillar();
     if (c && p) return `${c.countryName} · ${p.pillarName}`;
     if (c) return c.countryName;
-=======
-    !!this.chatService.selectedCity() || !!this.chatService.selectedPillar()
-  );
-
-  protected contextLabel = computed<string | null>(() => {
-    const c = this.chatService.selectedCity();
-    const p = this.chatService.selectedPillar();
-    if (c && p) return `${c.cityName} · ${p.pillarName}`;
-    if (c) return c.cityName;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     if (p) return p.pillarName;
     return null;
   });
@@ -143,31 +110,18 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   });
 
   readonly rotatingHeadlines = [
-<<<<<<< HEAD
-    'Welcome to AHI Aevum',
+    'Welcome to PEM Aevum',
     'Surface stability signals across regions',
     'Interrogate country risk with pillar context',
-=======
-    'Welcome to VUI Aevum',
-    'Surface stability signals across regions',
-    'Interrogate city risk with pillar context',
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     'Compare indices and emerging pressure points',
     'Brief on conflict trajectories and early warnings',
   ];
 
   readonly rotatingPlaceholders = [
-<<<<<<< HEAD
     'Frame a country intelligence question…',
     'Which stability indicators matter for your decision?',
     'Ask about governance, security, or humanitarian drivers…',
     'Request a cross-country or regional assessment…',
-=======
-    'Frame a city intelligence question…',
-    'Which stability indicators matter for your decision?',
-    'Ask about governance, security, or humanitarian drivers…',
-    'Request a cross-city or regional assessment…',
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
   ];
 
   rotatingIndex = signal(0);
@@ -221,208 +175,87 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     this.clearHistory();
     this.closeChat();
     this.clearContext();
-    let userRole = this.userService.userInfo.role;
-<<<<<<< HEAD
-    if (userRole === UserRole.CountryUser) {
-      this.countryUserService.getCountryUserCountries().subscribe({
-        next: res => {
-          const countries = res.result ?? [];
-          this.chatService.countries.next(countries);
-        }
-      });
-      this.countryUserService.getCountryUserAllPillars().subscribe({
-=======
-    if (userRole === UserRole.CityUser) {
-      this.cityUserService.getCityUserCities().subscribe({
-        next: res => {
-          const cities = res.result ?? [];
-          this.chatService.cities.next(cities);
-        }
-      });
-      this.cityUserService.getCityUserAllPillars().subscribe({
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
-        next: res => {
-          const pillars = res.result ?? [];
-          this.chatService.pillars.next(pillars);
-        }
-      });
-    }
-    else {
-<<<<<<< HEAD
-      this.chatService.getAllCountries();
-=======
-      this.chatService.getAllCites();
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
-      this.chatService.getPillars();
-    }
+    this.chatService.getAllCountries();
     this.chatService.getPillars();
     this.chatService.getFAQDs();
     this.loadEmergingTrends();
-     this.loadPillarLiveSignals();
+    this.loadPillarLiveSignals();
     this.startSlider();
     this.startPromptRotation();
-<<<<<<< HEAD
     if (this.chatService.crossComparisionCountryIDs.value.length > 0) {
-      this.getCountriesCrossComparision()
+      this.getContriesCrossComparision()
     }
   }
 
- onCountryChange(country: CountryVM | null): void {
-=======
-    if (this.chatService.crossComparisionCityIDs.value.length > 0) {
-      this.getCitiesCrossComparision()
+  onCountryChange(city: CountryVM | null): void {
+    this.analysisModalOpen.set(false);
+    this.sliderItems = [];
+    this.currentSlide = 0;
+    clearInterval(this.intervalId);
+    this.chatService.selectedCountry.set(city ?? null);
+
+    if (!city?.countryID) {
+      this.contrySlide = null;
+      this.countrySlidesLoading.set(false);
+      this.cdr.markForCheck();
+      return;
     }
-  }
 
- onCityChange(city: CityVM | null): void {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
-  this.analysisModalOpen.set(false);
-  this.sliderItems = [];
-  this.currentSlide = 0;
-
-  clearInterval(this.intervalId);
-
-<<<<<<< HEAD
-  this.chatService.selectedCountry.set(country ?? null);
-
-  if (!country?.countryID) {
-    this.countrySlide = null;
-    this.countrySlidesLoading.set(false);
-=======
-  this.chatService.selectedCity.set(city ?? null);
-
-  if (!city?.cityID) {
-    this.citySlide = null;
-    this.citySlidesLoading.set(false);
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+    this.contrySlide = null;
+    this.countrySlidesLoading.set(true);
     this.cdr.markForCheck();
-    return;
-  }
 
-<<<<<<< HEAD
-  this.countrySlide = null;
-  this.countrySlidesLoading.set(true);
-  this.cdr.markForCheck();
-
-  this.chatService.getCountrySlides(country.countryID)
-    .pipe(
+    this.chatService.getCountrySlides(city.countryID).pipe(
       takeUntil(this.destroy$),
       finalize(() => {
         this.countrySlidesLoading.set(false);
-=======
-  this.citySlide = null;
-  this.citySlidesLoading.set(true);
-  this.cdr.markForCheck();
-
-  this.chatService.getCitySlides(city.cityID)
-    .pipe(
-      takeUntil(this.destroy$),
-      finalize(() => {
-        this.citySlidesLoading.set(false);
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
         this.cdr.markForCheck();
       })
-    )
-    .subscribe({
+    ).subscribe({
       next: res => {
+        const data = res?.result?.result;
+        this.contrySlide = data ?? null;
 
-        const data = res?.result?.result ?? null;
+        if (!data) return;
 
-<<<<<<< HEAD
-        this.countrySlide = data;
-=======
-        this.citySlide = data;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
-
-        if (!data) {
-          this.sliderItems = [];
-          this.cdr.markForCheck();
-          return;
-        }
-
-        const earlyWarnings = Array.isArray(data?.earlyWarnings)
+        const earlyWarnings = Array.isArray(data.earlyWarnings)
           ? data.earlyWarnings
           : [];
 
-        const combinedRisks = Array.isArray(data?.combinedRisks)
+        const combinedRisks = Array.isArray(data.combinedRisks)
           ? data.combinedRisks
           : [];
 
-<<<<<<< HEAD
-        const countryName =
-          data?.country?.countryName ||
-          country?.countryName ||
-          'Country';
-=======
-        const cityName =
-          data?.city?.cityName ||
-          city?.cityName ||
-          'City';
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
-
-        const recentPerformanceSummary =
-          data?.recentPerformance?.summary || '';
-
         this.sliderItems = [
           {
-<<<<<<< HEAD
-            title: `${countryName} recent performance`,
-=======
-            title: `${cityName} recent performance`,
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
-            subtitle: recentPerformanceSummary,
-            trend: 'Recent'
+            title: `${data.country.countryName} recent performance`,
+            subtitle: data.recentPerformance?.summary,
+            trend: "Recent"
           },
-
           ...combinedRisks.map((x: any) => ({
             title: 'Risk Overview',
-            subtitle:
-              x?.summary ||
-              x?.description ||
-              '',
-            trend: 'Risk'
+            subtitle: x.summary || x.description,
+            trend: "Risk"
           })),
-
           ...earlyWarnings.map((x: any) => ({
-            title:
-              x?.title ||
-              'Early Warning',
-
-            subtitle:
-              x?.description ||
-              x?.summary ||
-              '',
-
-            trend: 'Early Warning'
+            title: x.title || 'Early Warning',
+            subtitle: x.description || x.summary,
+            trend: "Early Warning"
           })),
         ];
 
         this.currentSlide = 0;
-
-        if (this.sliderItems.length > 1) {
-          this.startSlider();
-        }
-
+        this.startSlider();
         this.cdr.markForCheck();
       },
-
-      error: (err) => {
-
-<<<<<<< HEAD
-        console.error('Error loading country slides:', err);
-
-        this.countrySlide = null;
-=======
-        console.error('Error loading city slides:', err);
-
-        this.citySlide = null;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+      error: () => {
+        this.contrySlide = null;
         this.sliderItems = [];
-
         this.cdr.markForCheck();
       },
     });
-}
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -463,22 +296,14 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   }
 
   // ─── Send ─────────────────────────────────────────────────────────────────
-<<<<<<< HEAD
-  getCountriesCrossComparision (): void {
-=======
-  getCitiesCrossComparision (): void {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+  getContriesCrossComparision(): void {
 
     this.inputText.set('');
     this.showSuggestions.set(false);
     this.suggestions.set([]);
 
     this.chatService
-<<<<<<< HEAD
-      .getCountriesCrossComparision()
-=======
-      .getCitiesCrossComparision()
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+      .getContriesCrossComparision()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => { this.scrollToBottom(); this.cdr.markForCheck(); },
@@ -551,11 +376,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   }
 
   clearContext(): void {
-<<<<<<< HEAD
     this.chatService.selectedCountry.set(null);
-=======
-    this.chatService.selectedCity.set(null);
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
     this.chatService.selectedPillar.set(null);
     this.chatService.selectedfaq.set(null);
   }
@@ -579,15 +400,9 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-<<<<<<< HEAD
   /** Pillars from country slide, ordered for sidebar display. */
-  get sidebarPillars(): PillarsUserHistoryResponseDto[] {
-    const pillars = this.countrySlide?.country?.pillars;
-=======
-  /** Pillars from city slide, ordered for sidebar display. */
-  get sidebarPillars(): PillarsUserHistoryResponseDto[] {
-    const pillars = this.citySlide?.city?.pillars;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
+  get sidebarPillars(): PillarsUserHistroyResponseDto[] {
+    const pillars = this.contrySlide?.country?.pillars;
     if (!pillars?.length) return [];
     return [...pillars].sort(
       (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)
@@ -639,14 +454,14 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     return name.trim().split(/\s+/).length > maxWords;
   }
 
-  vuiLevelLabel(score: number | null | undefined): string {
+  peaceLevelLabel(score: number | null | undefined): string {
     if (score == null || isNaN(Number(score))) return '—';
     const v = Number(score);
-    if (v >= 80) return 'Very High';
-    if (v >= 60) return 'High';
-    if (v >= 40) return 'Moderate';
-    if (v >= 20) return 'Low';
-    return 'Very Low';
+    if (v >= 80) return 'Very High Peace';
+    if (v >= 60) return 'High Peace';
+    if (v >= 40) return 'Moderate Peace';
+    if (v >= 20) return 'Low Peace';
+    return 'Very Low Peace';
   }
 
   rankPeaceIndex(rank: number | null | undefined, total: number | null | undefined): number {
@@ -666,25 +481,153 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     return '#64748b';
   }
 
-  trackPillarId(_: number, p: PillarsUserHistoryResponseDto): number {
+  trackPillarId(_: number, p: PillarsUserHistroyResponseDto): number {
     return p.pillarID;
   }
 
-<<<<<<< HEAD
+  loadEmergingTrends(): void {
+    this.emergingTrendsLoading.set(true);
+    this.emergingTrendsError.set(null);
+    this.cdr.markForCheck();
+
+    this.chatService.getEmergingTrendsAndIssues(8).pipe(
+      takeUntil(this.destroy$),
+      finalize(() => {
+        this.emergingTrendsLoading.set(false);
+        this.cdr.markForCheck();
+      })
+    ).subscribe({
+      next: res => {
+        const payload = res?.succeeded ? res.result : null;
+        const countries = payload?.countries?.filter(c => c?.country && c?.sourceUrl) ?? [];
+
+        if (!payload || !countries.length) {
+          this.emergingTrends.set(null);
+          this.emergingTrendsError.set(
+            res?.errors?.[0] ?? res?.messages?.join(", ") ?? 'Unable to load global trends right now.'
+          );
+          return;
+        }
+
+        this.emergingTrends.set({ ...payload, countries });
+        this.selectedTrendCode.set(countries[0]?.countryCode ?? null);
+        this.emergingTrendsError.set(null);
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.emergingTrends.set(null);
+        this.emergingTrendsError.set('Unable to load global trends. Please try again.');
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  retryEmergingTrends(): void {
+    this.loadEmergingTrends();
+  }
+
+  selectTrendCard(card: EmergingTrendCountryCard): void {
+    this.selectedTrendCode.set(card.countryCode);
+    this.cdr.markForCheck();
+  }
+
+  isTrendSelected(card: EmergingTrendCountryCard): boolean {
+    return this.selectedTrendCode() === card.countryCode;
+  }
+
+  trackTrendCard(_: number, card: EmergingTrendCountryCard): string {
+    return card.countryCode;
+  }
+
+  trendAccentColor(color: string | null | undefined): string {
+    const map: Record<string, string> = {
+      green: '#53c341',
+      yellow: '#eab308',
+      orange: '#f97316',
+      red: '#ef4444',
+      blue: '#3b82f6',
+    };
+    return map[(color ?? '').toLowerCase()] ?? '#77bd3e';
+  }
+
+  loadPillarLiveSignals(): void {
+    this.pillarLiveSignalsLoading.set(true);
+    this.pillarLiveSignalsError.set(null);
+    this.cdr.markForCheck();
+
+    this.chatService.getPillarLiveSignals().pipe(
+      takeUntil(this.destroy$),
+      finalize(() => {
+        this.pillarLiveSignalsLoading.set(false);
+        this.cdr.markForCheck();
+      })
+    ).subscribe({
+      next: res => {
+        const payload = res?.succeeded ? res.result : null;
+        const pillars = payload?.pillars?.filter(p => p?.pillarId && p?.sourceUrl) ?? [];
+
+        if (!payload || pillars.length < 1) {
+          this.pillarLiveSignals.set(null);
+          this.pillarLiveSignalsError.set(
+            res?.errors?.[0] ?? 'Unable to load pillar signals right now.'
+          );
+          return;
+        }
+
+        this.pillarLiveSignals.set({ ...payload, pillars });
+        this.selectedPillarSignalId.set(pillars[0]?.pillarId ?? null);
+        this.pillarLiveSignalsError.set(null);
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.pillarLiveSignals.set(null);
+        this.pillarLiveSignalsError.set('Unable to load pillar signals. Please try again.');
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  retryPillarLiveSignals(): void {
+    this.loadPillarLiveSignals();
+  }
+
+  selectPillarSignal(card: PillarLiveSignalCard): void {
+    this.selectedPillarSignalId.set(card.pillarId);
+    this.cdr.markForCheck();
+  }
+
+  isPillarSignalSelected(card: PillarLiveSignalCard): boolean {
+    return this.selectedPillarSignalId() === card.pillarId;
+  }
+
+  trackPillarSignal(_: number, card: PillarLiveSignalCard): number {
+    return card.pillarId;
+  }
+
+  pillarSignalLabel(card: PillarLiveSignalCard): string {
+    return card.pillarName ?? `Pillar ${card.pillarId}`;
+  }
+
+  formatTrendUpdatedAt(iso: string | null | undefined): string {
+    if (!iso) return '';
+    try {
+      return new Date(iso).toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    } catch {
+      return '';
+    }
+  }
+
   /** Search both country name and alias (also used as a fallback for pillar name) */
   customSearchFn(term: string, item: any): boolean {
     const t = term.toLowerCase();
     return (
       item.countryName?.toLowerCase().includes(t) ||
       item.countryAliasName?.toLowerCase().includes(t) ||
-=======
-  /** Search both city name and alias (also used as a fallback for pillar name) */
-  customSearchFn(term: string, item: any): boolean {
-    const t = term.toLowerCase();
-    return (
-      item.cityName?.toLowerCase().includes(t) ||
-      item.cityAliasName?.toLowerCase().includes(t) ||
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
       item.region?.toLowerCase().includes(t) ||
       item.pillarName?.toLowerCase().includes(t) ||
       false
@@ -728,27 +671,6 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  getOrdinalSuffix(rank?: number): string {
-
-  if (!rank) return '';
-
-  const j = rank % 10;
-  const k = rank % 100;
-
-  if (j === 1 && k !== 11) {
-    return 'st';
-  }
-
-  if (j === 2 && k !== 12) {
-    return 'nd';
-  }
-
-  if (j === 3 && k !== 13) {
-    return 'rd';
-  }
-
-  return 'th';
-}
 
   startSlider(): void {
 
@@ -902,167 +824,26 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadEmergingTrends(): void {
-    this.emergingTrendsLoading.set(true);
-    this.emergingTrendsError.set(null);
-    this.cdr.markForCheck();
+  getOrdinalSuffix(rank?: number): string {
 
-    this.chatService.getEmergingTrendsAndIssues(8).pipe(
-      takeUntil(this.destroy$),
-      finalize(() => {
-        this.emergingTrendsLoading.set(false);
-        this.cdr.markForCheck();
-      })
-    ).subscribe({
-      next: res => {
-        const payload = res?.succeeded ? res.result : null;
-<<<<<<< HEAD
-        const countries = payload?.countries?.filter(c => c?.country && c?.sourceUrl) ?? [];
+    if (!rank) return '';
 
-        if (!payload || !countries.length) {
-=======
-        const cities = payload?.cities?.filter(c => c?.city && c?.sourceUrl) ?? [];
+    const j = rank % 10;
+    const k = rank % 100;
 
-        if (!payload || !cities.length) {
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
-          this.emergingTrends.set(null);
-          this.emergingTrendsError.set(
-            res?.errors?.[0] ?? res?.messages?.join(", ") ?? 'Unable to load global trends right now.'
-          );
-          return;
-        }
-
-<<<<<<< HEAD
-        this.emergingTrends.set({ ...payload, countries });
-        this.selectedTrendCode.set(countries[0]?.countryCode ?? null);
-=======
-        this.emergingTrends.set({ ...payload, cities });
-        this.selectedTrendCode.set(cities[0]?.cityCode ?? null);
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
-        this.emergingTrendsError.set(null);
-        this.cdr.markForCheck();
-      },
-      error: () => {
-        this.emergingTrends.set(null);
-        this.emergingTrendsError.set('Unable to load global trends. Please try again.');
-        this.cdr.markForCheck();
-      },
-    });
-  }
-
-  retryEmergingTrends(): void {
-    this.loadEmergingTrends();
-  }
-
-<<<<<<< HEAD
-  selectTrendCard(card: EmergingTrendCountryCard): void {
-    this.selectedTrendCode.set(card.countryCode ?? null);
-    this.cdr.markForCheck();
-  }
-
-  isTrendSelected(card: EmergingTrendCountryCard): boolean {
-    return this.selectedTrendCode() === card.countryCode;
-  }
-
-  trackTrendCard(_: number, card: EmergingTrendCountryCard): string {
-    return card.countryCode ?? '';
-=======
-  selectTrendCard(card: EmergingTrendCityCard): void {
-    this.selectedTrendCode.set(card.cityCode);
-    this.cdr.markForCheck();
-  }
-
-  isTrendSelected(card: EmergingTrendCityCard): boolean {
-    return this.selectedTrendCode() === card.cityCode;
-  }
-
-  trackTrendCard(_: number, card: EmergingTrendCityCard): string {
-    return card.cityCode;
->>>>>>> 9bde2debd31e1f04446351354c9d704a5439b7b1
-  }
-
-  trendAccentColor(color: string | null | undefined): string {
-    const map: Record<string, string> = {
-      green: '#53c341',
-      yellow: '#eab308',
-      orange: '#f97316',
-      red: '#ef4444',
-      blue: '#3b82f6',
-    };
-    return map[(color ?? '').toLowerCase()] ?? '#77bd3e';
-  }
-
-  formatTrendUpdatedAt(iso: string | null | undefined): string {
-    if (!iso) return '';
-    try {
-      return new Date(iso).toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-    } catch {
-      return '';
+    if (j === 1 && k !== 11) {
+      return 'st';
     }
+
+    if (j === 2 && k !== 12) {
+      return 'nd';
+    }
+
+    if (j === 3 && k !== 13) {
+      return 'rd';
+    }
+
+    return 'th';
   }
- 
-  loadPillarLiveSignals(): void {
-    this.pillarLiveSignalsLoading.set(true);
-    this.pillarLiveSignalsError.set(null);
-    this.cdr.markForCheck();
-
-    this.chatService.getPillarLiveSignals().pipe(
-      takeUntil(this.destroy$),
-      finalize(() => {
-        this.pillarLiveSignalsLoading.set(false);
-        this.cdr.markForCheck();
-      })
-    ).subscribe({
-      next: res => {
-        const payload = res?.succeeded ? res.result : null;
-        const pillars = payload?.pillars?.filter(p => p?.pillarId && p?.sourceUrl) ?? [];
-
-        if (!payload || pillars.length < 1) {
-          this.pillarLiveSignals.set(null);
-          this.pillarLiveSignalsError.set(
-            res?.errors?.[0] ?? 'Unable to load pillar signals right now.'
-          );
-          return;
-        }
-
-        this.pillarLiveSignals.set({ ...payload, pillars });
-        this.selectedPillarSignalId.set(pillars[0]?.pillarId ?? null);
-        this.pillarLiveSignalsError.set(null);
-        this.cdr.markForCheck();
-      },
-      error: () => {
-        this.pillarLiveSignals.set(null);
-        this.pillarLiveSignalsError.set('Unable to load pillar signals. Please try again.');
-        this.cdr.markForCheck();
-      },
-    });
-  }
-
-  retryPillarLiveSignals(): void {
-    this.loadPillarLiveSignals();
-  }
-
-  selectPillarSignal(card: PillarLiveSignalCard): void {
-    this.selectedPillarSignalId.set(card.pillarId);
-    this.cdr.markForCheck();
-  }
-
-  isPillarSignalSelected(card: PillarLiveSignalCard): boolean {
-    return this.selectedPillarSignalId() === card.pillarId;
-  }
-
-  trackPillarSignal(_: number, card: PillarLiveSignalCard): number {
-    return card.pillarId;
-  }
-
-  pillarSignalLabel(card: PillarLiveSignalCard): string {
-    return card.pillarName ?? `Pillar ${card.pillarId}`;
-  }
-
 
 }

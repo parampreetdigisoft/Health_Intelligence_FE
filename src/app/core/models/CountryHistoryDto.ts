@@ -1,5 +1,4 @@
-import { GetCountrySubmitionHistoryReponseDto } from "./AssessmentResponse";
-
+import { GetCountrySubmitionHistoryResponseDto } from "src/app/core/models/AssessmentResponse";
 
 export interface CountryHistoryDto {
   totalCountry: number;
@@ -15,12 +14,12 @@ export interface CountryHistoryDto {
   finalizeCountry: number;
   unFinalize: number;
 }
-export interface GetCountryQuestionHistoryReponseDto
-  extends GetCountrySubmitionHistoryReponseDto {
-  pillars: CountryPillarQuestionHistoryReponseDto[];
+export interface GetCountryQuestionHistoryResponseDto
+  extends GetCountrySubmitionHistoryResponseDto {
+  pillars: CountryPillarQuestionHistoryResponseDto[];
 }
 
-export interface CountryPillarQuestionHistoryReponseDto  {
+export interface CountryPillarQuestionHistoryResponseDto {
   pillarID: number;
   pillarName: string;
   score: number;
@@ -32,21 +31,21 @@ export interface CountryPillarQuestionHistoryReponseDto  {
   isAccess: boolean;
 }
 
-export interface GetCountriesSubmitionHistoryReponseDto
-  extends GetCountrySubmitionHistoryReponseDto {
+export interface GetCountriesSubmitionHistoryResponseDto
+  extends GetCountrySubmitionHistoryResponseDto {
   countryName: string;
 }
-export interface CountryPillarHistoryReponseDto
-  extends CountryPillarQuestionHistoryReponseDto {
+export interface CountryPillarHistoryResponseDto
+  extends CountryPillarQuestionHistoryResponseDto {
   userID: number;
   fullName: string;
 }
 
-export interface UserCountryRequstDto extends UserCountryPillarDashboardRequstDto {
+export interface UserCountryRequestDto extends UserCountryPillarDashboardRequestDto {
   userID: number;
 }
 
-export interface UserCountryPillarDashboardRequstDto {
+export interface UserCountryPillarDashboardRequestDto {
   countryID: number;
   updatedAt: string;
 }

@@ -19,7 +19,7 @@ export interface ChartTableRowDto {
 }
 
 export interface CountryValueDto {
-  countryID : number;
+  countryID: number;
   countryName: string;
   value: number;
   aiValue: number;
