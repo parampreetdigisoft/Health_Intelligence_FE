@@ -53,18 +53,18 @@
           <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
             <path d="M20 4L33 9V19C33 27.5 27.5 33.8 20 36C12.5 33.8 7 27.5 7 19V9L20 4Z" stroke="currentColor"
               stroke-width="2" stroke-linejoin="round" />
-            <path d="M12 20L16.5 20L18.5 14L21.5 26L23.5 20L28 20" stroke="#77BD3E" stroke-width="2"
+            <path d="M12 20L16.5 20L18.5 14L21.5 26L23.5 20L28 20" stroke="#A8E063" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </div>
         <div class="pem_hero_content">
           <span class="pem_hero_label">Peace System Stress Test</span>
           <h3>{{ getCountryName() }} · {{ selectedYear }}</h3>
-          <p>Overall PEM {{ getPemValue().toFixed(1) }}/100 · {{ stressDashboard.pemCondition || "Stable" }}</p>
+          <p>Overall AHI {{ getPemValue().toFixed(1) }}/100 · {{ stressDashboard.pemCondition || "Stable" }}</p>
         </div>
         <div class="pem_hero_stats">
           <div class="pem_stat">
-            <span>PEM</span>
+            <span>AHI</span>
             <strong>{{ getPemValue().toFixed(1) }}</strong>
           </div>
           <div class="pem_stat">

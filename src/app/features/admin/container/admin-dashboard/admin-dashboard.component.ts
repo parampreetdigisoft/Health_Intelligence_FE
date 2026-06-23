@@ -241,7 +241,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       colors: [
         "#002147",
         "#C2DBF5",
-        "#003160",
+        "#006D77",
         "#6C8FB5",
         "#77BD3E",
         "#5AA52F"
@@ -340,7 +340,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       stroke: {
         curve: 'smooth',
         width: 3,
-        colors: ['#6C8FB5', '#003160']
+        colors: ['#6C8FB5', '#006D77']
       },
 
       fill: {

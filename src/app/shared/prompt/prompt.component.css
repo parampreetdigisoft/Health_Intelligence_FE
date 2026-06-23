@@ -62,12 +62,12 @@ line-height: normal;
 }
 button.btn.btn_cancel {
     border-radius: 5px;
-    color: #003160 !important;
+    color: #006D77 !important;
     border: 1px solid #00070f;
     transition: 0.3s all;
 }
 button.btn.btn_cancel:hover {
-    background-color: #003160 !important;
+    background-color: #006D77 !important;
     color: #ffffff !important;
     border: 1px solid #00070f;
 }

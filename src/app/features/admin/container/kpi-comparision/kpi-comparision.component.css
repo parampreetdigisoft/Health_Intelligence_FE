@@ -116,7 +116,7 @@ app-kpi-comparision app-ag-bar:nth-child(3) {
 
 ::ng-deep .analyst_multi_select .ng-option-selected {
   background-color: #e8f0ff !important;
-  color: #003160 !important;
+  color: #006D77 !important;
   font-weight: 600;
 }
 
@@ -174,7 +174,7 @@ app-kpi-comparision app-ag-bar:nth-child(3) {
   white-space: nowrap;
   padding: 2px 5px !important;
   border-radius: 5px !important;
-  background-color: #003160 !important;
+  background-color: #006D77 !important;
   color: #ffffff !important;
 }
 
@@ -201,7 +201,7 @@ app-kpi-comparision app-ag-bar:nth-child(3) {
 
 .table_outer .compare_table tbody td.action_td table .action_icons span {
     display: inline-block;
-    background-color: #003160;
+    background-color: #006D77;
     padding: 8px 10px;
     white-space: nowrap;
     color: #ffffff;
@@ -218,7 +218,7 @@ app-kpi-comparision app-ag-bar:nth-child(3) {
 }
 p.btn_spinner {
     display: inline-block;
-    background-color: #003160;
+    background-color: #006D77;
     padding: 8px 10px;
     white-space: nowrap;
     color: #ffffff;

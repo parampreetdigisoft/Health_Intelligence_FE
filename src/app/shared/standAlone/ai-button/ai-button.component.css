@@ -27,15 +27,15 @@
     0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-  background: linear-gradient(135deg, #9CD670 0%, #77BD3E 50%, #4E8F2B 100%);
+  background: linear-gradient(135deg, #A8E063 0%, #4CAF50 50%, #006D77 100%);
 }
 
 .ai-toggle-input:checked + .ai-toggle-label .toggle-track {
-  background: linear-gradient(135deg, #FFD700 0%, var(--Secondary-Color) 100%);
+  background: linear-gradient(135deg, #006D77 0%, #4CAF50 55%, #A8E063 100%);
   box-shadow: 
     inset 0 2px 8px rgba(0, 0, 0, 0.2),
-    0 2px 16px rgba(255, 215, 0, 0.4),
-    0 0 32px rgba(255, 215, 0, 0.2);
+    0 2px 16px rgba(168, 224, 99, 0.4),
+    0 0 32px rgba(168, 224, 99, 0.2);
 }
 
 /* Toggle Thumb */
@@ -163,7 +163,7 @@
 }
 
 .label-manual {
-  color: #77bd3e;
+  color: #A8E063;
   transition: all 0.3s ease;
   opacity: 1;
   transform: translateY(0);
@@ -211,7 +211,7 @@
 }
 
 .ai-toggle-input:not(:checked) + .ai-toggle-label:hover .toggle-track {
-  background: linear-gradient(135deg, #77BD3E 0%, #4E8F2B 100%);
+  background: linear-gradient(135deg, #A8E063 0%, #4CAF50 100%);
 }
 
 .ai-toggle-input:checked + .ai-toggle-label:hover .toggle-track {

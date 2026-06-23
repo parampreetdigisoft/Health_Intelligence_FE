@@ -110,7 +110,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   });
 
   readonly rotatingHeadlines = [
-    'Welcome to PEM Aevum',
+    'Welcome to AHI',
     'Surface stability signals across regions',
     'Interrogate country risk with pillar context',
     'Compare indices and emerging pressure points',
@@ -547,7 +547,7 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
       red: '#ef4444',
       blue: '#3b82f6',
     };
-    return map[(color ?? '').toLowerCase()] ?? '#77bd3e';
+    return map[(color ?? '').toLowerCase()] ?? '#A8E063';
   }
 
   loadPillarLiveSignals(): void {

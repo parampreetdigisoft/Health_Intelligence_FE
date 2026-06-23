@@ -573,7 +573,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
       grid: {
         borderColor: "#e5ebe9",
       },
-      colors: ["#003160", "#77BD3E", "#14416c", "#9ad76c"],
+      colors: ["#006D77", "#77BD3E", "#14416c", "#9ad76c"],
       tooltip: {
         y: {
           formatter: (v?: number) => (typeof v === "number" ? `${v.toFixed(1)}` : "0.0"),

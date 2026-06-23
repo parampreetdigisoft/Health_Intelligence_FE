@@ -527,7 +527,7 @@ export class EvaluatorDashboardComponent {
           }
         }
       },
-      colors: ["#003160", "#c2dbf5","#77bd3e", "#6c8fb5"],
+      colors: ["#006D77", "#c2dbf5","#77bd3e", "#6c8fb5"],
       labels: ["Total Country", "Active", "InProgress", "Completed"],
       legend: {
         show: true,

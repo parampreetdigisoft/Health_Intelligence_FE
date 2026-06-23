@@ -55,7 +55,7 @@
 
 
 .cus_table .table th {
-    background-color: #77BD3E;
+    background-color: #A8E063;
     font-weight: 600;
     color: #ffffff;
     font-size: 14px;
@@ -64,7 +64,7 @@
 
 
 .cus_table .score_label_tab {
-    background: #003160;
+    background: #006D77;
     color: #ffffff;
     padding: 0.3rem 0.5rem;
     border-radius: 0.5rem;
@@ -98,7 +98,7 @@ h4.kpi_head_col {
     font-size: 2.2rem;
     font-weight: 600;
     margin-bottom: 2rem;
-    color: #304a43;
+    color: #003d44;
 }
 
 

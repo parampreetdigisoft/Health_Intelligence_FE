@@ -1,26 +1,26 @@
 /* ============================================================
-   PEM Aevum · Country Signal Dashboard
+   AHI · Country Signal Dashboard
    Design language: "Intelligence Command Console"
    — deep navy + signal green, targeting-reticle card framing,
      radar/grid texture, tabular data typography, live-scan motif.
    ============================================================ */
 
 .signal-dashboard-wrap {
-  --pe-primary: #003160;
-  --pe-primary-mid: #0d4a85;
-  --pe-primary-soft: #1a5080;
-  --pe-deep: #051c38;
-  --pe-deep-mid: #082a52;
-  --pe-secondary: #77bd3e;
-  --pe-secondary-soft: #9ad76c;
-  --pe-secondary-glow: rgba(119, 189, 62, 0.45);
+  --pe-primary: #006D77;
+  --pe-primary-mid: #00838f;
+  --pe-primary-soft: #007A87;
+  --pe-deep: #004d55;
+  --pe-deep-mid: #005a62;
+  --pe-secondary: #A8E063;
+  --pe-secondary-soft: #c5e878;
+  --pe-secondary-glow: rgba(168, 224, 99, 0.45);
   --pe-bg: #eef3fa;
   --pe-bg-card: #ffffff;
   --pe-border: #d7e3f0;
-  --pe-border-focus: #77bd3e;
+  --pe-border-focus: #A8E063;
   --pe-text: #04203f;
   --pe-text-muted: #5a7394;
-  --pe-shadow: rgba(0, 49, 96, 0.12);
+  --pe-shadow: rgba(0, 109, 119, 0.12);
   --pe-font-display: "Geist", "Poppins", sans-serif;
   --pe-font-data: "Geist Mono", "JetBrains Mono", "Consolas", monospace;
 
@@ -28,7 +28,7 @@
   flex-direction: column;
   gap: 24px;
   background:
-    radial-gradient(circle at 100% 0%, rgba(119, 189, 62, 0.06) 0%, transparent 38%),
+    radial-gradient(circle at 100% 0%, rgba(168, 224, 99, 0.06) 0%, transparent 38%),
     linear-gradient(180deg, var(--pe-bg) 0%, #f6f9fd 50%, transparent 100%);
   border-radius: 18px;
   padding: 4px 0 16px;
@@ -117,7 +117,7 @@
   background: linear-gradient(135deg, var(--pe-deep) 0%, var(--pe-primary) 55%, var(--pe-primary-mid) 100%);
   color: #fff;
   border-color: var(--pe-primary);
-  box-shadow: 0 6px 18px rgba(0, 49, 96, 0.32), inset 0 0 0 1px rgba(119, 189, 62, 0.25);
+  box-shadow: 0 6px 18px rgba(0, 109, 119, 0.32), inset 0 0 0 1px rgba(168, 224, 99, 0.25);
 }
 
 .tab_btn.active::after {
@@ -190,7 +190,7 @@
 
 .filter_select_shell:focus-within {
   border-color: var(--pe-border-focus);
-  box-shadow: 0 0 0 3px rgba(119, 189, 62, 0.2);
+  box-shadow: 0 0 0 3px rgba(168, 224, 99, 0.2);
 }
 
 .filter_select_shell--native {
@@ -285,7 +285,7 @@
   background: #fff;
   border-radius: 16px;
   padding: 22px;
-  box-shadow: 0 8px 24px rgba(0, 49, 96, 0.07);
+  box-shadow: 0 8px 24px rgba(0, 109, 119, 0.07);
   border: 1px solid #eaf0fa;
 }
 
@@ -304,7 +304,7 @@
 .section_title i {
   font-size: 17px;
   color: var(--pe-secondary);
-  background: rgba(119, 189, 62, 0.12);
+  background: rgba(168, 224, 99, 0.12);
   width: 28px;
   height: 28px;
   border-radius: 8px;
@@ -325,25 +325,25 @@
   margin-bottom: 22px;
   padding: 22px 24px;
   border-radius: 16px;
-  border: 1px solid rgba(119, 189, 62, 0.3);
+  border: 1px solid rgba(168, 224, 99, 0.3);
   background:
     repeating-linear-gradient(
       0deg,
-      rgba(119, 189, 62, 0.05) 0px,
-      rgba(119, 189, 62, 0.05) 1px,
+      rgba(168, 224, 99, 0.05) 0px,
+      rgba(168, 224, 99, 0.05) 1px,
       transparent 1px,
       transparent 28px
     ),
     repeating-linear-gradient(
       90deg,
-      rgba(119, 189, 62, 0.05) 0px,
-      rgba(119, 189, 62, 0.05) 1px,
+      rgba(168, 224, 99, 0.05) 0px,
+      rgba(168, 224, 99, 0.05) 1px,
       transparent 1px,
       transparent 28px
     ),
     linear-gradient(120deg, var(--pe-deep) 0%, var(--pe-primary) 50%, var(--pe-primary-mid) 100%);
   color: #fff;
-  box-shadow: 0 14px 34px rgba(0, 49, 96, 0.32);
+  box-shadow: 0 14px 34px rgba(0, 109, 119, 0.32);
   position: relative;
   overflow: hidden;
 }
@@ -353,7 +353,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 0%, rgba(119, 189, 62, 0.5) 50%, transparent 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(168, 224, 99, 0.5) 50%, transparent 100%);
   height: 2px;
   top: 0;
   animation: heroScan 5s linear infinite;
@@ -384,8 +384,8 @@
   place-items: center;
   font-size: 26px;
   background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(119, 189, 62, 0.5);
-  box-shadow: 0 0 0 4px rgba(119, 189, 62, 0.08);
+  border: 1px solid rgba(168, 224, 99, 0.5);
+  box-shadow: 0 0 0 4px rgba(168, 224, 99, 0.08);
   flex: 0 0 58px;
   position: relative;
   z-index: 1;
@@ -458,8 +458,8 @@
 }
 
 .pem_stat:hover {
-  background: rgba(119, 189, 62, 0.16);
-  border-color: rgba(119, 189, 62, 0.4);
+  background: rgba(168, 224, 99, 0.16);
+  border-color: rgba(168, 224, 99, 0.4);
   transform: translateY(-2px);
 }
 
@@ -593,7 +593,7 @@
   width: 130px;
   height: 130px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(119, 189, 62, 0.16) 0%, transparent 68%);
+  background: radial-gradient(circle, rgba(168, 224, 99, 0.16) 0%, transparent 68%);
   pointer-events: none;
   transition: transform 0.35s ease, opacity 0.35s ease;
 }
@@ -650,7 +650,7 @@
 .resilience_card:hover,
 .predictive_card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 18px 34px rgba(0, 49, 96, 0.16);
+  box-shadow: 0 18px 34px rgba(0, 109, 119, 0.16);
   border-color: #aed3ee;
 }
 
@@ -854,7 +854,7 @@
 
 /* ── Signal accent variants ── */
 
-.accent-pem .signal_icon_well { background: linear-gradient(135deg, #d4e8e4, #a8cfc4); color: #003160; border-color: #9ec4b8; }
+.accent-pem .signal_icon_well { background: linear-gradient(135deg, #d4e8e4, #a8cfc4); color: #006D77; border-color: #9ec4b8; }
 .accent-risk .signal_icon_well { background: linear-gradient(135deg, #fde8d8, #f5c9a8); color: #a04a12; border-color: #f0b88a; }
 .accent-alert .signal_icon_well { background: linear-gradient(135deg, #ffe4dc, #ffc4b0); color: #b83a1a; border-color: #f5a890; }
 .accent-warning .signal_icon_well { background: linear-gradient(135deg, #fff3d4, #ffe4a0); color: #8a6500; border-color: #f0d070; }
@@ -864,7 +864,7 @@
 .accent-health .signal_icon_well { background: linear-gradient(135deg, #fde0e8, #f8b8c8); color: #a02040; border-color: #f0a0b8; }
 .accent-education .signal_icon_well { background: linear-gradient(135deg, #e8e4f8, #d0c8f0); color: #4a3a7a; border-color: #b8b0e0; }
 .accent-institution .signal_icon_well { background: linear-gradient(135deg, #e8ece8, #d0d8d0); color: #3a4a3a; border-color: #b8c4b8; }
-.accent-default .signal_icon_well { background: linear-gradient(135deg, #e4f2eb, #d4ebe0); color: #003160; border-color: #c8dfd4; }
+.accent-default .signal_icon_well { background: linear-gradient(135deg, #e4f2eb, #d4ebe0); color: #006D77; border-color: #c8dfd4; }
 
 /* ============================================================
    Narrative & chips
@@ -895,7 +895,7 @@
 
 .narrative_item:hover {
   transform: translateX(5px);
-  box-shadow: 0 8px 18px rgba(0, 49, 96, 0.1);
+  box-shadow: 0 8px 18px rgba(0, 109, 119, 0.1);
   border-left-color: var(--pe-primary);
 }
 
@@ -949,7 +949,7 @@
 
 .drill_chip:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 49, 96, 0.12);
+  box-shadow: 0 8px 16px rgba(0, 109, 119, 0.12);
   background: #e4f2eb;
 }
 
@@ -1163,7 +1163,7 @@
   border: none;
   border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 24px 56px rgba(0, 49, 96, 0.22);
+  box-shadow: 0 24px 56px rgba(0, 109, 119, 0.22);
 }
 
 .signal_detail_header {
@@ -1202,7 +1202,7 @@
   place-items: center;
   font-size: 22px;
   background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(119, 189, 62, 0.4);
+  border: 1px solid rgba(168, 224, 99, 0.4);
   flex-shrink: 0;
 }
 
@@ -1313,7 +1313,7 @@
 ::ng-deep .compare_select .ng-dropdown-panel {
   border: 1px solid #d7e3f0;
   border-radius: 13px;
-  box-shadow: 0 14px 32px rgba(0, 49, 96, 0.14);
+  box-shadow: 0 14px 32px rgba(0, 109, 119, 0.14);
 }
 
 /* ============================================================
@@ -1339,7 +1339,7 @@
   position: absolute;
   inset: -6px;
   border-radius: 16px;
-  border: 1px solid rgba(119, 189, 62, 0.35);
+  border: 1px solid rgba(168, 224, 99, 0.35);
   animation: iconPulseRing 2.6s ease-out infinite;
   pointer-events: none;
 }
@@ -1370,7 +1370,7 @@
 }
 
 .signal_detail_content {
-  border: 1px solid rgba(119, 189, 62, 0.25);
+  border: 1px solid rgba(168, 224, 99, 0.25);
 }
 
 .signal_detail_header {
@@ -1379,8 +1379,8 @@
   background:
     repeating-linear-gradient(
       90deg,
-      rgba(119, 189, 62, 0.06) 0px,
-      rgba(119, 189, 62, 0.06) 1px,
+      rgba(168, 224, 99, 0.06) 0px,
+      rgba(168, 224, 99, 0.06) 1px,
       transparent 1px,
       transparent 22px
     ),
@@ -1398,7 +1398,7 @@
 }
 
 .signal_detail_icon {
-  box-shadow: 0 0 0 5px rgba(119, 189, 62, 0.1);
+  box-shadow: 0 0 0 5px rgba(168, 224, 99, 0.1);
 }
 
 .signal_detail_stat {
@@ -1407,7 +1407,7 @@
 
 .signal_detail_stat:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 49, 96, 0.1);
+  box-shadow: 0 8px 16px rgba(0, 109, 119, 0.1);
 }
 
 .signal_detail_stat strong {
@@ -1421,7 +1421,7 @@
 }
 
 .signal_detail_block:hover {
-  box-shadow: 0 6px 16px rgba(0, 49, 96, 0.06);
+  box-shadow: 0 6px 16px rgba(0, 109, 119, 0.06);
 }
 
 .signal_detail_block--action::before {

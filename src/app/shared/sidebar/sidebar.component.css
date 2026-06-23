@@ -17,7 +17,7 @@ body{
     grid-gap: 10px;
     position: sticky;
     top: 130px;
-    background: #003160;
+    background: var(--Dark-Bg-Color);
 }
 
 .inner_sidebar::-webkit-scrollbar {
@@ -75,7 +75,7 @@ body{
     border-radius: 8px;
     /* border: 1px solid rgba(255, 255, 255, 0.08); */
     /* background: rgba(255, 255, 255, 0.03); */
-    background-color: #77bd3e;
+    background: var(--AHI-Gradient);
     padding: 10px 15px;
     display: flex;
     justify-content: center;
@@ -106,7 +106,7 @@ body{
 .sub_menu .nav_links {
     padding: 14px 14px 14px 35px;
     align-items: baseline;
-    /* background: #304a43 !important; */
+    /* background: #003d44 !important; */
 }
 
 .sub_menu {
@@ -138,7 +138,7 @@ body{
 }
 .sub_menu .nav_links svg {
     min-width: 11px !important;
-    stroke: #77bd3e;
+    stroke: var(--Secondary-Color);
 }
 .log_out {
     padding: 0 20px;

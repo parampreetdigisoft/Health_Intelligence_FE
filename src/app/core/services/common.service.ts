@@ -268,7 +268,7 @@ isValidDate(date: any): boolean {
 
       "#1A4269",
       "#12365A",
-      "#003160"  // base (strong highlight)
+      "#006D77"  // base (strong highlight)
     ];
   }
  get radarColors() {

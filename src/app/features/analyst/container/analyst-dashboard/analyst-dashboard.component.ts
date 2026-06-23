@@ -354,7 +354,7 @@ export class AnalystDashboardComponent implements OnInit {
       colors: [
         "#002147",
         "#C2DBF5",
-        "#003160",
+        "#006D77",
         "#6C8FB5",
         "#77BD3E",
         "#5AA52F"
@@ -454,7 +454,7 @@ export class AnalystDashboardComponent implements OnInit {
       stroke: {
         curve: 'smooth',
         width: 3,
-        colors: ['#6C8FB5', '#003160']
+        colors: ['#6C8FB5', '#006D77']
       },
 
       fill: {

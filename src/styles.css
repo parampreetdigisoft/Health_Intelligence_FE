@@ -7,18 +7,21 @@
 
 :root
 {
-	--Primary-Color:#003160;
-	--Secondary-Color:#77BD3E;
-	--Hover-Primary-color: #77bd3e;
+	--Primary-Color: #006D77;
+	--Secondary-Color: #A8E063;
+	--Hover-Primary-color: #4CAF50;
+	--Accent-Green: #4CAF50;
+	--AHI-Gradient: linear-gradient(135deg, #006D77 0%, #4CAF50 52%, #A8E063 100%);
+	--AHI-Gradient-Hover: linear-gradient(135deg, #005a62 0%, #3d9a46 52%, #96cc55 100%);
     --White-Color: #ffffff;
-	--Text-Color:#2C2C2C;
-	--Border-Color:#E4E4E4;
-	--background-Color:#F7F7F7;
-	--Light-Text-Color:#525856;
-	--Light-Bg-Color:#7AC2AE;
-	--Dark-Bg-Color:#304A43;
-	--Light-Border-Color:rgba(0, 0, 0, 0.02);
-	--Green-text-Color:#304A43;
+	--Text-Color: #003d44;
+	--Border-Color: #E4E4E4;
+	--background-Color: #F5F8F7;
+	--Light-Text-Color: #4a5f62;
+	--Light-Bg-Color: #7ec8cf;
+	--Dark-Bg-Color: #005a62;
+	--Light-Border-Color: rgba(0, 0, 0, 0.02);
+	--Green-text-Color: #003d44;
 }
 
 html, body, div, span, applet, object, iframe,
@@ -81,11 +84,11 @@ img, svg
 }
 
 .common_button{
-    border-radius: 8px !important;
-    background: var(--Primary-Color);
+    border-radius: 20px !important;
+    background: var(--AHI-Gradient);
     padding: 9px 20px;
     text-align: center;
-    border: 1px solid var(--Primary-Color);
+    border: none;
     color: var(--White-Color);
 font-size: 14px;
 font-style: normal;
@@ -97,12 +100,14 @@ transition: 0.3s;
 	justify-content: center;
     cursor: pointer;
     align-items: center;
+    box-shadow: 0 4px 14px rgba(0, 109, 119, 0.22);
 }
 
 .common_button:hover
 {
-  background-color: var(--Hover-Primary-color);
+  background: var(--AHI-Gradient-Hover);
   border-color: transparent;
+  box-shadow: 0 6px 18px rgba(0, 109, 119, 0.28);
 }
 
 .page_head
@@ -360,7 +365,7 @@ padding-right: 40px;
     box-shadow: none;
     outline: 0;
     background-color: #ffffff;
-    border-color: #304a4345;
+    border-color: rgba(0, 109, 119, 0.28);
 }
 
 .modal_tabs .nav-pills .nav-link.active, .modal_tabs  .nav-pills .show>.nav-link
@@ -386,9 +391,9 @@ padding-right: 40px;
 
 .outline_btn {
     border-radius: 50px;
-    border: 1px solid #7AC2AE;
+    border: 1px solid var(--Primary-Color);
     padding: 5px 15px;
-    color: #7ac2ae;
+    color: var(--Primary-Color);
     /* font-family: Montserrat; */
     font-size: 12px;
     font-style: normal;
@@ -412,7 +417,7 @@ padding-right: 40px;
     font-size: 16px;
 }
 .table_outer tbody tr:hover td {
-    background-color: rgb(18 53 47 / 1%);
+    background-color: rgba(0, 109, 119, 0.04);
     border-color: #d3d7db;
 }
 
@@ -430,7 +435,7 @@ padding-right: 40px;
   padding: 8px;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: #003160;
+  background: var(--Primary-Color);
   --_m: 
     conic-gradient(#0000 10%,#000),
     linear-gradient(#000 0 0) content-box;
@@ -450,7 +455,7 @@ padding-right: 40px;
 
 @keyframes l3 {to{transform: rotate(1turn)}}
 .bold_num {
-    color: #77bd3e;
+    color: var(--Secondary-Color);
     font-weight: 700 !important;
 }
 
@@ -490,14 +495,14 @@ padding-right: 40px;
     grid-gap: 5px;
 }
 .city_card_ul li {
-    background-color: rgb(48 74 67);
+    background-color: var(--Primary-Color);
     padding: 3px 10px;
     border-radius: 5px;
     color: #fff;
     font-size: 14px;
 }
 .city_card_img .score {
-    background-color: #77bd3e;
+    background: var(--AHI-Gradient);
     color: #ffffff;
     display: inline-block;
     padding: 3px 10px;
@@ -514,7 +519,7 @@ padding-right: 40px;
     grid-gap: 3px;
 }
 .city_cards_p path {
-    fill: rgb(48 74 67);
+    fill: var(--Primary-Color);
 }
 .city_cards_disc {
     margin: 10px 0 15px;
@@ -592,7 +597,7 @@ padding-right: 40px;
 }
 .dashboard_card_inner span {
     display: flex;
-    background-color: rgb(0 49 96 / 10%);
+    background-color: rgba(0, 109, 119, 0.1);
     padding: 10px;
     border-radius: 100px;
     width: 90px;
@@ -605,7 +610,7 @@ padding-right: 40px;
     height: 40px;
 }
 .dashboard_card_inner span svg path{
-    fill: rgb(0 49 96);
+    fill: var(--Primary-Color);
 }
 .dashboard_number h4 {
     color: #303030;
@@ -615,13 +620,13 @@ padding-right: 40px;
     font-size: 20px;
 }
 .dashboard_number h5 {
-    color: #77bd3e;
+    color: var(--Secondary-Color);
     font-size: 28px;
     line-height: normal;
     font-weight: 700;
 }
 .city_piller > .align-items-end {
-    background-color: #25453f0d;
+    background-color: rgba(0, 109, 119, 0.05);
     border-radius: 10px;
     padding: 10px 6px 10px 0;
     margin-bottom: 20px;
@@ -684,7 +689,7 @@ padding-right: 40px;
 .action_td input[type="checkbox"] {
     width: 20px;
     height: 20px;
-    accent-color: #003160;
+    accent-color: var(--Primary-Color);
     border-radius: 5px;
 }
 .heading_area .input_field.input_flex {
@@ -694,11 +699,11 @@ padding-right: 40px;
 .modal_design .modal-body .ng-value {
     padding: 2px 5px !important;
     border-radius: 5px !important;
-    background-color: #003160 !important;
+    background-color: var(--Primary-Color) !important;
     color: #ffffff !important;
 }
 .modal_design .tab-pane label .text-primary {
-    color: #003160 !important;
+    color: var(--Primary-Color) !important;
 }
 
 
@@ -772,7 +777,7 @@ padding-right: 40px;
     border: 1px solid rgba(231, 76, 60, 0.35);
 }
 .city_img {
-    background-color: #0c2e5d;
+    background-color: var(--Primary-Color);
     border-radius: 15px !important;
 }
 
