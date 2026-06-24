@@ -457,11 +457,11 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   peaceLevelLabel(score: number | null | undefined): string {
     if (score == null || isNaN(Number(score))) return '—';
     const v = Number(score);
-    if (v >= 80) return 'Very High Peace';
-    if (v >= 60) return 'High Peace';
-    if (v >= 40) return 'Moderate Peace';
-    if (v >= 20) return 'Low Peace';
-    return 'Very Low Peace';
+    if (v >= 80) return 'Very High';
+    if (v >= 60) return 'High ';
+    if (v >= 40) return 'Moderate ';
+    if (v >= 20) return 'Low ';
+    return 'Very Low ';
   }
 
   rankPeaceIndex(rank: number | null | undefined, total: number | null | undefined): number {

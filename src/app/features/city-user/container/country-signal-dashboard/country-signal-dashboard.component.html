@@ -4,7 +4,7 @@
     <nav class="tab_head" aria-label="Dashboard modes">
       <button class="tab_btn" [class.active]="activeTab === 'stress'" (click)="setActiveTab('stress')">
         <i class="bi" [ngClass]="getTabIcon('stress')"></i>
-        <span>Peace System Stress Test</span>
+        <span>Health System Stress Test</span>
       </button>
       <button class="tab_btn" [class.active]="activeTab === 'warning'" (click)="setActiveTab('warning')">
         <i class="bi" [ngClass]="getTabIcon('warning')"></i>
@@ -58,7 +58,7 @@
           </svg>
         </div>
         <div class="pem_hero_content">
-          <span class="pem_hero_label">Peace System Stress Test</span>
+          <span class="pem_hero_label">Health System Stress Test</span>
           <h3>{{ getCountryName() }} · {{ selectedYear }}</h3>
           <p>Overall AHI {{ getPemValue().toFixed(1) }}/100 · {{ stressDashboard.pemCondition || "Stable" }}</p>
         </div>

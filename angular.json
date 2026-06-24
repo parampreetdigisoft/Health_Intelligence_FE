@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "health-intelligence-app": {
+    "health-intelligence-frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/health-intelligence-app",
+            "outputPath": "dist/health-intelligence-frontend",
             "allowedCommonJsDependencies": [
               "file-saver",
               "quill-delta"
@@ -69,18 +69,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "health-intelligence-app:build"
+            "buildTarget": "health-intelligence-frontend:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "health-intelligence-app:build:production"
+              "buildTarget": "health-intelligence-frontend:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "health-intelligence-app:build"
+            "buildTarget": "health-intelligence-frontend:build"
           }
         },
         "test": {

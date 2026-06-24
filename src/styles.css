@@ -579,15 +579,16 @@ padding-right: 40px;
     position: relative;
     z-index: 5;
     padding: 24px;
-    border-radius: 10px;
+    border-radius: 16px;
     overflow: hidden;
-    transition: 0.3s all;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     background-color: #ffffff !important;
     background-position: bottom left;
     background-repeat: no-repeat;
     background-size: 80%;
     background-blend-mode: soft-light;
-    box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.03),0px 0px 1px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 109, 119, 0.06);
+    border: 1px solid rgba(0, 109, 119, 0.08);
 }
 .dashboard_card_inner{
     display: flex;

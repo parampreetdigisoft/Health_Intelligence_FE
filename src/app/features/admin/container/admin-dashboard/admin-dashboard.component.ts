@@ -27,6 +27,7 @@ import {
   ApexStates,
 } from "ng-apexcharts";
 import { AiCountryPillarDashboardResponseDto } from "src/app/core/models/AiCountryPillarDashboardResponseDto";
+import { AHI_CHART, ahiScoreColor, AHI_AXIS_STYLE } from "src/app/core/constants/ahi-chart-theme";
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -211,7 +212,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
           hollow: {
             margin: 0,
             size: "40%",
-            background: "#25453f0d",
+            background: AHI_CHART.hollow,
             image: undefined,
             position: "front",
           },
@@ -238,14 +239,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
           },
         },
       },
-      colors: [
-        "#002147",
-        "#C2DBF5",
-        "#006D77",
-        "#6C8FB5",
-        "#77BD3E",
-        "#5AA52F"
-      ],
+      colors: [...AHI_CHART.radialBar],
       labels: [
         "Total",
         "Manual Active",
@@ -340,40 +334,25 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       stroke: {
         curve: 'smooth',
         width: 3,
-        colors: ['#6C8FB5', '#006D77']
+        colors: [AHI_CHART.primary, AHI_CHART.secondary],
       },
 
       fill: {
         type: 'gradient',
         gradient: {
           shadeIntensity: 1,
-          opacityFrom: 0.7,
-          opacityTo: 0.2,
-          stops: [0, 90, 100],
-          colorStops: [
-            {
-              offset: 0,
-              color: '#6C8FB5',
-              opacity: 0.8
-            },
-            {
-              offset: 50,
-              color: '#6C8FB5',
-              opacity: 0.5
-            },
-            {
-              offset: 100,
-              color: '#6C8FB5',
-              opacity: 0.2
-            }
-          ]
+          opacityFrom: 0.55,
+          opacityTo: 0.06,
+          stops: [0, 85, 100],
         }
       },
 
+      colors: [AHI_CHART.primary, AHI_CHART.secondary],
+
       markers: {
         size: data.map(p => 4),
-        colors: data.map(p => this.PillarColorByScore(p.aiValue)),
-        strokeColors: '#fff',
+        colors: data.map(p => ahiScoreColor(p.aiValue)),
+        strokeColors: '#77af93',
         strokeWidth: 2,
         hover: {
           size: 8,
@@ -424,8 +403,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       },
 
       grid: {
-        borderColor: '#e5e7eb',
-        strokeDashArray: 4,
+        ...AHI_AXIS_STYLE.grid,
         xaxis: {
           lines: { show: false }
         },
@@ -436,11 +414,12 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
 
       tooltip: {
         enabled: true,
+        theme: 'light',
         custom: ({ dataPointIndex }) => {
           const pillar = data[dataPointIndex];
 
-          const progressColor = this.PillarColorByScore(pillar.aiValue);
-          const evaluatorProgressColor = this.PillarColorByScore(pillar.evaluationValue);
+          const progressColor = ahiScoreColor(pillar.aiValue);
+          const evaluatorProgressColor = ahiScoreColor(pillar.evaluationValue);
           const progressPercent = pillar.aiValue ?? 0;
           const evaluatorProgressPercent = pillar.evaluationValue ?? 0;
           const avgScore = ((progressPercent + evaluatorProgressPercent) / 2);
@@ -460,8 +439,8 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
             background: #ffffff;
             border-radius: 14px;
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
-            border-left: 4px solid ${progressColor};
-            font-family: 'Inter', system-ui, sans-serif;
+            border-left: 4px solid ${AHI_CHART.primary};
+            font-family: 'Poppins', system-ui, sans-serif;
             position: relative;
             overflow: hidden;
           ">
@@ -490,7 +469,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
                   <div style="
                     font-weight: 700;
                     font-size: 16px;
-                    color: #111827;
+                    color: ${AHI_CHART.text};
                     margin-bottom: 6px;
                   ">
                     ${pillar.pillarName}
@@ -654,7 +633,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
                   <div style="
                     font-size: 13px;
                     font-weight: 700;
-                    color: #111827;
+                    color: ${AHI_CHART.text};
                   ">
                    ${avgScore.toFixed(0)}
                   </div>
@@ -680,26 +659,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   }
 
 PillarColorByScore(score: any): string {
-  const colors = [
-    "#E3ECF7", // very light blue
-    "#C9DBF0",
-    "#AFC9E9",
-    "#95B8E2",
-    "#7BA6DB",
-    "#6195D4",
-    "#4A7FC2",
-    "#345FA3",
-    "#1F3F7A",
-    "#0D2B4D"  // deep navy (highest)
-  ];
-
-  if (score === null || score === undefined || isNaN(score)) {
-    return "#E0E0E0"; // neutral grey
-  }
-
-  const safeScore = Math.min(Math.max(score, 0), 100);
-  const index = Math.min(Math.floor(safeScore / 10), colors.length - 1);
-  return colors[index];
+  return ahiScoreColor(score);
 }
 
   buildUniqueCategories(data: { pillarName: string }[]): string[] {

@@ -17,6 +17,7 @@ import {
 } from "ng-apexcharts";
 import { AiCountryPillarDashboardResponseDto } from 'src/app/core/models/AiCountryPillarDashboardResponseDto';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AHI_CHART, ahiScoreColor, AHI_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-theme';
 
 
 
@@ -37,6 +38,7 @@ export type ApexChartOptions = {
   yaxis: ApexYAxis;
   stroke: ApexStroke;
   tooltip: ApexTooltip;
+  colors:any;
   dataLabels: ApexDataLabels;
 };
 export type PillarChartOptions = {
@@ -175,8 +177,8 @@ export class AnalystDashboardComponent implements OnInit {
   }
   getCountryLineChartOptions(countriesHistory: GetCountriesSubmitionHistoryResponseDto[]) {
 
-    const evaluationColor = "#61615a";
-    const aiColor = "#c0c097";
+    const evaluationColor = AHI_CHART.lineEvaluation;
+    const aiColor = AHI_CHART.lineAi;
 
     const categories = countriesHistory.map(x => x.countryName);
     const evaluationSeries = countriesHistory.map(x => x.scoreProgress ?? 0);
@@ -231,10 +233,12 @@ export class AnalystDashboardComponent implements OnInit {
           borderRadius: 5,
           padding: 6,
           borderWidth: 1,
-          borderColor: "#e1ebd1",
+          borderColor: AHI_CHART.border,
           opacity: 0.95
         }
       },
+
+      colors: [evaluationColor, aiColor],
 
       xaxis: {
         categories,
@@ -255,30 +259,31 @@ export class AnalystDashboardComponent implements OnInit {
       },
 
       tooltip: {
+        theme: 'light',
         custom: ({ dataPointIndex }) => {
           const d = countriesHistory[dataPointIndex];
           if (!d) return "";
 
           return `
-          <div style="padding:10px; font-size:12px;">
-            <div style="font-weight:600; margin-bottom:6px;">
+          <div style="padding:14px 16px; min-width:220px; font-size:12px; font-family:Poppins,sans-serif; background:#fff; border-radius:12px; box-shadow:${AHI_CHART.tooltipShadow}; border-left:4px solid ${AHI_CHART.primary};">
+            <div style="font-weight:700; margin-bottom:10px; color:${AHI_CHART.primary}; font-size:14px;">
               ${d.countryName}
             </div>
-            <div style="margin-top:6px; color:#666;">
-              Total Answered: ${d.ansQuestion}
+            <div style="margin-bottom:8px; color:${AHI_CHART.textMuted};">
+              Total Answered: <b style="color:${AHI_CHART.text}">${d.ansQuestion}</b>
             </div>
 
-            <div style="display:flex; align-items:center; gap:6px;">
-              <span style="width:8px; height:8px; background:${evaluationColor}; border-radius:50%;"></span>
-              Evaluation: <b>${(d.scoreProgress ?? 0).toFixed(1)}</b>
+            <div style="display:flex; align-items:center; gap:8px; margin:6px 0; padding:6px 8px; background:rgba(0,109,119,0.06); border-radius:8px;">
+              <span style="width:10px; height:10px; background:${evaluationColor}; border-radius:50%; box-shadow:0 0 0 2px ${evaluationColor}33;"></span>
+              <span style="color:${AHI_CHART.textMuted}">Evaluation:</span>
+              <b style="margin-left:auto; color:${AHI_CHART.text}">${(d.scoreProgress ?? 0).toFixed(1)}</b>
             </div>
 
-            <div style="display:flex; align-items:center; gap:6px; margin-top:4px;">
-              <span style="width:8px; height:8px; background:${aiColor}; border-radius:50%;"></span>
-              AI Score: <b>${(d.aiScore ?? 0).toFixed(1)}</b>
+            <div style="display:flex; align-items:center; gap:8px; margin:6px 0; padding:6px 8px; background:rgba(168,224,99,0.12); border-radius:8px;">
+              <span style="width:10px; height:10px; background:${aiColor}; border-radius:50%; box-shadow:0 0 0 2px ${aiColor}44;"></span>
+              <span style="color:${AHI_CHART.textMuted}">AI Score:</span>
+              <b style="margin-left:auto; color:${AHI_CHART.text}">${(d.aiScore ?? 0).toFixed(1)}</b>
             </div>
-
-            
           </div>
         `;
         }
@@ -324,7 +329,7 @@ export class AnalystDashboardComponent implements OnInit {
           hollow: {
             margin: 0,
             size: "40%",
-            background: "#25453f0d",
+            background: AHI_CHART.hollow,
             image: undefined,
             position: "front",
           },
@@ -351,14 +356,7 @@ export class AnalystDashboardComponent implements OnInit {
           },
         },
       },
-      colors: [
-        "#002147",
-        "#C2DBF5",
-        "#006D77",
-        "#6C8FB5",
-        "#77BD3E",
-        "#5AA52F"
-      ],
+      colors: [...AHI_CHART.radialBar],
       labels: [
         "Total",
         "Manual Active",
@@ -454,39 +452,24 @@ export class AnalystDashboardComponent implements OnInit {
       stroke: {
         curve: 'smooth',
         width: 3,
-        colors: ['#6C8FB5', '#006D77']
+        colors: [AHI_CHART.primary, AHI_CHART.secondary],
       },
 
       fill: {
         type: 'gradient',
         gradient: {
           shadeIntensity: 1,
-          opacityFrom: 0.7,
-          opacityTo: 0.2,
-          stops: [0, 90, 100],
-          colorStops: [
-            {
-              offset: 0,
-              color: '#6C8FB5',
-              opacity: 0.8
-            },
-            {
-              offset: 50,
-              color: '#6C8FB5',
-              opacity: 0.5
-            },
-            {
-              offset: 100,
-              color: '#6C8FB5',
-              opacity: 0.2
-            }
-          ]
+          opacityFrom: 0.55,
+          opacityTo: 0.06,
+          stops: [0, 85, 100],
         }
       },
 
+      colors: [AHI_CHART.primary, AHI_CHART.secondary],
+
       markers: {
         size: data.map(p => 4),
-        colors: data.map(p => this.PillarColorByScore(p.aiValue)),
+        colors: data.map(p => ahiScoreColor(p.aiValue)),
         strokeColors: '#fff',
         strokeWidth: 2,
         hover: {
@@ -538,8 +521,7 @@ export class AnalystDashboardComponent implements OnInit {
       },
 
       grid: {
-        borderColor: '#e5e7eb',
-        strokeDashArray: 4,
+        ...AHI_AXIS_STYLE.grid,
         xaxis: {
           lines: { show: false }
         },
@@ -550,11 +532,12 @@ export class AnalystDashboardComponent implements OnInit {
 
       tooltip: {
         enabled: true,
+        theme: 'light',
         custom: ({ dataPointIndex }) => {
           const pillar = data[dataPointIndex];
 
-          const progressColor = this.PillarColorByScore(pillar.aiValue);
-          const evaluatorProgressColor = this.PillarColorByScore(pillar.evaluationValue);
+          const progressColor = ahiScoreColor(pillar.aiValue);
+          const evaluatorProgressColor = ahiScoreColor(pillar.evaluationValue);
           const progressPercent = pillar.aiValue ?? 0;
           const evaluatorProgressPercent = pillar.evaluationValue ?? 0;
           const avgScore = ((progressPercent + evaluatorProgressPercent) / 2);
@@ -574,8 +557,8 @@ export class AnalystDashboardComponent implements OnInit {
             background: #ffffff;
             border-radius: 14px;
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
-            border-left: 4px solid ${progressColor};
-            font-family: 'Inter', system-ui, sans-serif;
+            border-left: 4px solid ${AHI_CHART.primary};
+            font-family: 'Poppins', system-ui, sans-serif;
             position: relative;
             overflow: hidden;
           ">
@@ -604,7 +587,7 @@ export class AnalystDashboardComponent implements OnInit {
                   <div style="
                     font-weight: 700;
                     font-size: 16px;
-                    color: #111827;
+                    color: ${AHI_CHART.text};
                     margin-bottom: 6px;
                   ">
                     ${pillar.pillarName}
@@ -768,7 +751,7 @@ export class AnalystDashboardComponent implements OnInit {
                   <div style="
                     font-size: 13px;
                     font-weight: 700;
-                    color: #111827;
+                    color: ${AHI_CHART.text};
                   ">
                    ${avgScore.toFixed(0)}
                   </div>
@@ -794,26 +777,7 @@ export class AnalystDashboardComponent implements OnInit {
   }
 
   PillarColorByScore(score: any): string {
-    const colors = [
-      "#E3ECF7", // very light blue
-      "#C9DBF0",
-      "#AFC9E9",
-      "#95B8E2",
-      "#7BA6DB",
-      "#6195D4",
-      "#4A7FC2",
-      "#345FA3",
-      "#1F3F7A",
-      "#0D2B4D"  // deep navy (highest)
-    ];
-
-    if (score === null || score === undefined || isNaN(score)) {
-      return "#E0E0E0"; // neutral grey
-    }
-
-    const safeScore = Math.min(Math.max(score, 0), 100);
-    const index = Math.min(Math.floor(safeScore / 10), colors.length - 1);
-    return colors[index];
+    return ahiScoreColor(score);
   }
 
   buildUniqueCategories(data: { pillarName: string }[]): string[] {

@@ -471,12 +471,12 @@ export class ChatService {
   // Questions for a single country
   countryQuickQuestions = [
     {
-      label: 'Peace summary',
-      question: 'Summarize the recent peace progress and overall stability of this country.'
+      label: 'Health summary',
+      question: 'Summarize the recent health progress and overall stability of this country.'
     },
     {
-      label: 'Peace initiatives',
-      question: 'What major peace initiatives or diplomatic efforts are currently taking place in this country?'
+      label: 'health initiatives',
+      question: 'What major health initiatives or diplomatic efforts are currently taking place in this country?'
     },
     {
       label: 'Security risks',
@@ -484,31 +484,31 @@ export class ChatService {
     },
     {
       label: 'Recommendations',
-      question: 'What recommendations can improve peace, security, and stability in this country?'
+      question: 'What recommendations can improve health, security, and stability in this country?'
     },
     {
       label: 'Recent improvements',
-      question: 'What recent improvements have been observed in this country’s peace and stability indicators?'
+      question: 'What recent improvements have been observed in this country’s health and stability indicators?'
     },
     {
       label: 'Risk factors',
       question: 'What are the biggest political, social, or economic risks impacting this country?'
     },
     {
-      label: 'Peace trends',
-      question: 'What are the latest peace trends and international cooperation efforts related to this country?'
+      label: 'health trends',
+      question: 'What are the latest health trends and international cooperation efforts related to this country?'
     }
   ];
 
   // Questions for all countries globally
   globalQuickQuestions = [
     {
-      label: 'Peace summary',
-      question: 'Summarize the peace across all countries in recent days.'
+      label: 'health summary',
+      question: 'Summarize the health across all countries in recent days.'
     },
     {
-      label: 'Peace leaders',
-      question: 'Which countries are showing the strongest peace initiatives recently?'
+      label: 'health leaders',
+      question: 'Which countries are showing the strongest health initiatives recently?'
     },
     {
       label: 'Security risks',
@@ -516,19 +516,19 @@ export class ChatService {
     },
     {
       label: 'Recommendations',
-      question: 'What are the key recommendations for enhancing global peace and stability?'
+      question: 'What are the key recommendations for enhancing global health and stability?'
     },
     {
       label: 'Improved countries',
-      question: 'Which nations have experienced the most significant improvement in peace indicators recently?'
+      question: 'Which nations have experienced the most significant improvement in health indicators recently?'
     },
     {
       label: 'Risk countries',
       question: 'Which countries are facing the highest conflict or instability risks?'
     },
     {
-      label: 'Peace trends',
-      question: 'What are the latest global peace trends and international cooperation efforts?'
+      label: 'health trends',
+      question: 'What are the latest global health trends and international cooperation efforts?'
     }
   ];
 }

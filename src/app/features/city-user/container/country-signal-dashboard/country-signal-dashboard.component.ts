@@ -22,6 +22,7 @@ import {
   StressNarrativeDto,
   FiveLevelInterpretationDto,
 } from "src/app/core/models/CountrySignalDashboardDto";
+import { AHI_CHART, AHI_AXIS_STYLE } from "src/app/core/constants/ahi-chart-theme";
 import { PillarsVM } from "src/app/core/models/PillersVM";
 import { ToasterService } from "src/app/core/services/toaster.service";
 import { CommonService } from "src/app/core/services/common.service";
@@ -40,6 +41,7 @@ export type EarlyWarningChartOptions = {
   dataLabels: ApexDataLabels;
   legend: ApexLegend;
   grid: ApexGrid;
+  markers:any;
   colors: string[];
 };
 
@@ -550,18 +552,42 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
         height: 320,
         toolbar: { show: false },
         zoom: { enabled: false },
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 700,
+        },
       },
       stroke: {
         curve: "smooth",
         width: 3,
       },
+      markers: {
+        size: 4,
+        strokeWidth: 2,
+        strokeColors: '#fff',
+        hover: { size: 7, sizeOffset: 2 },
+      },
       xaxis: {
         categories: categories.map((x) => `${x}`),
+        labels: {
+          style: AHI_AXIS_STYLE.xaxisLabels.style,
+        },
+        axisBorder: { color: AHI_CHART.border },
+        axisTicks: { color: AHI_CHART.border },
       },
       yaxis: {
         min: 0,
         max: 100,
         tickAmount: 5,
+        title: {
+          text: 'Signal Index',
+          style: AHI_AXIS_STYLE.yaxisTitle.style,
+        },
+        labels: {
+          style: AHI_AXIS_STYLE.yaxisLabels.style,
+          formatter: (v: number) => `${Math.round(v)}`,
+        },
       },
       dataLabels: {
         enabled: false,
@@ -569,14 +595,47 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
       legend: {
         position: "top",
         horizontalAlign: "left",
+        fontSize: '13px',
+        fontWeight: 600,
+        labels: {
+          colors: AHI_CHART.textMuted,
+        },
+        markers: {
+          width: 10,
+          height: 10,
+          radius: 10,
+        },
       },
       grid: {
-        borderColor: "#e5ebe9",
+        borderColor: AHI_CHART.grid,
+        strokeDashArray: 4,
       },
-      colors: ["#006D77", "#77BD3E", "#14416c", "#9ad76c"],
+      colors: series.map((_, i) => AHI_CHART.trendLines[i % AHI_CHART.trendLines.length]),
       tooltip: {
-        y: {
-          formatter: (v?: number) => (typeof v === "number" ? `${v.toFixed(1)}` : "0.0"),
+        theme: 'light',
+        shared: true,
+        intersect: false,
+        followCursor: true,
+        custom: ({ series: chartSeries, dataPointIndex, w }: any) => {
+          const year = w.globals.categoryLabels[dataPointIndex] ?? '';
+          let rows = '';
+          chartSeries.forEach((s: number[], i: number) => {
+            const val = s[dataPointIndex];
+            if (val == null || Number.isNaN(val)) return;
+            const color = w.globals.colors[i];
+            const name = w.globals.seriesNames[i];
+            rows += `
+              <div style="display:flex;align-items:center;gap:10px;margin:6px 0;padding:6px 8px;border-radius:8px;background:${i % 2 === 0 ? 'rgba(0,109,119,0.05)' : 'rgba(168,224,99,0.1)'};">
+                <span style="width:10px;height:10px;border-radius:50%;background:${color};box-shadow:0 0 0 2px ${color}44;flex-shrink:0;"></span>
+                <span style="color:${AHI_CHART.textMuted};font-size:12px;flex:1;">${name}</span>
+                <b style="color:${AHI_CHART.text};font-size:13px;">${Number(val).toFixed(1)}</b>
+              </div>`;
+          });
+          return `
+            <div style="padding:14px 16px;min-width:200px;background:#fff;border-radius:12px;box-shadow:${AHI_CHART.tooltipShadow};border-left:4px solid ${AHI_CHART.primary};font-family:Poppins,sans-serif;">
+              <div style="font-weight:700;color:${AHI_CHART.primary};margin-bottom:10px;font-size:13px;">Year ${year}</div>
+              ${rows}
+            </div>`;
         },
       },
     };

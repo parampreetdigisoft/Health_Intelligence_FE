@@ -100,7 +100,7 @@
 
 .compare_city_table tbody td.action_td table .action_icons span {
     display: inline-block;
-    background-color: #14416c;
+    background-color: #006D77;
     padding: 8px 10px;
     white-space: nowrap;
     color: #ffffff;
@@ -197,7 +197,7 @@
 }
 p.btn_spinner {
     display: inline-block;
-    background-color: #14416c;
+    background-color: #006D77;
     padding: 8px 10px;
     white-space: nowrap;
     color: #ffffff;
@@ -241,7 +241,7 @@ p.btn_spinner {
 }
 .research_date.just-now {
   background: linear-gradient(135deg, #e8f0ff, #d9e6ff);
-  color: #204ecf;
+  color: #09312b;
   animation: glow 1.8s ease-in-out infinite;
 }
 
