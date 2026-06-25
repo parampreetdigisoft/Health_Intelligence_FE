@@ -1,11 +1,11 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <section class="vui_before_login">
-        <div class="vui_before_login_cards">
+    <section class="vui_before_login vui_auth_page">
+        <div class="vui_before_login_cards ahi_auth_card ahi_auth_card--narrow">
             <figure class="vui_logo">
-                <a href=""><img src="assets/images/Logo-health-large.png" alt=""></a>
+                <a><img src="assets/images/Logo-health-large.png" alt="Africa Health Intelligence"></a>
             </figure>
-            <h4 class="before_login_card_head text-center">Welcome {{role =='3' ? 'to the Africa Health Intelligence System — your health intelligence copilot.': ''}} </h4>
-            <p class="before_login_card_desc text-center">Log In to your account.</p>
+            <h4 class="before_login_card_head text-center">Welcome {{role =='3' ? 'to the Africa Health Intelligence System' : ''}}</h4>
+            <p class="before_login_card_desc text-center">{{role =='3' ? 'Your health intelligence copilot for national insights.' : 'Log in to your account.'}}</p>
             <div class="input_field">
                 <label for="">Username *</label>
                 <input type="text" formControlName="email" placeholder="Enter Username" class="form-control">
@@ -76,17 +76,16 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <!-- <a href="auth/forgot-password" class="vui_reset_pass_link">Forgot Password</a> -->
-                    <a [routerLink]="['/auth/forgot-password']" class="vui_reset_pass_link" style="color: rgb(129, 129, 235);">Forgot Password?</a>
+                    <a [routerLink]="['/auth/forgot-password']" class="vui_reset_pass_link">Forgot Password?</a>
                     
                 </div>
             </div>
             <button type="submit" class="common_button w-100 mt-4" [disabled]="loading">Log In
                 <span *ngIf="loading" class="spinner-border spinner-border-sm ms-2"></span>
             </button>
-            <!-- <div class="text-center" *ngIf="role =='3'">
-                <a [routerLink]="['/auth/sign-up']" class="create_new_account vui_reset_pass_link d-inline-block mt-2" style="color: rgb(52, 52, 236);">Create Account</a>
-            </div> -->
+            <div class="text-center" *ngIf="role =='3'">
+                <a [routerLink]="['/auth/sign-up']" class="create_new_account vui_reset_pass_link d-inline-block mt-2">Create Account</a>
+            </div>
         </div>
     </section>
 </form>

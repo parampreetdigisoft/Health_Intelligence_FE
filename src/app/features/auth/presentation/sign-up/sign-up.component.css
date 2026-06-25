@@ -1,73 +1,315 @@
-.form-control:focus {
-  border-color: #e4e4e4 !important;
-  box-shadow: none !important;
-}
-
-.error-msg {
-  color: red;
-  font-size: 12px;
-  margin-top: 2px;
-}
-
-
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
   display: none;
 }
 
-.input_field {
-  margin-bottom: 15px !important;
+/* ── Sign-up: restore full design, slight spacing only ───────── */
+
+.ahi_signup_brand_name {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(168, 224, 99, 0.95);
+  margin-bottom: 6px;
 }
 
+.ahi_aevum_chip {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(168, 224, 99, 0.35);
+  backdrop-filter: blur(4px);
+}
 
-.or {
-  border-top: 1px solid var(--Border-Color);
-  text-align: center;
-  margin-top: 20px;
+.ahi_aevum_chip > i {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(168, 224, 99, 0.35), rgba(76, 175, 80, 0.25));
+  color: #e8ffc4;
+  font-size: 19px;
+  display: grid;
+  place-items: center;
+}
+
+.ahi_aevum_chip strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.ahi_aevum_chip span {
+  display: block;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.78);
+  margin-top: 2px;
+}
+
+.ahi_signup_form_head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8efef;
+}
+
+.ahi_signup_form_head_icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(0, 109, 119, 0.12), rgba(168, 224, 99, 0.2));
+  color: #006D77;
+  font-size: 20px;
+  display: grid;
+  place-items: center;
+}
+
+.ahi_signup_form_head h4 {
+  margin-bottom: 4px !important;
+}
+
+.ahi_signup_form_head .ahi_aevum_tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(0, 109, 119, 0.08);
+  color: #006D77;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ahi_signup_form_head .ahi_aevum_tag i {
+  font-size: 12px;
+  color: #4CAF50;
+}
+
+.ahi_signup_form_head .before_login_card_desc {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+/* Label icons */
+.ahi_form_label {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #3d5255 !important;
+}
+
+.ahi_form_label > i {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(0, 109, 119, 0.12), rgba(168, 224, 99, 0.18));
+  color: #006D77;
+  font-size: 13px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.ahi_form_label > span {
+  color: #006D77;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ahi_form_label--compact {
+  margin-bottom: 6px !important;
+}
+
+/* 2FA + captcha row */
+.ahi_security_row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 16px 24px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #f8fbfb 0%, #ffffff 100%);
+  border: 1px solid #dce8e9;
+}
+
+.ahi_2fa_inline {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .ahi_2fa_inline {
+    border-right: 1px solid #e8efef;
+    padding-right: 24px;
+  }
+}
+
+.ahi_2fa_inline .form-check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 40px;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.ahi_2fa_inline .form-check-input {
+  flex-shrink: 0;
+  margin: 0;
+  float: none;
+}
+
+.ahi_2fa_inline .form-check-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3d5255;
+  cursor: pointer;
+  line-height: 1.3;
+}
+
+.ahi_2fa_inline .form-check-label i {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: rgba(0, 109, 119, 0.1);
+  color: #006D77;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.ahi_2fa_inline .auth_text {
+  font-size: 11px;
+  margin-top: 6px !important;
+  padding-left: 2px;
+}
+
+.ahi_2fa_inline .auth_text i {
+  margin-right: 4px;
+  color: #006D77;
+}
+
+.ahi_captcha_inline {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.ahi_captcha_box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 72px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px dashed rgba(0, 109, 119, 0.22);
+}
+
+.ahi_captcha_box .cus_capcha {
+  transform: scale(0.9);
+  transform-origin: left center;
+}
+
+.cus_capcha {
+  transform-origin: center;
+}
+
+.ahi_signup_social .face_button i {
+  margin-right: 6px;
+}
+
+/* Slight height trim — keeps full content */
+.vui_before_signup {
+  padding: 20px 16px;
+}
+
+.ahi_auth_shell--signup {
+  min-height: unset !important;
+}
+
+.vui_before_signup .ahi_auth_brand {
+  padding: 32px 34px;
+}
+
+.vui_before_signup .ahi_auth_brand .vui_logo {
   margin-bottom: 20px;
 }
 
+.vui_before_signup .ahi_auth_brand .vui_logo img {
+  width: 200px;
+}
 
-.or span {
-  border: 1px solid var(--Border-Color);
-  border-radius: 5px;
-  height: 26px;
-  width: auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 500;
-  color: #7c7c7c;
-  margin-top: -15px;
-  z-index: 9;
-  position: relative;
-  top: -12px;
-  background-color: #ffffff;
+.vui_before_signup .ahi_auth_brand_title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.vui_before_signup .ahi_auth_brand_desc {
   font-size: 14px;
-  padding: 0 10px;
+  margin-bottom: 18px;
+  line-height: 1.45;
 }
 
-.face_button {
+.vui_before_signup .ahi_auth_features {
+  gap: 10px;
+}
 
-  font-size: 13px;
-  font-weight: 500;
-  height: 38px;
-  background-image: url("data:image/svg+xml,%3Csvg fill='%23ffffff' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' stroke='%23ffffff'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Cpath d='M12 2.03998C6.5 2.03998 2 6.52998 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.84998C10.44 7.33998 11.93 5.95998 14.22 5.95998C15.31 5.95998 16.45 6.14998 16.45 6.14998V8.61998H15.19C13.95 8.61998 13.56 9.38998 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96C15.9164 21.5878 18.0622 20.3855 19.6099 18.57C21.1576 16.7546 22.0054 14.4456 22 12.06C22 6.52998 17.5 2.03998 12 2.03998Z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
-  background-size: 20px;
-  background-repeat: no-repeat;
-  background-position: center left 10px;
+.vui_before_signup .ahi_auth_card--signup {
+  padding: 30px 34px !important;
 }
-.form-switch label {
-    font-size: 13px;
+
+.vui_before_signup .input_field {
+  margin-bottom: 12px !important;
 }
-.auth_text{
-    font-size: 11px;
+
+.vui_before_signup .input_field .form-control {
+  min-height: 42px !important;
 }
-.form-switch input[type="checkbox"]{
-  box-shadow: none;
-  outline: none;
-}
-.form-switch input[type="checkbox"]:checked {
-    background-color: #006D77 !important;
-    border-color: #006D77;
+
+@media (max-width: 900px) {
+  .ahi_security_row {
+    flex-direction: column;
+  }
+
+  .ahi_2fa_inline {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid #e8efef;
+    padding-bottom: 12px;
+  }
+
+  .ahi_captcha_box {
+    justify-content: center;
+  }
+
+  .ahi_captcha_box .cus_capcha {
+    transform-origin: center center;
+  }
 }

@@ -112,9 +112,18 @@ export class HttpService {
 
   getQueryString = (obj: any) => {
     const qp = new URLSearchParams();
-    Object.keys(obj).forEach(el => {
-      qp.set(el, obj[el]);
+
+    Object.keys(obj).forEach(key => {
+      const value = obj[key];
+
+      if (Array.isArray(value)) {
+        value.forEach(v => qp.append(key, v.toString()));
+      } else if (value !== null && value !== undefined) {
+        qp.append(key, value.toString());
+      }
     });
+
     return '?' + qp.toString();
   }
+  
 }

@@ -37,6 +37,7 @@ export interface GetAssessmentQuestionResponseDto {
 export interface AssessmentWithProgressVM {
   assessmentID: number;
   score: number;
+  totalPillar: number;
   totalAnsPillar: number;
   totalQuestion: number;
   totalAnsQuestion: number;

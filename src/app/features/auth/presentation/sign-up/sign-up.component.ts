@@ -21,6 +21,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
   externalLogin = signal<CountryUserSignUpDto | null>(null);
   countries = signal<CountryVM[]>([]);
   captchaToken: string | null = null;
+  confirmPasswordVisible = false;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private toasterService: ToasterService,private cdr: ChangeDetectorRef) {
     this.signupForm = this.fb.group({
