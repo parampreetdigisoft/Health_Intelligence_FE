@@ -22,10 +22,10 @@ export class AddUpdateQuestionComponent implements OnChanges, OnInit {
   isSubmitted = false;
   alertMsg = '';
   scoreOptions = [
-    { scoreValue: 4 },
-    { scoreValue: 3 },
-    { scoreValue: 2 },
-    { scoreValue: 1 },
+    { scoreValue: 100 },
+    { scoreValue: 75 },
+    { scoreValue: 50 },
+    { scoreValue: 25 },
     { scoreValue: 0 }
   ];
   excelData: any[] = [];
@@ -121,10 +121,10 @@ export class AddUpdateQuestionComponent implements OnChanges, OnInit {
       QuestionText: "Enter Question",
       PillarName: "Enter Pillar",
       Option1Text: "Enter Option 1", Option1Score: "0",
-      Option2Text: "Enter Option 2", Option2Score: "1",
-      Option3Text: "Enter Option 3", Option3Score: "2",
-      Option4Text: "Enter Option 4", Option4Score: "3",
-      Option5Text: "Enter Option 5", Option5Score: "4"
+      Option2Text: "Enter Option 2", Option2Score: "25",
+      Option3Text: "Enter Option 3", Option3Score: "50",
+      Option4Text: "Enter Option 4", Option4Score: "75",
+      Option5Text: "Enter Option 5", Option5Score: "100"
     };
 
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([sampleRow], { header: headers });

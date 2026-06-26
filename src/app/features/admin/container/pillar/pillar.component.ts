@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { AdminService } from "../../admin.service";
 import { ToasterService } from "src/app/core/services/toaster.service";
 import { PillarsVM } from "src/app/core/models/PillersVM";
+import { AnalyticalLayerResponseDto } from "src/app/core/models/GetAnalyticalLayerResultDto";
 import { environment } from "src/environments/environment";
 declare var bootstrap: any;
 
@@ -13,8 +14,10 @@ declare var bootstrap: any;
 export class PillarComponent implements OnInit, OnDestroy {
   pillars: PillarsVM[] = [];
   selectedPillar: PillarsVM | null = null;
+  kpis: AnalyticalLayerResponseDto[] = [];
   loading: boolean = false;
   isLoader: boolean = false;
+  isOpendialog: boolean = false;
   urlBase = environment.apiUrl;
   constructor(
     private adminService: AdminService,
@@ -23,7 +26,17 @@ export class PillarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.GetAllPillars();
+    this.GetAllKpi();
   }
+
+  GetAllKpi() {
+    this.adminService.GetAllKpi().subscribe((res) => {
+      if (res.succeeded) {
+        this.kpis = res.result ?? [];
+      }
+    });
+  }
+
   GetAllPillars() {
     this.pillars = [];
     this.isLoader = true;
@@ -41,33 +54,64 @@ export class PillarComponent implements OnInit, OnDestroy {
     const temp = document.createElement("div");
     temp.innerHTML = html;
     const text = temp.innerText || temp.textContent || "";
-    return text.split(/\s+/).length > 40; // approx 4 lines
+    return text.split(/\s+/).length > 40;
   }
 
   addUpdatePillar(piller: PillarsVM | any) {
-    if (
-      !this.selectedPillar ||
-      piller.pillarID == 0 ||
-      piller.pillarID == null
-    ) {
-      this.toaster.showWarning("No selected pillar");
+    if (!piller) {
       return;
     }
-    if (this.selectedPillar.pillarName.length < 5) {
-      this.toaster.showError("pillarName cannot be to short");
+
+    if (!piller.pillarName || piller.pillarName.trim().length < 5) {
+      this.toaster.showError("Pillar name must be at least 5 characters");
       return;
     }
-    this.loading = true;
+
     const formData = new FormData();
     formData.append("pillarName", piller.pillarName);
+    formData.append("pillarCode", piller.pillarCode ?? "");
+    formData.append("displayOrder", (piller.displayOrder ?? 0).toString());
     formData.append("weight", piller.weight.toString());
     formData.append("reliability", piller.reliability.toString());
     formData.append("description", piller.description);
-    formData.append("displayOrder", (piller.displayOrder ?? 0).toString());
 
     if (piller.imageFile) {
       formData.append("imageFile", piller.imageFile, piller.imageFile.name);
     }
+
+    const isAdd = !piller.pillarID || piller.pillarID === 0;
+
+    if (isAdd) {
+      formData.append("kpiLayerIds", (piller.kpiLayerIds ?? []).join(","));
+
+      this.loading = true;
+      this.adminService.addPillar(formData).subscribe({
+        next: (res) => {
+          this.closeModal();
+          if (res.succeeded) {
+            this.toaster.showSuccess(
+              res.messages?.join(", ") || "Pillar created successfully",
+            );
+            this.GetAllPillars();
+          } else {
+            this.toaster.showError(res.errors?.join(", ") || "Failed to create pillar");
+          }
+        },
+        error: () => {
+          this.loading = false;
+          this.toaster.showError("Failed to create pillar");
+        },
+      });
+      return;
+    }
+
+    if (!this.selectedPillar) {
+      this.toaster.showWarning("No selected pillar");
+      return;
+    }
+
+    formData.append("kpiLayerIds", (piller.kpiLayerIds ?? []).join(","));
+    this.loading = true;
     this.adminService
       .editAllPillars(this.selectedPillar.pillarID, formData)
       .subscribe({
@@ -76,14 +120,64 @@ export class PillarComponent implements OnInit, OnDestroy {
           this.toaster.showSuccess("Pillar updated successfully");
           this.GetAllPillars();
         },
-        error: (err) => {
+        error: () => {
+          this.loading = false;
           this.toaster.showError("Failed to update pillar");
         },
       });
   }
 
-  editPillar(piller: PillarsVM) {        
-    this.selectedPillar = piller;    
+  get nextDisplayOrder(): number {
+    if (!this.pillars.length) {
+      return 1;
+    }
+    return Math.max(...this.pillars.map((p) => p.displayOrder ?? 0)) + 1;
+  }
+
+  addPillar() {
+    this.selectedPillar = null;
+    this.openDialog();
+  }
+
+  editPillar(piller: PillarsVM, isOpen: boolean = true) {
+    this.selectedPillar = piller;
+    if (isOpen) {
+      this.openDialog();
+    }
+  }
+
+  deletePillar() {
+    if (this.selectedPillar === null) {
+      this.toaster.showError("No pillar selected for deletion");
+      return;
+    }
+    this.adminService.deletePillar(this.selectedPillar.pillarID).subscribe({
+      next: (res) => {
+        if (res.succeeded) {
+          this.GetAllPillars();
+          this.toaster.showSuccess(res?.messages?.join(", ") || "Pillar deleted successfully");
+        } else {
+          this.toaster.showError(res?.errors?.join(", ") || "Failed to delete pillar");
+        }
+      },
+      error: () => {
+        this.toaster.showError("Failed to delete pillar");
+      },
+    });
+  }
+
+  openDialog() {
+    this.isOpendialog = true;
+    setTimeout(() => {
+      const modalEl = document.getElementById("exampleModal");
+      if (modalEl) {
+        let modalInstance = bootstrap.Modal.getInstance(modalEl);
+        if (!modalInstance) {
+          modalInstance = new bootstrap.Modal(modalEl);
+        }
+        modalInstance.show();
+      }
+    }, 100);
   }
 
   ngOnDestroy(): void {}
@@ -92,18 +186,21 @@ export class PillarComponent implements OnInit, OnDestroy {
     this.loading = false;
     const modalEl = document.getElementById("exampleModal");
     const modalInstance = bootstrap.Modal.getInstance(modalEl);
-    modalInstance.hide();
+    modalInstance?.hide();
+    this.isOpendialog = false;
     setTimeout(() => {
       this.selectedPillar = null;
     }, 100);
   }
+
   decodeHtml(text: string): string {
     const txt = document.createElement("textarea");
     txt.innerHTML = text;
-    return txt.value.replace(/\u00a0/g, " "); // Replace non-breaking space with normal space
+    return txt.value.replace(/\u00a0/g, " ");
   }
 
-   onImgError(event: Event) {
-    (event.target as HTMLImageElement).src = 'assets/images/noImageAvailable.png';
+  onImgError(event: Event) {
+    (event.target as HTMLImageElement).src =
+      "assets/images/noImageAvailable.png";
   }
 }

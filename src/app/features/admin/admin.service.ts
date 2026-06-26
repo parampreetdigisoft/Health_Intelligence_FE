@@ -2,6 +2,7 @@ import { map, Subject, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { CountryVM } from '../../core/models/CountryVM';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
+import { PillarKpiMappingDto } from 'src/app/core/models/PillarKpiMappingDto';
 import { HttpService } from 'src/app/core/http/http.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { ResultResponseDto } from 'src/app/core/models/ResultResponseDto';
@@ -128,6 +129,23 @@ export class AdminService {
       .pipe(map((x) => x as ResultResponseDto<boolean>));
   }
 
+  public addPillar(data: FormData) {
+    return this.http
+      .UploadFile(`Pillar/add`, data)
+      .pipe(map((x) => x as ResultResponseDto<PillarsVM>));
+  }
+
+  public getPillarKpiMappings(pillarId: number) {
+    return this.http
+      .get(`Pillar/${pillarId}/kpiMappings`)
+      .pipe(map((x) => x as ResultResponseDto<PillarKpiMappingDto[]>));
+  }
+
+  public deletePillar(id: number) {
+    return this.http
+      .delete(`Pillar/` + id)
+      .pipe(map((x) => x as ResultResponseDto<boolean>));
+  }
 
   public getResponsesByUserId(request: GetCountryPillarHistoryRequestNewDto) {
     return this.http.post(`Pillar/GetResponsesByUserId`, request).pipe(map(x => x as PaginationResponse<PillarsHistoryResponse>));
