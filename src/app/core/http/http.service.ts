@@ -40,13 +40,13 @@ export class HttpService {
     );
   }
   public getExternalApi(url: string, params?: any) {
-  return this.http.get(url, {
-    headers: this.headers,
-    params: params
-  }).pipe(
-    catchError(this.handleError)
-  );
-}
+    return this.http.get(url, {
+      headers: this.headers,
+      params: params
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
   public getWithQueryParams(url: string, params: any = null) {
     const options = { headers: this.headers, params: null, };
     if (params) {
@@ -84,11 +84,11 @@ export class HttpService {
       catchError(this.handleError)
     );
   }
-  public ImportFile(url: string,params:any = null) {
-    let query =params ? this.getQueryString(params) :'';
-    url =`${this.urlBase}/${url}${query}`;
-    return this.http.get(url ,{
-      responseType: 'blob' 
+  public ImportFile(url: string, params: any = null) {
+    let query = params ? this.getQueryString(params) : '';
+    url = `${this.urlBase}/${url}${query}`;
+    return this.http.get(url, {
+      responseType: 'blob'
     }).pipe(
       catchError(this.handleError)
     );
@@ -125,5 +125,5 @@ export class HttpService {
 
     return '?' + qp.toString();
   }
-  
+
 }

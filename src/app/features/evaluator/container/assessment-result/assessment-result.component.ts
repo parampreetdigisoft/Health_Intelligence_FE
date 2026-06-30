@@ -28,6 +28,8 @@ export class AssessmentResultComponent implements OnInit {
   currentPage: number = 1;
   countries: CountryVM[] | null = [];
   isLoader: boolean = false;
+  selectedAssessment!:GetAssessmentResponse;
+
   constructor(
     private evaluatorService: EvaluatorService,
     public commonService: CommonService,
@@ -88,7 +90,13 @@ export class AssessmentResultComponent implements OnInit {
       });
   }
 
+  selectAssessment(assessment: GetAssessmentResponse){
+    this.selectedAssessment = assessment;
+  }
+
   assessmentPhaseAction(assessment: GetAssessmentResponse) {
+    if(!assessment) return;
+    
     let userRole = this.userService.userInfo.role;
     switch (assessment.assessmentPhase) {
       case AssessmentPhase.InProgress: {

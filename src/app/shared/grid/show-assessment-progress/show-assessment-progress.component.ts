@@ -47,8 +47,8 @@ export class ShowAssessmentProgressComponent implements OnInit, OnChanges, OnDes
     this.isShow = true;
     if (this.router.url.includes('assessment')) {
       this.getoptions();
-    }else{
-      this.isShow= false;
+    } else {
+      this.isShow = false;
     }
   }
   ngOnDestroy(): void {

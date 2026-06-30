@@ -84,17 +84,17 @@ img, svg
 }
 
 .common_button{
-    border-radius: 20px !important;
+    border-radius: 12px !important;
     background: var(--AHI-Gradient);
     padding: 9px 20px;
     text-align: center;
     border: none;
     color: var(--White-Color);
-font-size: 14px;
-font-style: normal;
-font-weight: 600;
-line-height: 20px;
-transition: 0.3s;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    transition: 0.3s;
     display: flex;
     grid-gap: 8px;
 	justify-content: center;
