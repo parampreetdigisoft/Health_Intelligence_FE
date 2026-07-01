@@ -105,4 +105,9 @@ export class CountryUserService {
     return this.http.getWithQueryParams(`CountryUser/getResilienceScorecard`, { countryID, year })
       .pipe(map(x => x as ResultResponseDto<ResilienceScorecardDto>));
   }
+  
+  public exportCompareCountriesCountryUsers(params: any) {
+    return this.http.ImportFile(`CountryUser/ExportCompareCountries`, params);
+  }
+
 }

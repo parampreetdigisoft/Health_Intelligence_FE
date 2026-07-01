@@ -1,11 +1,7 @@
-import { Component, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, Output, SimpleChanges } from '@angular/core';
 import { environment } from 'src/environments/environment';
-
-
 import { CommonModule } from '@angular/common';
 import { TypingTextComponent } from 'src/app/shared/standAlone/typing-text/typing-text.component';
-
-import { AiCountryPillarVM } from 'src/app/core/models/aiVm/AiCountryPillarResponseDto';
 import { CircularScoreComponent } from 'src/app/shared/standAlone/circular-score/circular-score.component';
 import { SparklineScoreComponent } from 'src/app/shared/standAlone/sparkline-score/sparkline-score.component';
 import { AITrustLevelVM } from 'src/app/core/models/aiVm/AITrustLevelVM';
@@ -22,7 +18,7 @@ import { AIEstimatedQuestionScoreDto } from 'src/app/core/models/aiVm/AIEstimate
 })
 export class ViewAiQuestionDetailsComponent {
   @Input() question?: AIEstimatedQuestionScoreDto | null = null;
-  @Input() aiTrustLevels: AITrustLevelVM[]=[];
+  @Input() aiTrustLevels: AITrustLevelVM[] = [];
   @Output() closeSidebar?: boolean | null = null;
   urlBase = environment.apiUrl;
 
@@ -40,5 +36,9 @@ export class ViewAiQuestionDetailsComponent {
   getLabelDesById(id: number) {
     let tl = this.aiTrustLevels?.find(x => x.trustValue == id)
     return (tl?.trustDescription ?? tl?.trustName) ?? 'NA'
+  }
+  discrepancy(question: any): number {
+    let discrepancy = Math.abs((question?.evaluatorScore ?? 0) - (question?.aiScore ?? 0));
+    return discrepancy;
   }
 }

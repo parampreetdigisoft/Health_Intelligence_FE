@@ -159,9 +159,14 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
       },
       error: () => {
         this.isLoader = false;
-        this.toaster.showError("There is an Error Please Try later")
+        this.toaster.showError("There is an error please try later")
       }
     })
+  }
+
+  discrepancy(question: any): number {
+    let discrepancy = Math.abs((question?.evaluatorScore ?? 0) - (question?.aiScore ?? 0));
+    return discrepancy;
   }
 
   viewDetails(country: AIEstimatedQuestionScoreDto) {
@@ -177,15 +182,15 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
 
     offcanvas.show();
   }
-   customSearchFn(term: string, item: any) {    
+  customSearchFn(term: string, item: any) {
     term = term.toLowerCase();
     return (
       item.countryName?.toLowerCase().includes(term) ||
       item.countryAliasName?.toLowerCase().includes(term)
     );
-}
-refresh()
-{
-  this.getAIPillarQuestions(this.currentPage);
-}
+  }
+
+  refresh() {
+    this.getAIPillarQuestions(this.currentPage);
+  }
 }

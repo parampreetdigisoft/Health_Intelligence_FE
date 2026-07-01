@@ -17,7 +17,6 @@ import { CircularScoreComponent } from "src/app/shared/standAlone/circular-score
 import { AiButtonComponent } from "src/app/shared/standAlone/ai-button/ai-button.component";
 import { GetMutiplekpiLayerResultsDto } from "src/app/core/models/aiVm/GetMutiplekpiLayerResultsDto";
 import { GetMutiplekpiLayerRequestDto } from "src/app/core/models/aiVm/GetMutiplekpiLayerRequestDto";
-import { AdminService } from "src/app/features/admin/admin.service";
 import { CompareCountryKpiDetailComponent } from "src/app/shared/standAlone/compare-country-kpi-detail/compare-country-kpi-detail.component";
 declare var bootstrap: any; // 👈 use Bootstrap JS API
 export type ChartOptions = {
@@ -61,12 +60,12 @@ export class KpiComparisionComponent implements OnInit {
   isAiViewEnabled: boolean = false;
   mutipleCountrykpiLayerResults: GetMutiplekpiLayerResultsDto | null = null;
   viewDetailIndex = -1;
+  downloadkpiSpinnerEnable =false;
   constructor(
     private analystService: AnalystService,
     private toaster: ToasterService,
     private userService: UserService,
-    public commonService: CommonService,
-    private adminService:AdminService
+    public commonService: CommonService
   ) {
 
   }
@@ -488,38 +487,4 @@ export class KpiComparisionComponent implements OnInit {
       item.layerName?.toLowerCase().includes(term)
     );
   }
-  exportData() { 
-  if (!this.selectedCountries.length) {
-    this.toaster.showWarning("Please select countries");
-    return;
-  }
-  this.isLoader = true;
-  const params = {
-    countries: this.selectedCountries.join(','),
-    kpis: null,
-    updatedAt: new Date().toISOString()
-  };
-
-  this.adminService.exportCompareCountries(params)
-    .subscribe({
-      next: (res: Blob) => {
-        this.isLoader = false;
-        const url = window.URL.createObjectURL(res);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "Country_Comparison.xlsx";
-        a.click();
-        window.URL.revokeObjectURL(url); // good practice
-      },
-
-      error: (err) => {
-        console.error("Export failed:", err);
-        this.isLoader = false;
-        // Show user-friendly message
-        this.toaster.showError(
-          err?.error?.message || "Failed to export data. Please try again."
-        );
-      }
-    });
-}
 }

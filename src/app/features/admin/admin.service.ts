@@ -251,7 +251,4 @@ export class AdminService {
   public exportCompareCountries(params: any) {
     return this.http.ImportFile(`Kpi/ExportCompareCountries`, params);
   }
-  public exportCompareCountriesCountryUsers(params: any) {
-    return this.http.ImportFile(`CountryUser/ExportCompareCountries`, params);
-  }
 }

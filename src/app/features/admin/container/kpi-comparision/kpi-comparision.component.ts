@@ -61,6 +61,7 @@ export class KpiComparisionComponent implements OnInit {
   isAiViewEnabled: boolean = false;
   mutipleCountrykpiLayerResults: GetMutiplekpiLayerResultsDto | null = null;
   viewDetailIndex = -1;
+  downloadkpiSpinnerEnable =false;
   constructor(
     private adminService: AdminService,
     private toaster: ToasterService,
@@ -497,21 +498,21 @@ export class KpiComparisionComponent implements OnInit {
       updatedAt: new Date().toISOString()
     };
 
+    this.downloadkpiSpinnerEnable = true;
     this.adminService.exportCompareCountries(params)
       .subscribe({
         next: (res: Blob) => {
-          this.isLoader = false;
           const url = window.URL.createObjectURL(res);
           const a = document.createElement("a");
           a.href = url;
           a.download = "Country_Comparison.xlsx";
           a.click();
           window.URL.revokeObjectURL(url); // good practice
+          this.downloadkpiSpinnerEnable = false;
         },
 
         error: (err) => {
-          console.error("Export failed:", err);
-          this.isLoader = false;
+          this.downloadkpiSpinnerEnable = false;
           // Show user-friendly message
           this.toaster.showError(
             err?.error?.message || "Failed to export data. Please try again."

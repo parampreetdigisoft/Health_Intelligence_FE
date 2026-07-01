@@ -17,8 +17,7 @@ import { CountryUserService } from '../../country-user.service';
 import { CountryVM } from 'src/app/core/models/CountryVM';
 import { CommonModule } from '@angular/common';
 import { debounceTime, Subject } from 'rxjs';
-import { AdminService } from 'src/app/features/admin/admin.service';
-declare var bootstrap: any; // 👈 use Bootstrap JS API
+declare var bootstrap: any; 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -59,12 +58,12 @@ export class ComparisonComponent implements OnInit, OnDestroy {
   $kpiChanged = new Subject();
   mutipleCitykpiLayerResults: GetMutiplekpiLayerResultsDto | null = null;
   viewDetailIndex = -1;
+  downloadkpiSpinnerEnable =false;
   constructor(
     private countryUserService: CountryUserService,
     private toaster: ToasterService,
     public commonService: CommonService,
-    private userDataShareService: UserDataShareService,
-    private adminService:AdminService
+    private userDataShareService: UserDataShareService
   ) {
 
   }
@@ -446,17 +445,16 @@ export class ComparisonComponent implements OnInit, OnDestroy {
     this.toaster.showWarning("Please select countries");
     return;
   }
-  this.isLoader = true;
   const params = {
     countries: this.selectedCountries.join(','),
     kpis: null,
     updatedAt: new Date().toISOString()
   };
-
-  this.adminService.exportCompareCountriesCountryUsers(params)
+ this.downloadkpiSpinnerEnable = true;
+  this.countryUserService.exportCompareCountriesCountryUsers(params)
     .subscribe({
       next: (res: Blob) => {
-        this.isLoader = false;
+        this.downloadkpiSpinnerEnable = false;
         const url = window.URL.createObjectURL(res);
         const a = document.createElement("a");
         a.href = url;
@@ -466,9 +464,7 @@ export class ComparisonComponent implements OnInit, OnDestroy {
       },
 
       error: (err) => {
-        console.error("Export failed:", err);
-        this.isLoader = false;
-        // Show user-friendly message
+        this.downloadkpiSpinnerEnable = false;
         this.toaster.showError(
           err?.error?.message || "Failed to export data. Please try again."
         );

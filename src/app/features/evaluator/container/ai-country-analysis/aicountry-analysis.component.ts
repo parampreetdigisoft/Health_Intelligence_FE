@@ -33,7 +33,7 @@ declare var bootstrap: any; // 👈 use Bootstrap JS API
   styleUrl: './aicountry-analysis.component.css'
 })
 export class AICountryAnalaysisComponent implements OnInit, OnDestroy {
-    selectedYear = new Date().getFullYear();
+  selectedYear = new Date().getFullYear();
   urlBase = environment.apiUrl;
   totalRecords: number = 0;
   pageSize: number = 10;
@@ -112,7 +112,7 @@ export class AICountryAnalaysisComponent implements OnInit, OnDestroy {
     offcanvas.show();
   }
   aiCountryDetailsReport(country: AiCountrySummeryDto, selectedIndex: number) {
-    if(this.selectedIndex != -1) return;
+    if (this.selectedIndex != -1) return;
     this.selectedIndex = selectedIndex;
     let payload: AiCountrySummeryRequestPdfDto = {
       countryID: country.countryID,
@@ -183,16 +183,15 @@ export class AICountryAnalaysisComponent implements OnInit, OnDestroy {
       }
     });
   }
-    customSearchFn(term: string, item: any) {
+  customSearchFn(term: string, item: any) {
     term = term.toLowerCase();
     return (
       item.countryName?.toLowerCase().includes(term) ||
       item.countryAliasName?.toLowerCase().includes(term)
     );
-}
-refresh()
-{
+  }
+  refresh() {
     this.getAiCountries(this.currentPage);
-}
+  }
 
 }

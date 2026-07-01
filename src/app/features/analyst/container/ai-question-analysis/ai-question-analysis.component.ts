@@ -177,11 +177,16 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
 
     offcanvas.show();
   }
-   customSearchFn(term: string, item: any) {    
+  customSearchFn(term: string, item: any) {
     term = term.toLowerCase();
     return (
       item.countryName?.toLowerCase().includes(term) ||
       item.countryAliasName?.toLowerCase().includes(term)
     );
-}
+  }
+  
+  discrepancy(question: any): number {
+    let discrepancy = Math.abs((question?.evaluatorScore ?? 0) - (question?.aiScore ?? 0));
+    return discrepancy;
+  }
 }
