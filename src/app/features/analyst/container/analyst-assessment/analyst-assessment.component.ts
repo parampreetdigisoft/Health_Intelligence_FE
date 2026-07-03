@@ -301,10 +301,10 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
     this.isUploading = true;
     this.analystService.ImportAssessment(formData).subscribe({
       next: (res) => {
-        this.selectedPillar = undefined;
         this.isUploading = false;
         if (res.succeeded) {
-          this.getCountryByUserIdForAssessment();
+           this.selectedPillar = this.pillars[0];
+           this.getQuestionsByCountryId();
           this.toaster.showSuccess(res.messages.join(", "));
         } else {
           this.toaster.showError(res.errors.join(", "));

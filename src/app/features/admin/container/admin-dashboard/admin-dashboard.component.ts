@@ -197,7 +197,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       ],
 
       chart: {
-        height: 380,
+        height: 500,
         type: "radialBar",
         toolbar: {
           show: false,
@@ -207,7 +207,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
         radialBar: {
           startAngle: 20,
           endAngle: 300,
-          offsetY: 100,
+          offsetY: 10,
           offsetX: 10,
           hollow: {
             margin: 0,
@@ -250,9 +250,9 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       ],
       legend: {
         show: true,
-        floating: true,
+        floating: false,
         fontSize: "16px",
-        position: "left",
+        position: "top",
         offsetX: 0,
         offsetY: 10,
         labels: {
