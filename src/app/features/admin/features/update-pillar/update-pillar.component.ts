@@ -62,6 +62,10 @@ export class UpdatePillarComponent implements OnInit, OnChanges, AfterViewInit {
     return this.getSelectedKpiIds().length;
   }
 
+  get selectedFileName(): string {
+    return this.imageFile?.name ?? 'No file chosen';
+  }
+
   get selectedKpis(): AnalyticalLayerResponseDto[] {
     const ids = this.getSelectedKpiIds();
     return this.kpis.filter((k) => ids.includes(Number(k.layerID)));

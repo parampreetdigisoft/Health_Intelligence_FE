@@ -241,6 +241,14 @@
   margin: 0 auto 32px;
 }
 
+.vui_before_signup .vui_logo > a {
+  background: #ffffff;
+    border-radius: 10px;
+    padding: 7px 15px 5px 15px;
+    margin-left: 0;
+}
+
+
 .before_login_card_head {
   color: #003d44;
   font-size: 24px;
@@ -482,6 +490,8 @@
   color: #6b8083;
   background: #fff;
   top: -14px;
+      margin: 10px auto 0 auto;
+    display: table;
 }
 
 .vui_before_login .face_button {

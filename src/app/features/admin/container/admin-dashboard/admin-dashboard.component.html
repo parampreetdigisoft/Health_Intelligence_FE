@@ -93,8 +93,8 @@
 		</div>
 	</div>
 	<div class="city_piller">
-		<div class="row justify-content-between align-items-end">
-			<div class="col-md-auto">
+		<div class="row align-items-end">
+			<div class="col-xxl col-md-6">
 				<div class="input_field">
 					<label>Select Country *</label>
 
@@ -106,7 +106,7 @@
 						(change)="getCountryPillarHistory()"
 						bindValue="countryID"
 						bindLabel="countryName"
-						class="form-control analyst_multi_select">
+						class="form-control analyst_multi_select w-100">
 						<ng-template ng-label-tmp
 							let-item="item "
 							class="select_item">
@@ -121,7 +121,7 @@
 					</ng-select>
 				</div>
 			</div>
-			<div class="col-md-auto">
+			<div class="col-xxl col-md-6">
 				<div class="input_field">
 					<label>Select Year*</label>
 					<select [(ngModel)]="selectedYear"
@@ -157,7 +157,7 @@
 					</span>
 				</div>
 			</div>
-			<div class="col-md d-flex justify-content-end gap-2 mb-3">
+			<div class="col-md-auto d-flex gap-2 mt-3">
 				<button *ngIf="countryQuestionHistoryResponse?.pillars?.length"
 					[matTooltip]=" 'Go to the AI analysis page to review detailed country insights and scores'"
 					(click)="goToCountryAnalysis()"

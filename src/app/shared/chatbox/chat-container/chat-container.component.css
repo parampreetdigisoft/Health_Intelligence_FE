@@ -368,7 +368,7 @@
   display: flex;
   align-items: center;
   gap: 0;
-  border: 1px solid rgba(0, 109, 119, 0.12);
+  border: 1px solid rgb(255 255 255 / 15%);
   border-radius: 12px;
   overflow: visible;
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
@@ -380,7 +380,6 @@
 
 .cb__selector-group--filled {
   border-color: rgba(168, 224, 99, 0.45);
-  background: linear-gradient(180deg, #fff 0%, rgba(168, 224, 99, 0.04) 100%);
 }
 
 .cb__selector-group:focus-within,
@@ -459,14 +458,14 @@
 ::ng-deep .cb__selector-inner .ng-select .ng-select-container .ng-value-container .ng-placeholder {
     position: static !important;
     padding: 0 !important;
-    color: #1e293b !important;
+    color: #ffffff !important;
     font-size: 13px !important;
     font-family: 'DM Sans', sans-serif !important;
     background: transparent !important;
 }
 
 ::ng-deep .cb__selector-inner .ng-select .ng-select-container .ng-value-container .ng-value {
-  color: #1e293b !important;
+  color: #ffffff !important;
   background: transparent !important;
   border: none !important;
   border-radius: 0 !important;
@@ -508,9 +507,7 @@
   order: 3 !important;
 }
 
-::ng-deep .cb__selector-inner .ng-select .ng-select-container .ng-arrow-wrapper .ng-arrow {
-  border-color: #94a3b8 transparent transparent !important;
-}
+
 
 /* Clear (×) — always visible when a value is selected (country & pillar) */
 ::ng-deep .cb__selector-inner .ng-select.ng-select-clearable.ng-has-value .ng-select-container .ng-clear-wrapper,

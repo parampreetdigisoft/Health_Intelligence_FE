@@ -96,6 +96,9 @@
               <label>Reliability</label>
               <label class="reliability-card">
                 <input type="checkbox" formControlName="reliability" />
+                <span class="reliability-switch">
+                  <span class="reliability-switch-thumb"></span>
+                </span>
                 <span class="reliability-card-body">
                   <span class="reliability-status">
                     {{ pillarForm.get('reliability')?.value ? 'Enabled' : 'Disabled' }}
@@ -103,9 +106,6 @@
                   <span class="reliability-hint">
                     {{ pillarForm.get('reliability')?.value ? 'Included in KPI calculations' : 'Excluded from KPI calculations' }}
                   </span>
-                </span>
-                <span class="reliability-switch">
-                  <span class="reliability-switch-thumb"></span>
                 </span>
               </label>
             </div>
@@ -128,13 +128,17 @@
                 <div class="image-upload-actions">
                   <span class="image-upload-title">Upload image</span>
                   <span class="image-upload-hint">PNG or JPG, max 5MB</span>
-                  <input
-                    #fileInput
-                    type="file"
-                    (change)="onFileSelected($event)"
-                    accept="image/*"
-                    class="form-control image-file-input"
-                  />
+                  <label class="image-file-picker">
+                    <input
+                      #fileInput
+                      type="file"
+                      (change)="onFileSelected($event)"
+                      accept="image/*"
+                      class="image-file-input-hidden"
+                    />
+                    <span class="image-file-trigger">Choose File</span>
+                    <span class="image-file-name">{{ selectedFileName }}</span>
+                  </label>
                 </div>
               </div>
               <div class="error-msg" *ngIf="imageError">{{ imageError }}</div>
