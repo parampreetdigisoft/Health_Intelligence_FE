@@ -21,7 +21,7 @@ import { AiCountryPillarResponseDto } from 'src/app/core/models/aiVm/AiCountryPi
 import { AiCountrySummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiCountrySummeryRequestPdfDto';
 import { GetMutiplekpiLayerRequestDto } from 'src/app/core/models/aiVm/GetMutiplekpiLayerRequestDto';
 import { GetMutiplekpiLayerResultsDto } from 'src/app/core/models/aiVm/GetMutiplekpiLayerResultsDto';
-import { EarlyWarningDashboardDto, PeaceStressTestDashboardDto, ResilienceScorecardDto } from 'src/app/core/models/CountrySignalDashboardDto';
+import { DashboardModeResponseDto } from 'src/app/core/models/CountrySignalDashboardDto';
 
 @Injectable({
   providedIn: 'root'
@@ -93,17 +93,17 @@ export class CountryUserService {
   public getMutiplekpiLayerResults(payload: GetMutiplekpiLayerRequestDto) {
     return this.http.post(`kpi/getMutiplekpiLayerResults`, payload).pipe(map(x => x as ResultResponseDto<GetMutiplekpiLayerResultsDto>));;
   }
-  public getPeaceStressTestDashboard(countryID: number, year: number) {
-    return this.http.getWithQueryParams(`CountryUser/getPeaceStressTestDashboard`, { countryID, year })
-      .pipe(map(x => x as ResultResponseDto<PeaceStressTestDashboardDto>));
+  public getPeaceStressTestDashboard(countryID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getPeaceStressTestDashboard`, { countryID })
+      .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
   }
-  public getEarlyWarningDashboard(countryID: number, year: number) {
-    return this.http.getWithQueryParams(`CountryUser/getEarlyWarningDashboard`, { countryID, year })
-      .pipe(map(x => x as ResultResponseDto<EarlyWarningDashboardDto>));
+  public getEarlyWarningDashboard(countryID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getEarlyWarningDashboard`, { countryID })
+      .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
   }
-  public getResilienceScorecard(countryID: number, year: number) {
-    return this.http.getWithQueryParams(`CountryUser/getResilienceScorecard`, { countryID, year })
-      .pipe(map(x => x as ResultResponseDto<ResilienceScorecardDto>));
+  public getResilienceScorecard(countryID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getResilienceScorecard`, { countryID })
+      .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
   }
   
   public exportCompareCountriesCountryUsers(params: any) {

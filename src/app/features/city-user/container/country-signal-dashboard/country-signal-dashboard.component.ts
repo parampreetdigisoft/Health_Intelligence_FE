@@ -1,39 +1,33 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   ApexAxisChartSeries,
   ApexChart,
   ApexDataLabels,
   ApexGrid,
   ApexLegend,
+  ApexPlotOptions,
   ApexStroke,
   ApexTooltip,
   ApexXAxis,
   ApexYAxis,
-} from "ng-apexcharts";
-import { CountryVM } from "src/app/core/models/CountryVM";
-import { TieredAccessPlanValue } from "src/app/core/enums/TieredAccessPlan";
+} from 'ng-apexcharts';
+import { CountryVM } from 'src/app/core/models/CountryVM';
+import { TieredAccessPlanValue } from 'src/app/core/enums/TieredAccessPlan';
 import {
-  EarlyWarningDashboardDto,
-  PeaceStressTestDashboardDto,
-  PeerResilienceDto,
-  ResilienceScorecardDto,
-  SignalCardDto,
-  SignalTrendDto,
-  StressNarrativeDto,
-  FiveLevelInterpretationDto,
-} from "src/app/core/models/CountrySignalDashboardDto";
-import { AHI_CHART, AHI_AXIS_STYLE } from "src/app/core/constants/ahi-chart-theme";
-import { PillarsVM } from "src/app/core/models/PillersVM";
-import { ToasterService } from "src/app/core/services/toaster.service";
-import { CommonService } from "src/app/core/services/common.service";
-import { UserService } from "src/app/core/services/user.service";
-import { CountryUserService } from "../../country-user.service";
-import { interval, Subscription } from "rxjs";
+  DashboardModeResponseDto,
+  DashboardQuestionScoreDto,
+} from 'src/app/core/models/CountrySignalDashboardDto';
+import { AHI_CHART, AHI_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-theme';
+import { PillarsVM } from 'src/app/core/models/PillersVM';
+import { ToasterService } from 'src/app/core/services/toaster.service';
+import { UserService } from 'src/app/core/services/user.service';
+import { CountryUserService } from '../../country-user.service';
 declare var bootstrap: any;
 
-export type EarlyWarningChartOptions = {
+export type GlanceBarChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
+  plotOptions: ApexPlotOptions;
   xaxis: ApexXAxis;
   yaxis: ApexYAxis;
   stroke: ApexStroke;
@@ -41,45 +35,50 @@ export type EarlyWarningChartOptions = {
   dataLabels: ApexDataLabels;
   legend: ApexLegend;
   grid: ApexGrid;
-  markers:any;
   colors: string[];
 };
 
-type SignalTab = "stress" | "warning" | "resilience";
+export type GlanceDonutChartOptions = {
+  series: number[];
+  chart: ApexChart;
+  labels: string[];
+  legend: ApexLegend;
+  dataLabels: ApexDataLabels;
+  colors: string[];
+  plotOptions: ApexPlotOptions;
+  tooltip: ApexTooltip;
+};
+
+type SignalTab = 'stress' | 'warning' | 'resilience';
 
 @Component({
-  selector: "app-country-user-dashboard",
-  templateUrl: "./country-signal-dashboard.component.html",
-  styleUrl: "./country-signal-dashboard.component.css",
+  selector: 'app-country-user-dashboard',
+  templateUrl: './country-signal-dashboard.component.html',
+  styleUrl: './country-signal-dashboard.component.css',
 })
 export class CountryUserDashboardComponent implements OnInit, OnDestroy {
-  selectedYear = new Date().getFullYear();
   countries: CountryVM[] = [];
   selectedCountryID: number | null = null;
-  activeTab: SignalTab = "stress";
+  activeTab: SignalTab = 'stress';
 
   tier: TieredAccessPlanValue = TieredAccessPlanValue.Pending;
   pillars: PillarsVM[] = [];
   chooseKpisLayers = false;
   loading = false;
-
   isLoading = false;
 
-  stressDashboard: PeaceStressTestDashboardDto | null = null;
-  warningDashboard: EarlyWarningDashboardDto | null = null;
-  resilienceDashboard: ResilienceScorecardDto | null = null;
-  warningPollingSub: Subscription | null = null;
-  selectedSignal: SignalCardDto | null = null;
+  stressDashboard: DashboardModeResponseDto | null = null;
+  warningDashboard: DashboardModeResponseDto | null = null;
+  resilienceDashboard: DashboardModeResponseDto | null = null;
+  selectedQuestion: DashboardQuestionScoreDto | null = null;
 
-  public earlyWarningChartOptions: Partial<EarlyWarningChartOptions> = {};
-  readonly stressPrimaryCodes = ["PEM", "SFS", "GAS", "SCS", "NCS"];
-  readonly stressSecondaryCodes = ["IIS", "SCSS", "TIS", "MAS", "IAS"];
+  glanceBarChartOptions: Partial<GlanceBarChartOptions> = {};
+  glanceDonutChartOptions: Partial<GlanceDonutChartOptions> = {};
 
   constructor(
     private countryUserService: CountryUserService,
     private toaster: ToasterService,
-    private userService: UserService,
-    public commonService: CommonService
+    private userService: UserService
   ) {
     this.tier = this.userService?.userInfo?.tier || TieredAccessPlanValue.Pending;
   }
@@ -89,7 +88,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.stopEarlyWarningPolling();
+  
   }
 
   getCountryUserCountries(): void {
@@ -109,21 +108,17 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
             this.opendialog();
           }
         } else {
-          this.toaster.showWarning(res.errors?.[0] || "Failed to load countries.");
+          this.toaster.showWarning(res.errors?.[0] || 'Failed to load countries.');
         }
       },
       error: () => {
         this.isLoading = false;
-        this.toaster.showError("Failed to load country list.");
+        this.toaster.showError('Failed to load country list.');
       },
     });
   }
 
   onCountryChanged(): void {
-    this.loadActiveTabData();
-  }
-
-  onYearChanged(): void {
     this.loadActiveTabData();
   }
 
@@ -135,19 +130,16 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
 
   loadActiveTabData(): void {
     if (!this.selectedCountryID) {
-      this.toaster.showWarning("Please select a country.");
+      this.toaster.showWarning('Please select a country.');
       return;
     }
 
-    this.stopEarlyWarningPolling();
-
-    if (this.activeTab === "stress") {
+    if (this.activeTab === 'stress') {
       this.loadStressDashboard();
       return;
     }
-    if (this.activeTab === "warning") {
+    if (this.activeTab === 'warning') {
       this.loadEarlyWarningDashboard();
-      this.startEarlyWarningPolling();
       return;
     }
     this.loadResilienceDashboard();
@@ -156,285 +148,182 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   loadStressDashboard(): void {
     if (!this.selectedCountryID) return;
     this.isLoading = true;
-    this.countryUserService
-      .getPeaceStressTestDashboard(this.selectedCountryID, this.selectedYear)
-      .subscribe({
-        next: (res) => {
-          this.isLoading = false;
-          if (!res.succeeded) {
-            this.stressDashboard = null;
-            this.toaster.showWarning(res.errors?.[0] || "No stress test data found.");
-            return;
-          }
-          this.stressDashboard = res.result;
-        },
-        error: () => {
-          this.isLoading = false;
-          this.toaster.showError("Failed to load stress test dashboard.");
-        },
-      });
+    this.countryUserService.getPeaceStressTestDashboard(this.selectedCountryID).subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        if (!res.succeeded) {
+          this.stressDashboard = null;
+          this.toaster.showWarning(res.errors?.[0] || 'No stress test data found.');
+          return;
+        }
+        this.stressDashboard = res.result;
+        if (this.activeTab === 'stress') this.updateGlanceCharts(res.result);
+      },
+      error: () => {
+        this.isLoading = false;
+        this.toaster.showError('Failed to load stress test dashboard.');
+      },
+    });
   }
 
   loadEarlyWarningDashboard(isSilent = false): void {
     if (!this.selectedCountryID) return;
     if (!isSilent) this.isLoading = true;
-    this.countryUserService
-      .getEarlyWarningDashboard(this.selectedCountryID, this.selectedYear)
-      .subscribe({
-        next: (res) => {
-          if (!isSilent) this.isLoading = false;
-          if (!res.succeeded) {
-            this.warningDashboard = null;
-            if (!isSilent) {
-              this.toaster.showWarning(
-                res.errors?.[0] || "No early warning data found."
-              );
-            }
-            return;
-          }
-          this.warningDashboard = res.result;
-          this.setEarlyWarningChartOptions();
-        },
-        error: () => {
-          if (!isSilent) this.isLoading = false;
+    this.countryUserService.getEarlyWarningDashboard(this.selectedCountryID).subscribe({
+      next: (res) => {
+        if (!isSilent) this.isLoading = false;
+        if (!res.succeeded) {
+          this.warningDashboard = null;
           if (!isSilent) {
-            this.toaster.showError("Failed to load early warning dashboard.");
+            this.toaster.showWarning(res.errors?.[0] || 'No early warning data found.');
           }
-        },
-      });
+          return;
+        }
+        this.warningDashboard = res.result;
+        if (this.activeTab === 'warning') this.updateGlanceCharts(res.result);
+      },
+      error: () => {
+        if (!isSilent) this.isLoading = false;
+        if (!isSilent) {
+          this.toaster.showError('Failed to load early warning dashboard.');
+        }
+      },
+    });
   }
 
   loadResilienceDashboard(): void {
     if (!this.selectedCountryID) return;
     this.isLoading = true;
-    this.countryUserService
-      .getResilienceScorecard(this.selectedCountryID, this.selectedYear)
-      .subscribe({
-        next: (res) => {
-          this.isLoading = false;
-          if (!res.succeeded) {
-            this.resilienceDashboard = null;
-            this.toaster.showWarning(res.errors?.[0] || "No resilience data found.");
-            return;
-          }
-          this.resilienceDashboard = res.result;
-        },
-        error: () => {
-          this.isLoading = false;
-          this.toaster.showError("Failed to load resilience scorecard.");
-        },
-      });
-  }
-
-  startEarlyWarningPolling(): void {
-    if (this.warningPollingSub || this.activeTab !== "warning") return;
-    this.warningPollingSub = interval(60000).subscribe(() => {
-      if (this.activeTab === "warning") {
-        this.loadEarlyWarningDashboard(true);
-      }
+    this.countryUserService.getResilienceScorecard(this.selectedCountryID).subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        if (!res.succeeded) {
+          this.resilienceDashboard = null;
+          this.toaster.showWarning(res.errors?.[0] || 'No resilience data found.');
+          return;
+        }
+        this.resilienceDashboard = res.result;
+        if (this.activeTab === 'resilience') this.updateGlanceCharts(res.result);
+      },
+      error: () => {
+        this.isLoading = false;
+        this.toaster.showError('Failed to load resilience scorecard.');
+      },
     });
   }
 
-  stopEarlyWarningPolling(): void {
-    if (this.warningPollingSub) {
-      this.warningPollingSub.unsubscribe();
-      this.warningPollingSub = null;
-    }
+  getActiveDashboard(): DashboardModeResponseDto | null {
+    if (this.activeTab === 'stress') return this.stressDashboard;
+    if (this.activeTab === 'warning') return this.warningDashboard;
+    return this.resilienceDashboard;
   }
 
-  getConditionClass(condition?: string): string {
-    const value = (condition || "").toLowerCase();
-    if (value.includes("critical")) return "critical";
-    if (value.includes("elevated")) return "elevated";
-    if (value.includes("watch")) return "watch";
-    return "stable";
+  getQuestions(dashboard: DashboardModeResponseDto | null): DashboardQuestionScoreDto[] {
+    return dashboard?.questions ?? [];
   }
 
-  getAlertClass(severity?: string): string {
-    const value = (severity || "").toLowerCase();
-    if (value.includes("critical")) return "critical";
-    if (value.includes("high")) return "high";
-    if (value.includes("medium")) return "medium";
-    return "low";
+  hasScore(score: number | null | undefined): boolean {
+    return score !== null && score !== undefined;
   }
 
-  getPrimaryStressSignalByCode(code: string): SignalCardDto | undefined {
-    return this.stressDashboard?.signals?.find((x) => this.normalizeCode(x.code) === code);
+  formatScore(score: number | null | undefined): string {
+    if (!this.hasScore(score)) return 'N/A';
+    return Number(score).toFixed(1);
   }
 
-  getPemValue(): number {
-    return this.stressDashboard?.pem || 0;
+  getConditionClass(condition?: string | null): string {
+    const value = (condition || '').toLowerCase();
+    if (value.includes('critical') || value.includes('fragile')) return 'critical';
+    if (value.includes('elevated') || value.includes('high')) return 'elevated';
+    if (value.includes('watch') || value.includes('developing')) return 'watch';
+    return 'stable';
   }
 
-  getSfsValue(): number {
-    return this.getPrimaryStressSignalByCode("SFS")?.value || 0;
+  isAlertQuestion(question: DashboardQuestionScoreDto): boolean {
+    const condition = (question.condition || '').toLowerCase();
+    return (
+      condition.includes('critical') ||
+      condition.includes('elevated') ||
+      condition.includes('high') ||
+      condition.includes('watch') ||
+      condition.includes('fragile')
+    );
   }
 
-  getGasValue(): number {
-    return this.getPrimaryStressSignalByCode("GAS")?.value || 0;
+  getSignalProgress(score: number | null | undefined): number {
+    if (!this.hasScore(score)) return 0;
+    return Math.max(0, Math.min(100, Number(score)));
   }
 
-  getSignalProgress(value: number): number {
-    const normalized = Math.max(0, Math.min(100, value || 0));
-    return normalized;
+  getAverageScore(dashboard: DashboardModeResponseDto | null): number | null {
+    const scores = (dashboard?.questions ?? [])
+      .map((q) => q.aiScore)
+      .filter((score): score is number => this.hasScore(score));
+    if (!scores.length) return null;
+    return scores.reduce((sum, score) => sum + score, 0) / scores.length;
   }
 
-  getSignalDelta(signal: SignalCardDto): string {
-    const delta = signal?.delta ?? 0;
-    const prefix = delta > 0 ? "+" : "";
-    return `${prefix}${delta.toFixed(1)}`;
+  getReportingCount(dashboard: DashboardModeResponseDto | null): number {
+    return (dashboard?.questions ?? []).filter((q) => this.hasScore(q.aiScore)).length;
   }
 
-  hasSignalDelta(signal: SignalCardDto): boolean {
-    return signal?.delta !== null && signal?.delta !== undefined;
+  getTotalQuestionCount(dashboard: DashboardModeResponseDto | null): number {
+    return dashboard?.questions?.length ?? 0;
   }
 
   getCountryName(): string {
     return (
       this.countries.find((x) => x.countryID === this.selectedCountryID)?.countryName ||
-      "Selected Country"
+      'Selected Country'
     );
   }
 
-  getStressPrimarySignals(): SignalCardDto[] {
-    if (this.stressDashboard?.primarySignals?.length) {
-      return this.stressDashboard.primarySignals;
-    }
-    const signals = this.stressDashboard?.signals || [];
-    return signals.filter((x) => this.stressPrimaryCodes.includes(this.normalizeCode(x.code || x.layerCode)));
+
+
+  getQuestionName(question: DashboardQuestionScoreDto): string {
+    return question.questionDescription ;
   }
 
-  getStressSecondarySignals(): SignalCardDto[] {
-    if (this.stressDashboard?.secondarySignals?.length) {
-      return this.stressDashboard.secondarySignals;
-    }
-    const signals = this.stressDashboard?.signals || [];
-    return signals.filter((x) => this.stressSecondaryCodes.includes(this.normalizeCode(x.code || x.layerCode)));
+  getQuestionIconClass(question: DashboardQuestionScoreDto): string {
+    const value = (question.questionDescription || '').toLowerCase();
+    if (value.includes('fever') || value.includes('respiratory') || value.includes('disease')) return 'bi-virus';
+    if (value.includes('icu') || value.includes('ventilator') || value.includes('emergency')) return 'bi-hospital';
+    if (value.includes('rain') || value.includes('flood') || value.includes('heat') || value.includes('drought')) return 'bi-cloud-rain-heavy';
+    if (value.includes('vaccin') || value.includes('medicine') || value.includes('stock')) return 'bi-capsule';
+    if (value.includes('ambulance') || value.includes('continuity')) return 'bi-truck';
+    if (value.includes('lab') || value.includes('movement')) return 'bi-radar';
+    return 'bi-graph-up-arrow';
   }
 
-  getLiveSignals(): SignalCardDto[] {
-    return this.warningDashboard?.alerts || [];
-  }
-
-  getResilienceSignals(): SignalCardDto[] {
-    if (this.resilienceDashboard?.primarySignals?.length) {
-      return this.resilienceDashboard.primarySignals;
-    }
-    return this.resilienceDashboard?.resilienceSignals || [];
-  }
-
-  getPeerRows(): PeerResilienceDto[] {
-    return this.resilienceDashboard?.peers || [];
-  }
-
-  getResilienceRankText(): string {
-    if (!this.resilienceDashboard) return "";
-    return `Rank ${this.resilienceDashboard.regionalRank} / ${this.resilienceDashboard.regionSampleSize}`;
-  }
-
-  getResilienceRegionText(): string {
-    return this.resilienceDashboard?.region || "";
-  }
-
-  getOutlookLines(): string[] {
-    const outlook = this.warningDashboard?.outlook;
-    if (!outlook) return [];
-    if (Array.isArray(outlook)) return outlook;
-    if (typeof outlook === "string") return [outlook];
-
-    const values = Object.values(outlook).filter((x) => typeof x === "string");
-    return values.length ? (values as string[]) : [];
-  }
-
-  getStressNarratives(): StressNarrativeDto[] {
-    return this.stressDashboard?.narratives || [];
-  }
-
-  getNarrativeHeadline(item: StressNarrativeDto): string {
-    return item?.headline || item?.title || "Narrative";
-  }
-
-  getSignalIconClass(code?: string): string {
-    const icons: Record<string, string> = {
-      PEM: "bi-shield-check",
-      PEM_DM: "bi-radar",
-      SFS: "bi-activity",
-      GAS: "bi-exclamation-triangle",
-      SCS: "bi-link-45deg",
-      NCS: "bi-diagram-3",
-      IIS: "bi-info-circle",
-      SCSS: "bi-sliders",
-      TIS: "bi-clock-history",
-      MAS: "bi-people",
-      IAS: "bi-bullseye",
-      NSS: "bi-broadcast",
-      EWES: "bi-lightning-charge",
-      VCS: "bi-virus",
-      CRS: "bi-hand-thumbs-up",
-      MPS: "bi-geo-alt",
-      LRS: "bi-tree",
-      YFS: "bi-sun",
-      HVS: "bi-heart-pulse",
-      USS: "bi-mortarboard",
-      ESS: "bi-building",
-      SAS: "bi-patch-check",
-    };
-    return icons[this.normalizeCode(code)] || "bi-graph-up-arrow";
-  }
-
-  getSignalAccentClass(code?: string): string {
-    const accents: Record<string, string> = {
-      PEM: "accent-pem",
-      PEM_DM: "accent-warning",
-      SFS: "accent-risk",
-      GAS: "accent-alert",
-      SCS: "accent-cohesion",
-      NCS: "accent-network",
-      IIS: "accent-default",
-      SCSS: "accent-cohesion",
-      TIS: "accent-warning",
-      MAS: "accent-network",
-      IAS: "accent-default",
-      NSS: "accent-warning",
-      EWES: "accent-alert",
-      VCS: "accent-risk",
-      CRS: "accent-cohesion",
-      MPS: "accent-network",
-      LRS: "accent-growth",
-      YFS: "accent-growth",
-      HVS: "accent-health",
-      USS: "accent-education",
-      ESS: "accent-institution",
-      SAS: "accent-pem",
-    };
-    return accents[this.normalizeCode(code)] || "accent-default";
+  getQuestionAccentClass(question: DashboardQuestionScoreDto): string {
+    const score = question.aiScore;
+    if (!this.hasScore(score)) return 'accent-default';
+    if (Number(score) <= 40) return 'accent-alert';
+    if (Number(score) <= 60) return 'accent-warning';
+    return 'accent-cohesion';
   }
 
   getTabIcon(tab: SignalTab): string {
     const icons: Record<SignalTab, string> = {
-      stress: "bi-speedometer2",
-      warning: "bi-bell",
-      resilience: "bi-bar-chart-steps",
+      stress: 'bi-speedometer2',
+      warning: 'bi-bell',
+      resilience: 'bi-bar-chart-steps',
     };
     return icons[tab];
   }
 
-  getSignalCode(signal: SignalCardDto): string {
-    return signal?.code || signal?.layerCode || "SIG";
+  getOutlookLines(dashboard: DashboardModeResponseDto | null): string[] {
+    const alertCount = (dashboard?.questions ?? []).filter((q) => this.isAlertQuestion(q)).length;
+    if (!dashboard) return [];
+    if (alertCount >= 4) return ['Escalation watch: multiple indicators are in elevated or critical range.'];
+    if (alertCount >= 2) return ['Cautionary watch: monitor highlighted indicators closely.'];
+    return ['Stable watch: no major escalation detected across mapped indicators.'];
   }
 
-  getSignalName(signal: SignalCardDto): string {
-    return signal?.name || signal?.layerName || this.getSignalCode(signal);
-  }
-
-  getSignalDescription(signal: SignalCardDto): string {
-    return signal?.description || signal?.narrative || "";
-  }
-
-  openSignalDetails(signal: SignalCardDto): void {
-    this.selectedSignal = signal;
+  openQuestionDetails(question: DashboardQuestionScoreDto): void {
+    this.selectedQuestion = question;
     setTimeout(() => {
-      const modalEl = document.getElementById("signalDetailModal");
+      const modalEl = document.getElementById('signalDetailModal');
       if (modalEl) {
         let modalInstance = bootstrap.Modal.getInstance(modalEl);
         if (!modalInstance) {
@@ -445,30 +334,15 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
     }, 50);
   }
 
-  closeSignalDetails(): void {
-    const modalEl = document.getElementById("signalDetailModal");
+  closeQuestionDetails(): void {
+    const modalEl = document.getElementById('signalDetailModal');
     if (!modalEl) return;
     const modalInstance = bootstrap.Modal.getInstance(modalEl);
     if (modalInstance) {
       modalInstance.hide();
     }
-    this.selectedSignal = null;
+    this.selectedQuestion = null;
   }
-
-  getSelectedInterpretation(): FiveLevelInterpretationDto | undefined {
-    if (!this.selectedSignal?.interpretations?.length) return undefined;
-    if (this.selectedSignal.interpretationID) {
-      return this.selectedSignal.interpretations.find(
-        (x) => x.interpretationID === this.selectedSignal?.interpretationID
-      );
-    }
-    return this.selectedSignal.interpretations[0];
-  }
-
-  getNarrativeDetail(item: StressNarrativeDto): string {
-    return item?.detail || item?.text || item?.narrative || "";
-  }
-
 
   getAllPillars(): void {
     this.countryUserService.getAllPillars().subscribe({
@@ -480,7 +354,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
 
   opendialog(): void {
     setTimeout(() => {
-      const modalEl = document.getElementById("exampleModal");
+      const modalEl = document.getElementById('exampleModal');
       if (modalEl) {
         let modalInstance = bootstrap.Modal.getInstance(modalEl);
         if (!modalInstance) {
@@ -493,11 +367,11 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
 
   closeModal(): void {
     this.loading = false;
-    const homeTab = document.querySelector("#pills-home-tab") as HTMLElement;
+    const homeTab = document.querySelector('#pills-home-tab') as HTMLElement;
     if (homeTab) {
       homeTab.click();
     }
-    const modalEl = document.getElementById("exampleModal");
+    const modalEl = document.getElementById('exampleModal');
     if (!modalEl) return;
     const modalInstance = bootstrap.Modal.getInstance(modalEl);
     if (modalInstance) {
@@ -512,136 +386,169 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
         this.loading = false;
         if (res.succeeded) {
           this.closeModal();
-          this.toaster.showSuccess("Access granted successfully");
+          this.toaster.showSuccess('Access granted successfully');
           this.ngOnInit();
         } else {
-          this.toaster.showWarning(res.errors?.[0] || "Failed to save KPI access.");
+          this.toaster.showWarning(res.errors?.[0] || 'Failed to save KPI access.');
         }
       },
       error: () => {
         this.loading = false;
-        this.toaster.showError("Something went wrong");
+        this.toaster.showError('Something went wrong');
       },
     });
   }
 
-  private setEarlyWarningChartOptions(): void {
-    const trendSeries: SignalTrendDto[] = this.warningDashboard?.trendSeries || [];
-
-    const categorySet = new Set<number>();
-    trendSeries.forEach((x) => {
-      x.series?.forEach((point) => categorySet.add(point.year));
+  private updateGlanceCharts(dashboard: DashboardModeResponseDto | null): void {
+    const questions = dashboard?.questions ?? [];
+    const categories = questions.map((q) => this.truncateLabel(q.questionDescription || `Q${q.questionID}`, 22));
+    const scores = questions.map((q) => (this.hasScore(q.aiScore) ? Number(q.aiScore) : 0));
+    const barColors = questions.map((q, i) => {
+      if (!this.hasScore(q.aiScore)) return '#cbd5e1';
+      const score = Number(q.aiScore);
+      if (score <= 40) return '#dc3545';
+      if (score <= 60) return '#fd7e14';
+      if (score <= 80) return '#006D77';
+      return '#77BD3E';
     });
 
-    const categories = Array.from(categorySet).sort((a, b) => a - b);
-
-    const series =
-      trendSeries.map((item) => {
-        const mapByYear = new Map<number, number>();
-        item.series?.forEach((point) => mapByYear.set(point.year, point.value));
-        return {
-          name: item.name,
-          data: categories.map((year) => mapByYear.get(year) ?? null),
-        };
-      }) || [];
-
-    this.earlyWarningChartOptions = {
-      series: series.length ? series : [{ name: "Signal Trend", data: [] }],
+    this.glanceBarChartOptions = {
+      series: [{ name: 'Score', data: scores }],
       chart: {
-        type: "line",
-        height: 320,
+        type: 'bar',
+        height: 340,
         toolbar: { show: false },
-        zoom: { enabled: false },
-        animations: {
-          enabled: true,
-          easing: 'easeinout',
-          speed: 700,
+        fontFamily: 'Poppins, sans-serif',
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          borderRadius: 6,
+          barHeight: '62%',
+          distributed: true,
+          dataLabels: { position: 'top' },
         },
       },
-      stroke: {
-        curve: "smooth",
-        width: 3,
-      },
-      markers: {
-        size: 4,
-        strokeWidth: 2,
-        strokeColors: '#fff',
-        hover: { size: 7, sizeOffset: 2 },
+      colors: barColors,
+      dataLabels: {
+        enabled: true,
+        formatter: (val: number, opts: any) => {
+          const q = questions[opts.dataPointIndex];
+          return this.hasScore(q?.aiScore) ? Number(val).toFixed(1) : 'N/A';
+        },
+        offsetX: 24,
+        style: { fontSize: '11px', fontWeight: 700, colors: [AHI_CHART.text] },
       },
       xaxis: {
-        categories: categories.map((x) => `${x}`),
+        categories,
+        max: 100,
         labels: {
           style: AHI_AXIS_STYLE.xaxisLabels.style,
+          formatter: (v: string) => v,
         },
         axisBorder: { color: AHI_CHART.border },
-        axisTicks: { color: AHI_CHART.border },
       },
       yaxis: {
-        min: 0,
-        max: 100,
-        tickAmount: 5,
-        title: {
-          text: 'Signal Index',
-          style: AHI_AXIS_STYLE.yaxisTitle.style,
-        },
         labels: {
-          style: AHI_AXIS_STYLE.yaxisLabels.style,
-          formatter: (v: number) => `${Math.round(v)}`,
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      legend: {
-        position: "top",
-        horizontalAlign: "left",
-        fontSize: '13px',
-        fontWeight: 600,
-        labels: {
-          colors: AHI_CHART.textMuted,
-        },
-        markers: {
-          width: 10,
-          height: 10,
-          radius: 10,
+          style: { ...AHI_AXIS_STYLE.yaxisLabels.style, fontSize: '12px' },
         },
       },
       grid: {
         borderColor: AHI_CHART.grid,
         strokeDashArray: 4,
+        xaxis: { lines: { show: true } },
+        yaxis: { lines: { show: false } },
       },
-      colors: series.map((_, i) => AHI_CHART.trendLines[i % AHI_CHART.trendLines.length]),
+      legend: { show: false },
       tooltip: {
         theme: 'light',
-        shared: true,
-        intersect: false,
-        followCursor: true,
-        custom: ({ series: chartSeries, dataPointIndex, w }: any) => {
-          const year = w.globals.categoryLabels[dataPointIndex] ?? '';
-          let rows = '';
-          chartSeries.forEach((s: number[], i: number) => {
-            const val = s[dataPointIndex];
-            if (val == null || Number.isNaN(val)) return;
-            const color = w.globals.colors[i];
-            const name = w.globals.seriesNames[i];
-            rows += `
-              <div style="display:flex;align-items:center;gap:10px;margin:6px 0;padding:6px 8px;border-radius:8px;background:${i % 2 === 0 ? 'rgba(0,109,119,0.05)' : 'rgba(168,224,99,0.1)'};">
-                <span style="width:10px;height:10px;border-radius:50%;background:${color};box-shadow:0 0 0 2px ${color}44;flex-shrink:0;"></span>
-                <span style="color:${AHI_CHART.textMuted};font-size:12px;flex:1;">${name}</span>
-                <b style="color:${AHI_CHART.text};font-size:13px;">${Number(val).toFixed(1)}</b>
-              </div>`;
-          });
-          return `
-            <div style="padding:14px 16px;min-width:200px;background:#fff;border-radius:12px;box-shadow:${AHI_CHART.tooltipShadow};border-left:4px solid ${AHI_CHART.primary};font-family:Poppins,sans-serif;">
-              <div style="font-weight:700;color:${AHI_CHART.primary};margin-bottom:10px;font-size:13px;">Year ${year}</div>
-              ${rows}
-            </div>`;
+        y: {
+          formatter: (val: number, opts: any) => {
+            const q = questions[opts.dataPointIndex];
+            if (!this.hasScore(q?.aiScore)) return 'No data';
+            return `${Number(val).toFixed(1)} / 100`;
+          },
         },
+      },
+      stroke: { width: 0 },
+    };
+
+    const conditionMap = new Map<string, number>();
+    let noDataCount = 0;
+    questions.forEach((q) => {
+      if (!this.hasScore(q.aiScore)) {
+        noDataCount++;
+        return;
+      }
+      const key = q.condition || 'Stable';
+      conditionMap.set(key, (conditionMap.get(key) ?? 0) + 1);
+    });
+    if (noDataCount > 0) {
+      conditionMap.set('No Data', noDataCount);
+    }
+
+    const donutLabels = Array.from(conditionMap.keys());
+    const donutSeries = Array.from(conditionMap.values());
+    const donutColors = donutLabels.map((label) => this.getConditionColor(label));
+
+    this.glanceDonutChartOptions = {
+      series: donutSeries.length ? donutSeries : [1],
+      labels: donutLabels.length ? donutLabels : ['No indicators'],
+      chart: {
+        type: 'donut',
+        height: 300,
+        fontFamily: 'Poppins, sans-serif',
+      },
+      colors: donutColors.length ? donutColors : ['#cbd5e1'],
+      legend: {
+        position: 'bottom',
+        fontSize: '12px',
+        fontWeight: 600,
+        labels: { colors: AHI_CHART.textMuted },
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: (val: number) => `${Math.round(val)}%`,
+        style: { fontSize: '11px', fontWeight: 700 },
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            size: '62%',
+            labels: {
+              show: true,
+              total: {
+                show: true,
+                label: 'Indicators',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: AHI_CHART.textMuted,
+                formatter: () => `${questions.length}`,
+              },
+            },
+          },
+        },
+      },
+      tooltip: {
+        theme: 'light',
+        y: { formatter: (val: number) => `${val} indicator(s)` },
       },
     };
   }
 
-  private normalizeCode(code?: string): string {
-    return (code || "").trim().toUpperCase();
+  private truncateLabel(value: string, max: number): string {
+    if (value.length <= max) return value;
+    return `${value.slice(0, max - 1)}…`;
+  }
+
+  private getConditionColor(condition: string): string {
+    const value = condition.toLowerCase();
+    if (value.includes('no data')) return '#cbd5e1';
+    if (value.includes('critical') || value.includes('fragile')) return '#dc3545';
+    if (value.includes('elevated') || value.includes('high')) return '#fd7e14';
+    if (value.includes('watch') || value.includes('developing')) return '#ffc107';
+    if (value.includes('stable')) return '#006D77';
+    if (value.includes('strong')) return '#77BD3E';
+    return AHI_CHART.primarySoft;
   }
 }
