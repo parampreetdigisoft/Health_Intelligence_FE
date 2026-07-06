@@ -98,7 +98,7 @@
               </div>
             </div>
             <div class="signal_header_meta">
-             <div class="signal_top">
+              <div class="signal_top">
                 <span class="condition_badge" [ngClass]="getConditionClass(getInterpretationConditionByScore(question.aiScore).condition)">
                   {{ getInterpretationConditionByScore(question.aiScore).condition || (hasScore(question.aiScore) ? 'Stable' : 'No Data') }}
                 </span>
@@ -107,16 +107,41 @@
             </div>
           </div>
           <div class="signal_value_row">
-            <div class="signal_value">{{ formatScore(question.aiScore) }}</div>
+            <span class="signal_label" matTooltip="AI">🤖: </span>
+            <div class="score_value">  
+            <span class="signal_value">{{ formatScore(question.aiScore) }} </span>
             <span class="signal_value_unit" *ngIf="hasScore(question.aiScore)">/ 100</span>
+          </div>
+           <div class="signal_lastUpdated"> 
+            <span class="status_badge" [ngClass]="getUpdateStatus(question.aiUpdatedAt).class"
+           matTooltip="{{(question.aiUpdatedAt | date:'medium')}}"> 
+            {{ getUpdateStatus(question.aiUpdatedAt).label }}
+           </span>
+          </div>
           </div>
           <div class="progress_track" *ngIf="hasScore(question.aiScore)">
             <div class="progress_fill animated shimmer" [style.width.%]="getSignalProgress(question.aiScore)"></div>
           </div>
           <p class="signal_no_data" *ngIf="!hasScore(question.aiScore)">Score not available for this indicator yet.</p>
-          <p class="signal_interpretation_preview" *ngIf="hasScore(question.aiScore)">
-            {{ getInterpretationConditionByScore(question.aiScore).description }}
-          </p>
+        
+          <div class="signal_value_row">
+            <span class="signal_label" matTooltip="Manual">👤: </span>
+            <div class="score_value">  
+            <span class="signal_value">{{ formatScore(question.evaluationScore) }} </span>
+            <span class="signal_value_unit" *ngIf="hasScore(question.evaluationScore)">/ 100</span>
+          </div>
+           <div class="signal_lastUpdated"> 
+            <span class="status_badge" [ngClass]="getUpdateStatus(question.evaluationUpdatedAt).class"
+            matTooltip="{{(question.evaluationUpdatedAt | date:'medium')}}"> 
+            {{ getUpdateStatus(question.evaluationUpdatedAt).label }}
+           </span>
+          </div>
+          </div>
+          <div class="progress_track" *ngIf="hasScore(question.evaluationScore)">
+            <div class="progress_fill animated shimmer" [style.width.%]="getSignalProgress(question.evaluationScore)"></div>
+          </div>
+          <p class="signal_no_data" *ngIf="!hasScore(question.evaluationScore)">Score not available for this indicator yet.</p>
+          
           <span class="signal_view_hint"><i class="bi bi-box-arrow-up-right"></i> View details</span>
         </div>
       </div>
@@ -183,42 +208,82 @@
   <div class="loader"></div>
 </div>
 
-
 <div class="modal fade modal_design signal_detail_modal" id="signalDetailModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content signal_detail_content" *ngIf="selectedQuestion">
+      <!-- HEADER -->
       <div class="modal-header signal_detail_header">
         <div class="signal_detail_title_wrap">
           <div class="signal_detail_icon">
             <i class="bi" [ngClass]="getQuestionIconClass(selectedQuestion)"></i>
           </div>
-          <div>
-            <h5 class="modal-title mb-0">{{ getQuestionName(selectedQuestion) }}</h5>
-          </div>
+          <h5 class="modal-title mb-0">
+            {{ getQuestionName(selectedQuestion) }}
+          </h5>
         </div>
-        <button type="button" class="btn-close" (click)="closeQuestionDetails()"></button>
+        <button type="button" class="btn-close" (click)="closeQuestionDetails()"> </button>
       </div>
+      <!-- BODY -->
       <div class="modal-body">
-        <div class="signal_detail_stats">
-          <div class="signal_detail_stat">
-            <span>Score</span>
-            <strong>{{ formatScore(selectedQuestion.aiScore) }}</strong>
+        <div class="ai_manual_split">
+          <!-- ================= AI SIDE ================= -->
+          <div class="split_card ai_card">
+            <div class="meta_row">
+              <strong class="meta_label">🤖 AI Details :</strong>
+              <span class="meta_value" matTooltip="Last Updated Date">
+                {{ formatDate(selectedQuestion.aiUpdatedAt) }}
+              </span>
+            </div>
+            <div class="detail_item">
+              <span>Score</span>
+              <strong matTooltip="Score based on AI evaluation">{{ formatScore(selectedQuestion.aiScore) }}/100</strong>
+            </div>
+
+            <div class="detail_item">
+              <span>Condition</span>
+              <strong matTooltip="Condition based on AI score">{{ getInterpretationConditionByScore(selectedQuestion.aiScore).condition || 'No Data' }}</strong>
+            </div>
+
+            <div class="detail_item">
+              <span>Indicator</span>
+              <strong matTooltip="Indicator description">{{ selectedQuestion.questionDescription }}</strong>
+            </div>
+
+            <div class="detail_item full">
+              <span>Interpretation</span>
+              <p matTooltip="Interpretation based on AI score"> {{ getInterpretationConditionByScore(selectedQuestion.aiScore).description }}</p>
+            </div>
+
           </div>
-          <div class="signal_detail_stat">
-            <span>Condition</span>
-            <strong [ngClass]="getConditionClass(getInterpretationConditionByScore(selectedQuestion.aiScore).condition)">
-              {{ getInterpretationConditionByScore(selectedQuestion.aiScore).condition || (hasScore(selectedQuestion.aiScore) ? 'Stable' : 'No Data') }}
-            </strong>
+          <div class="split_divider">
+            ||
           </div>
-        </div>
-        <div class="signal_detail_block">
-          <h6><i class="bi bi-card-text"></i> Indicator</h6>
-          <p>{{ selectedQuestion.questionDescription || 'No description available.' }}</p>
-        </div>
-        <div class="signal_detail_block signal_detail_block--action">
-          <h6><i class="bi bi-compass"></i> Interpretation</h6>
-          <!-- <p>{{ selectedQuestion.interpretation || 'No interpretation available.' }}</p> -->
-          <p> {{ getInterpretationConditionByScore(selectedQuestion.aiScore).description }}</p>
+
+          <!-- ================= MANUAL SIDE ================= -->
+          <div class="split_card manual_card">
+             <div class="meta_row">
+              <strong class="meta_label">👤 Manual Details :</strong>
+              <span class="meta_value" matTooltip="Last Updated Date">
+                 {{ formatDate(selectedQuestion.evaluationUpdatedAt) }}
+                 </span>
+                </div>
+            <div class="detail_item">
+              <span>Score</span>
+              <strong matTooltip="Score based on evaluation">{{ formatScore(selectedQuestion.evaluationScore) }}/100</strong>
+            </div>
+            <div class="detail_item">
+              <span>Condition</span>
+              <strong matTooltip="Condition based on evaluation score">{{getInterpretationConditionByScore(selectedQuestion.evaluationScore).condition || 'No Data' }}</strong>
+            </div>
+            <div class="detail_item">
+              <span>Indicator</span>
+              <strong matTooltip="Indicator description">{{ selectedQuestion.questionDescription }}</strong>
+            </div>
+           <div class="detail_item full">
+              <span>Interpretation</span>
+                 <p matTooltip="Interpretation based on evaluation score"> {{ getInterpretationConditionByScore(selectedQuestion.evaluationScore).description }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

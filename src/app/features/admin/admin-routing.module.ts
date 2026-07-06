@@ -12,6 +12,7 @@ import { ComparisionComponent } from "./container/comparision/comparision.compon
 import { KpiLayersComponent } from "./container/kpi-layers/kpi-layers.component";
 import { EvaluatoinResponseViewComponent } from "./container/evaluatoin-response-view/evaluatoin-response-view.component";
 import { CountryUserViewComponent } from "./container/country-user-view/country-user-view.component";
+import { RealTimeOperationalStressComponent } from "./container/real-time-operational-stress/real-time-operational-stress.component";
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
     children: [
       { path: "", redirectTo: "dashboard", pathMatch: "full" },
       { path: "dashboard", component: AdminDashboardComponent },
+      { path: "rosew-dashboard", component: RealTimeOperationalStressComponent },
       { path: "country", component: CountryComponent },
       { path: "analyst", component: AnalystViewComponent },
       { path: "countryuser", component: CountryUserViewComponent },

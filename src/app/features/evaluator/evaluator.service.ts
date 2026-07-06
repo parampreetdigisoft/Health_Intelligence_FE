@@ -17,6 +17,7 @@ import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { CountryMappingPillerRequestDto } from 'src/app/core/models/QuestionRequest';
 import { GetQuestionByCountryMappingResponse } from 'src/app/core/models/QuestionResponse';
 import { ResultResponseDto } from 'src/app/core/models/ResultResponseDto';
+import { DashboardModeResponseDto } from 'src/app/core/models/CountrySignalDashboardDto';
 
 @Injectable({
   providedIn: 'root'
@@ -86,5 +87,18 @@ export class EvaluatorService {
   }
   public compareCountries(request: CompareCountryRequestDto) {
     return this.http.post(`Kpi/compareCountries`, request).pipe(map(x => x as ResultResponseDto<CompareCountryResponseDto>));
+  }
+  public getPeaceStressTestDashboard(countryID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getPeaceStressTestDashboard`, { countryID })
+    .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
+  }
+  
+  public getEarlyWarningDashboard(countryID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getEarlyWarningDashboard`, { countryID })
+    .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
+  }
+  public getResilienceScorecard(countryID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getResilienceScorecard`, { countryID })
+    .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
   }
 }

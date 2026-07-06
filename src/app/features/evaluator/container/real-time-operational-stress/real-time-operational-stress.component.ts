@@ -22,7 +22,8 @@ import { AHI_CHART, AHI_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-them
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { UserService } from 'src/app/core/services/user.service';
-import { CountryUserService } from '../../country-user.service';
+import { EvaluatorService } from '../../evaluator.service';
+
 declare var bootstrap: any;
 
 export type GlanceBarChartOptions = {
@@ -53,11 +54,11 @@ export type GlanceDonutChartOptions = {
 type SignalTab = 'stress' | 'warning' | 'resilience';
 
 @Component({
-  selector: 'app-country-user-dashboard',
-  templateUrl: './country-signal-dashboard.component.html',
-  styleUrl: './country-signal-dashboard.component.css',
+  selector: 'app-real-time-operational-stress',
+  templateUrl: './real-time-operational-stress.component.html',
+  styleUrl: './real-time-operational-stress.component.css'
 })
-export class CountryUserDashboardComponent implements OnInit, OnDestroy {
+export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
   countries: CountryVM[] = [];
   selectedCountryID: number | null = null;
   activeTab: SignalTab = 'stress';
@@ -76,7 +77,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   glanceDonutChartOptions: Partial<GlanceDonutChartOptions> = {};
 
   constructor(
-    private countryUserService: CountryUserService,
+    private evaluatorService: EvaluatorService,
     private toaster: ToasterService,
     private userService: UserService
   ) {
@@ -84,16 +85,16 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getCountryUserCountries();
+    this.getAllCountriesByUserId();
   }
 
   ngOnDestroy(): void {
   
   }
 
-  getCountryUserCountries(): void {
+  getAllCountriesByUserId(): void {
     this.isLoading = true;
-    this.countryUserService.getCountryUserCountries().subscribe({
+    this.evaluatorService.getAllCountriesByUserId(this.userService?.userInfo?.userID).subscribe({
       next: (res) => {
         this.isLoading = false;
         if (res.succeeded) {
@@ -147,7 +148,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   loadStressDashboard(): void {
     if (!this.selectedCountryID) return;
     this.isLoading = true;
-    this.countryUserService.getPeaceStressTestDashboard(this.selectedCountryID).subscribe({
+    this.evaluatorService.getPeaceStressTestDashboard(this.selectedCountryID).subscribe({
       next: (res) => {
         this.isLoading = false;
         if (!res.succeeded) {
@@ -169,7 +170,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   loadEarlyWarningDashboard(isSilent = false): void {
     if (!this.selectedCountryID) return;
     if (!isSilent) this.isLoading = true;
-    this.countryUserService.getEarlyWarningDashboard(this.selectedCountryID).subscribe({
+    this.evaluatorService.getEarlyWarningDashboard(this.selectedCountryID).subscribe({
       next: (res) => {
         if (!isSilent) this.isLoading = false;
         if (!res.succeeded) {
@@ -194,7 +195,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   loadResilienceDashboard(): void {
     if (!this.selectedCountryID) return;
     this.isLoading = true;
-    this.countryUserService.getResilienceScorecard(this.selectedCountryID).subscribe({
+    this.evaluatorService.getResilienceScorecard(this.selectedCountryID).subscribe({
       next: (res) => {
         this.isLoading = false;
         if (!res.succeeded) {
@@ -345,9 +346,9 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   }
 
   getAllPillars(): void {
-    this.countryUserService.getAllPillars().subscribe({
+    this.evaluatorService.getAllPillars().subscribe({
       next: (res) => {
-        this.pillars = res.result ?? [];
+        this.pillars = res ?? [];
       },
     });
   }

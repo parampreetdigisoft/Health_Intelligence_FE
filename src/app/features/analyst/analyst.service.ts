@@ -23,6 +23,7 @@ import { GetAnalyticalLayerRequestDto, GetAnalyticalLayerResultDto, AnalyticalLa
 import { AiCountryPillarDashboardResponseDto } from 'src/app/core/models/AiCountryPillarDashboardResponseDto';
 import { GetMutiplekpiLayerRequestDto } from 'src/app/core/models/aiVm/GetMutiplekpiLayerRequestDto';
 import { GetMutiplekpiLayerResultsDto } from 'src/app/core/models/aiVm/GetMutiplekpiLayerResultsDto';
+import { DashboardModeResponseDto } from 'src/app/core/models/CountrySignalDashboardDto';
 
 @Injectable({
   providedIn: 'root'
@@ -133,5 +134,20 @@ export class AnalystService {
 
   public getQuestionsByCountryId(payload: CountryMappingPillerRequestDto) {
     return this.http.getWithQueryParams(`Question/getQuestionsByCountryMappingIdForAnalyst`, payload).pipe(map(x => x as ResultResponseDto<GetQuestionByCountryMappingResponse>));
+  }
+  
+  public getPeaceStressTestDashboard(countryID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getPeaceStressTestDashboard`, { countryID })
+    .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
+  }
+  
+  public getEarlyWarningDashboard(countryID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getEarlyWarningDashboard`, { countryID })
+    .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
+  }
+
+  public getResilienceScorecard(countryID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getResilienceScorecard`, { countryID })
+    .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
   }
 }

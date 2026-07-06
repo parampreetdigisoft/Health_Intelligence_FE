@@ -26,6 +26,7 @@ import { GetMutiplekpiLayerRequestDto } from 'src/app/core/models/aiVm/GetMutipl
 import { GetMutiplekpiLayerResultsDto } from 'src/app/core/models/aiVm/GetMutiplekpiLayerResultsDto';
 import { EmailExistDto } from 'src/app/core/models/EmailExistDto';
 import { ExportCountryWithOptionDto } from 'src/app/core/models/ExportCountryWithOptionDto';
+import { DashboardModeResponseDto } from 'src/app/core/models/CountrySignalDashboardDto';
 
 @Injectable({
   providedIn: "root",
@@ -250,5 +251,17 @@ export class AdminService {
   }
   public exportCompareCountries(params: any) {
     return this.http.ImportFile(`Kpi/ExportCompareCountries`, params);
+  }
+  public getPeaceStressTestDashboard(countryID: number) {
+      return this.http.getWithQueryParams(`Dashboard/getPeaceStressTestDashboard`, { countryID })
+        .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
+  }
+  public getEarlyWarningDashboard(countryID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getEarlyWarningDashboard`, { countryID })
+    .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
+  }
+  public getResilienceScorecard(countryID: number) {
+    return this.http.getWithQueryParams(`Dashboard/getResilienceScorecard`, { countryID })
+    .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
   }
 }

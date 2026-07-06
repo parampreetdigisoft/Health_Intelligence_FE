@@ -22,6 +22,7 @@ import { KpiLayersComponent } from './container/kpi-layers/kpi-layers.component'
 import { AddUpdateCountryComponent } from './features/add-update-country/add-update-country.component';
 import { CountryUserViewComponent } from './container/country-user-view/country-user-view.component';
 import { AddUpdateCountryUserComponent } from './features/add-update-country-user/add-update-country-user.component';
+import { RealTimeOperationalStressComponent } from './container/real-time-operational-stress/real-time-operational-stress.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { AddUpdateCountryUserComponent } from './features/add-update-country-use
     ComparisionComponent,
     TransterAssessmentComponent,
     CountryUserViewComponent,
-    AddUpdateCountryUserComponent
+    AddUpdateCountryUserComponent,
+    RealTimeOperationalStressComponent,
   ],
   imports: [
     CommonModule,

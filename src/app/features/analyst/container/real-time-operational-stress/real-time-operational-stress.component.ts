@@ -22,7 +22,7 @@ import { AHI_CHART, AHI_AXIS_STYLE } from 'src/app/core/constants/ahi-chart-them
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { UserService } from 'src/app/core/services/user.service';
-import { CountryUserService } from '../../country-user.service';
+import { AnalystService } from '../../analyst.service';
 declare var bootstrap: any;
 
 export type GlanceBarChartOptions = {
@@ -51,13 +51,13 @@ export type GlanceDonutChartOptions = {
 };
 
 type SignalTab = 'stress' | 'warning' | 'resilience';
-
 @Component({
-  selector: 'app-country-user-dashboard',
-  templateUrl: './country-signal-dashboard.component.html',
-  styleUrl: './country-signal-dashboard.component.css',
+  selector: 'app-real-time-operational-stress',
+  templateUrl: './real-time-operational-stress.component.html',
+  styleUrl: './real-time-operational-stress.component.css'
 })
-export class CountryUserDashboardComponent implements OnInit, OnDestroy {
+
+export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
   countries: CountryVM[] = [];
   selectedCountryID: number | null = null;
   activeTab: SignalTab = 'stress';
@@ -72,11 +72,12 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   resilienceDashboard: DashboardModeResponseDto | null = null;
   selectedQuestion: DashboardQuestionScoreDto | null = null;
   interpretationConditions: DashboardInterpretationDto[] = [];
+
   glanceBarChartOptions: Partial<GlanceBarChartOptions> = {};
   glanceDonutChartOptions: Partial<GlanceDonutChartOptions> = {};
 
   constructor(
-    private countryUserService: CountryUserService,
+    private analystService: AnalystService,
     private toaster: ToasterService,
     private userService: UserService
   ) {
@@ -84,16 +85,18 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getCountryUserCountries();
+    this.getAllCountriesByUserID();
   }
 
   ngOnDestroy(): void {
   
   }
 
-  getCountryUserCountries(): void {
-    this.isLoading = true;
-    this.countryUserService.getCountryUserCountries().subscribe({
+  getAllCountriesByUserID(): void {
+   this.isLoading = true;
+   this.analystService
+      .getAllCountriesByUserId(this.userService?.userInfo?.userID)
+      .subscribe({
       next: (res) => {
         this.isLoading = false;
         if (res.succeeded) {
@@ -147,7 +150,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   loadStressDashboard(): void {
     if (!this.selectedCountryID) return;
     this.isLoading = true;
-    this.countryUserService.getPeaceStressTestDashboard(this.selectedCountryID).subscribe({
+    this.analystService.getPeaceStressTestDashboard(this.selectedCountryID).subscribe({
       next: (res) => {
         this.isLoading = false;
         if (!res.succeeded) {
@@ -155,8 +158,8 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
           this.toaster.showWarning(res.errors?.[0] || 'No stress test data found.');
           return;
         }
-        this.interpretationConditions = res.result?.dashboardInterpretations ?? [];
         this.stressDashboard = res.result;
+        this.interpretationConditions = res.result?.dashboardInterpretations ?? [];
         if (this.activeTab === 'stress') this.updateGlanceCharts(res.result);
       },
       error: () => {
@@ -169,7 +172,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   loadEarlyWarningDashboard(isSilent = false): void {
     if (!this.selectedCountryID) return;
     if (!isSilent) this.isLoading = true;
-    this.countryUserService.getEarlyWarningDashboard(this.selectedCountryID).subscribe({
+    this.analystService.getEarlyWarningDashboard(this.selectedCountryID).subscribe({
       next: (res) => {
         if (!isSilent) this.isLoading = false;
         if (!res.succeeded) {
@@ -194,7 +197,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   loadResilienceDashboard(): void {
     if (!this.selectedCountryID) return;
     this.isLoading = true;
-    this.countryUserService.getResilienceScorecard(this.selectedCountryID).subscribe({
+    this.analystService.getResilienceScorecard(this.selectedCountryID).subscribe({
       next: (res) => {
         this.isLoading = false;
         if (!res.succeeded) {
@@ -277,8 +280,32 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
       'Selected Country'
     );
   }
+  
+  getUpdateStatus(date: Date | string | null | undefined): { label: string; class: string } {
+    if (!date) { return { label: 'N/A', class: 'status-intermediate' }; 
+    }
+    
+    const updatedDate = new Date(date);
+    const today = new Date();
+    const diffTime = today.getTime() - updatedDate.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays < 7) {
+      return { label: 'Recent', class: 'status-recent'
+      };
+    }
+    
+    if (diffDays <= 15) {
+      return {
+        label: 'Aging',
+        class: 'status-intermediate'
+      };
+    }
 
-
+    return {
+      label: 'Outdated',
+      class: 'status-outdated'
+    };
+  }
 
   getQuestionName(question: DashboardQuestionScoreDto): string {
     return question.questionDescription ;
@@ -345,9 +372,9 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   }
 
   getAllPillars(): void {
-    this.countryUserService.getAllPillars().subscribe({
+    this.analystService.getAllPillars().subscribe({
       next: (res) => {
-        this.pillars = res.result ?? [];
+        this.pillars = res ?? [];
       },
     });
   }
@@ -460,7 +487,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
         noDataCount++;
         return;
       }
-      const key = this.getInterpretationConditionByScore(q.aiScore).condition || 'Stable';
+     const key = this.getInterpretationConditionByScore(q.aiScore).condition || 'Stable';
       conditionMap.set(key, (conditionMap.get(key) ?? 0) + 1);
     });
     if (noDataCount > 0) {
@@ -531,7 +558,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
     if (value.includes('strong')) return '#77BD3E';
     return AHI_CHART.primarySoft;
   }
-
+  
   getInterpretationConditionByScore(score: number | null | undefined) {
     if (score === null || score === undefined || !this.interpretationConditions?.length) {
       return {
@@ -549,5 +576,10 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
       condition: match?.condition ?? 'No Data',
       description: match?.description ?? 'No interpretation available.'
     };
+  }
+
+  formatDate(date: Date | string | null | undefined): string {
+    if (!date) return 'N/A';
+    return new Date(date).toLocaleDateString();
   }
 }

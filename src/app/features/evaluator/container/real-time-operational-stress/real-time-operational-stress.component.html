@@ -59,11 +59,11 @@
           </div>
           <div class="pem_stat" *ngIf="getQuestions(dashboard)[0] as firstQuestion">
             <span>{{ getQuestionName(firstQuestion) }}</span>
-            <strong>{{ formatScore(firstQuestion.aiScore) }}</strong>
+            <strong>{{ formatScore(firstQuestion.evaluationScore) }}</strong>
           </div>
           <div class="pem_stat" *ngIf="getQuestions(dashboard)[1] as secondQuestion">
             <span>{{ getQuestionName(secondQuestion) }}</span>
-            <strong>{{ formatScore(secondQuestion.aiScore) }}</strong>
+            <strong>{{ formatScore(secondQuestion.evaluationScore) }}</strong>
           </div>
         </div>
       </div>
@@ -84,7 +84,7 @@
 
       <div class="card_grid">
         <div class="signal_card signal_card--clickable" *ngFor="let question of getQuestions(dashboard)"
-          [ngClass]="[getQuestionAccentClass(question), isAlertQuestion(question) ? 'signal_card--alert' : '', !hasScore(question.aiScore) ? 'signal_card--no-data' : '']"
+          [ngClass]="[getQuestionAccentClass(question), isAlertQuestion(question) ? 'signal_card--alert' : '', !hasScore(question.evaluationScore) ? 'signal_card--no-data' : '']"
           (click)="openQuestionDetails(question)">
           <div class="signal_card_orb" aria-hidden="true"></div>
           <img src="assets/images/health-score-chart.svg" alt="" class="signal_card_watermark" aria-hidden="true" />
@@ -92,30 +92,30 @@
             <i class="bi bi-exclamation-triangle-fill"></i> Alert
           </div>
           <div class="signal_card_header">
-            <div class="signal_icon_ring" [style.--ring-value]="getSignalProgress(question.aiScore) + '%'">
+            <div class="signal_icon_ring" [style.--ring-value]="getSignalProgress(question.evaluationScore) + '%'">
               <div class="signal_icon_well">
                 <i class="bi" [ngClass]="getQuestionIconClass(question)"></i>
               </div>
             </div>
             <div class="signal_header_meta">
              <div class="signal_top">
-                <span class="condition_badge" [ngClass]="getConditionClass(getInterpretationConditionByScore(question.aiScore).condition)">
-                  {{ getInterpretationConditionByScore(question.aiScore).condition || (hasScore(question.aiScore) ? 'Stable' : 'No Data') }}
+                <span class="condition_badge" [ngClass]="getConditionClass(getInterpretationConditionByScore(question.evaluationScore).condition)">
+                  {{ getInterpretationConditionByScore(question.evaluationScore).condition || (hasScore(question.evaluationScore) ? 'Stable' : 'No Data') }}
                 </span>
               </div>
               <h4>{{ getQuestionName(question) }}</h4>
             </div>
           </div>
           <div class="signal_value_row">
-            <div class="signal_value">{{ formatScore(question.aiScore) }}</div>
-            <span class="signal_value_unit" *ngIf="hasScore(question.aiScore)">/ 100</span>
+            <div class="signal_value">{{ formatScore(question.evaluationScore) }}</div>
+            <span class="signal_value_unit" *ngIf="hasScore(question.evaluationScore)">/ 100</span>
           </div>
-          <div class="progress_track" *ngIf="hasScore(question.aiScore)">
-            <div class="progress_fill animated shimmer" [style.width.%]="getSignalProgress(question.aiScore)"></div>
+          <div class="progress_track" *ngIf="hasScore(question.evaluationScore)">
+            <div class="progress_fill animated shimmer" [style.width.%]="getSignalProgress(question.evaluationScore)"></div>
           </div>
-          <p class="signal_no_data" *ngIf="!hasScore(question.aiScore)">Score not available for this indicator yet.</p>
-          <p class="signal_interpretation_preview" *ngIf="hasScore(question.aiScore)">
-            {{ getInterpretationConditionByScore(question.aiScore).description }}
+          <p class="signal_no_data" *ngIf="!hasScore(question.evaluationScore)">Score not available for this indicator yet.</p>
+          <p class="signal_interpretation_preview" *ngIf="hasScore(question.evaluationScore)">
+            {{ getInterpretationConditionByScore(question.evaluationScore).description }}
           </p>
           <span class="signal_view_hint"><i class="bi bi-box-arrow-up-right"></i> View details</span>
         </div>
@@ -202,12 +202,12 @@
         <div class="signal_detail_stats">
           <div class="signal_detail_stat">
             <span>Score</span>
-            <strong>{{ formatScore(selectedQuestion.aiScore) }}</strong>
+            <strong>{{ formatScore(selectedQuestion.evaluationScore) }}</strong>
           </div>
           <div class="signal_detail_stat">
             <span>Condition</span>
-            <strong [ngClass]="getConditionClass(getInterpretationConditionByScore(selectedQuestion.aiScore).condition)">
-              {{ getInterpretationConditionByScore(selectedQuestion.aiScore).condition || (hasScore(selectedQuestion.aiScore) ? 'Stable' : 'No Data') }}
+            <strong [ngClass]="getConditionClass(getInterpretationConditionByScore(selectedQuestion.evaluationScore).condition)">
+              {{ getInterpretationConditionByScore(selectedQuestion.evaluationScore).condition || (hasScore(selectedQuestion.evaluationScore) ? 'Stable' : 'No Data') }}
             </strong>
           </div>
         </div>
@@ -218,7 +218,7 @@
         <div class="signal_detail_block signal_detail_block--action">
           <h6><i class="bi bi-compass"></i> Interpretation</h6>
           <!-- <p>{{ selectedQuestion.interpretation || 'No interpretation available.' }}</p> -->
-          <p> {{ getInterpretationConditionByScore(selectedQuestion.aiScore).description }}</p>
+          <p> {{ getInterpretationConditionByScore(selectedQuestion.evaluationScore).description }}</p>
         </div>
       </div>
     </div>

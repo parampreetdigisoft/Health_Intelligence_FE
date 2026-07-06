@@ -22,8 +22,8 @@ export interface DashboardQuestionScoreDto {
   evaluationTotalAns?: number | null;
   evaluationTotalNA?: number | null;
   evaluationTotalUnknown?: number | null;
-  condition: string | null;
-  interpretation: string | null;
+  evaluationUpdatedAt?: Date | null;
+  aiUpdatedAt: Date | null;
 }
 
 export interface DashboardModeResponseDto {

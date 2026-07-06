@@ -11,6 +11,7 @@ import { EvaluatorResponsesComponent } from './container/evaluator-responses/eva
 import { EvaluatorResponseViewComponent } from './container/evaluator-response-view/evaluator-response-view.component';
 import { AnalystDashboardComponent } from './container/analyst-dashboard/analyst-dashboard.component';
 import { ComparisionComponent } from './container/comparision/comparision.component';
+import { RealTimeOperationalStressComponent } from './container/real-time-operational-stress/real-time-operational-stress.component';
 const routes: Routes = [
   {
     path: '',
@@ -19,6 +20,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: AnalystDashboardComponent },
+      { path: 'rosew-dashboard', component: RealTimeOperationalStressComponent },
       { path: 'assigned-country', component: AssignedCountryComponent },
       { path: 'evaluator-view', component: EvaluatorViewComponent },
       { path: 'evaluator-response/:assessmentUserID', component: EvaluatorResponsesComponent },
@@ -59,6 +61,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AnalystComponent,
+    RealTimeOperationalStressComponent,
     AssignedCountryComponent,
     EvaluatorViewComponent,
     AnalystAssessmentComponent,

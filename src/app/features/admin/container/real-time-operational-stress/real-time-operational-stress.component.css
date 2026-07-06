@@ -1,5 +1,5 @@
 /* ============================================================
-   AHI · Country Signal Dashboard
+   AHI · Real-Time Operational Stress Dashboard
    Design language: "Intelligence Command Console"
    — deep navy + signal green, targeting-reticle card framing,
      radar/grid texture, tabular data typography, live-scan motif.
@@ -733,15 +733,17 @@
   margin-top: 12px;
   margin-bottom: 0;
   color: var(--pe-primary);
-  font-weight: 700;
-  font-size: 36px;
+  font-weight: 600;
+  font-size: 30px;
   line-height: 1;
 }
 
 .signal_value_row {
   display: flex;
+  justify-content: space-between;
+  width: 100%;
   align-items: baseline;
-  gap: 6px;
+  gap: 4px;
   margin-top: 13px;
   margin-bottom: 9px;
 }
@@ -1722,4 +1724,94 @@
   .glance_charts_grid {
     grid-template-columns: 1fr;
   }
+}
+
+.update_value {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-recent {
+  color: #198754;
+  background: #d1f7dd;
+}
+
+.status-intermediate {
+  color: #856404;
+  background: #fff3cd;
+}
+
+.status-outdated {
+  color: #dc3545;
+  background: #f8d7da;
+}
+
+.ai_manual_split {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.split_card {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.split_title {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.detail_item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.detail_item.full {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.detail_item.full p {
+  margin: 5px 0 0;
+  font-size: 13px;
+  color: #555;
+}
+
+.split_divider {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: #999;
+}
+
+.ai_card {
+  border-left: 4px solid #4f46e5;
+}
+
+.manual_card {
+  border-left: 4px solid #16a34a;
+}
+
+.meta_row{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.meta_label {
+  font-weight: 600;
+  font-size: 20px;
+}
+.modal_design .modal-body {
+    padding: 29px 23px 35px 23px !important;
 }

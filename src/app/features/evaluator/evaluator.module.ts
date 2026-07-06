@@ -8,6 +8,7 @@ import { SharedModule } from 'src/app/shared/share.module';
 import { AssignedCountryComponent } from './container/assigned-country/assigned-country.component';
 import { AssessmentViewResultComponent } from './container/assessment-view-result/assessment-view-result.component';
 import { EvaluatorDashboardComponent } from './container/evaluator-dashboard/evaluator-dashboard.component';
+import { RealTimeOperationalStressComponent } from './container/real-time-operational-stress/real-time-operational-stress.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
     data: { roles: [] },
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, 
+      { path: "rosew-dashboard", component: RealTimeOperationalStressComponent },
       { path: 'dashboard', component: EvaluatorDashboardComponent },
       { path: 'assigned-country', component: AssignedCountryComponent },
       { path: 'make-assessment', component: MakeAssessmentComponent },
@@ -44,7 +46,8 @@ const routes: Routes = [
     MakeAssessmentComponent,
     AssignedCountryComponent,
     EvaluatorDashboardComponent,
-    AssessmentViewResultComponent
+    AssessmentViewResultComponent,
+    RealTimeOperationalStressComponent
   ],
   imports: [
     CommonModule,
