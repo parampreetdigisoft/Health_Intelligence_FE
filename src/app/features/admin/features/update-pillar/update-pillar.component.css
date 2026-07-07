@@ -172,6 +172,7 @@
   border: 1px dashed #c2cfe0;
   border-radius: 14px;
   background: #fff;
+  max-width: 500px;
 }
 
 .image-preview {

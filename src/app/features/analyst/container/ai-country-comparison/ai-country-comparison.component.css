@@ -309,7 +309,7 @@ app-ai-city-comparison app-ag-bar:nth-child(3) {
 }
 
 .faq_inner_svg img {
-  width: 44px;
+width: 50px;
 }
 
 .faq_sidebar_item:nth-child(1) .faq_inner_svg { background-color: #5DADE2; } /* Soft Blue */

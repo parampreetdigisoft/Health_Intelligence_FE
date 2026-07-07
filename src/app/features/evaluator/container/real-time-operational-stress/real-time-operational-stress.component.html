@@ -107,8 +107,17 @@
             </div>
           </div>
           <div class="signal_value_row">
-            <div class="signal_value">{{ formatScore(question.evaluationScore) }}</div>
-            <span class="signal_value_unit" *ngIf="hasScore(question.evaluationScore)">/ 100</span>
+            <span class="signal_label" matTooltip="Manual">👤: </span>
+            <div class="score_value">
+              <span class="signal_value">{{ formatScore(question.evaluationScore) }}</span>
+              <span class="signal_value_unit" *ngIf="hasScore(question.evaluationScore)">/ 100</span>
+            </div>
+            <div class="signal_lastUpdated">
+              <span class="status_badge" [ngClass]="getUpdateStatus(question.evaluationUpdatedAt).class"
+                matTooltip="{{ question.evaluationUpdatedAt ? (question.evaluationUpdatedAt | date:'medium') : '' }}">
+                {{ getUpdateStatus(question.evaluationUpdatedAt).label }}
+              </span>
+            </div>
           </div>
           <div class="progress_track" *ngIf="hasScore(question.evaluationScore)">
             <div class="progress_fill animated shimmer" [style.width.%]="getSignalProgress(question.evaluationScore)"></div>

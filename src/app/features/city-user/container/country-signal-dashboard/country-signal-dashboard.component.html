@@ -106,8 +106,8 @@
               <h4>{{ getQuestionName(question) }}</h4>
             </div>
           </div>
-          <div class="signal_value_row">
-            <div class="signal_value">{{ formatScore(question.aiScore) }}</div>
+          <div class="signal_value_row signal_value_row--no-recency">
+            <span class="signal_value">{{ formatScore(question.aiScore) }}</span>
             <span class="signal_value_unit" *ngIf="hasScore(question.aiScore)">/ 100</span>
           </div>
           <div class="progress_track" *ngIf="hasScore(question.aiScore)">

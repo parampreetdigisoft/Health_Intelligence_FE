@@ -217,7 +217,7 @@ app-kpi-comparision app-ag-bar:nth-child(3) {
 }
 p.btn_spinner {
     display: inline-block;
-    background-color: #006D77;
+
     padding: 8px 10px;
     white-space: nowrap;
     color: #ffffff;

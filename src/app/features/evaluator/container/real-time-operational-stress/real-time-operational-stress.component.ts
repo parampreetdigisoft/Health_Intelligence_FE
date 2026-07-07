@@ -279,7 +279,26 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
     );
   }
 
+  getUpdateStatus(date: Date | string | null | undefined): { label: string; class: string } {
+    if (!date) {
+      return { label: 'N/A', class: 'status-intermediate' };
+    }
 
+    const updatedDate = new Date(date);
+    const today = new Date();
+    const diffTime = today.getTime() - updatedDate.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 7) {
+      return { label: 'Recent', class: 'status-recent' };
+    }
+
+    if (diffDays <= 15) {
+      return { label: 'Aging', class: 'status-intermediate' };
+    }
+
+    return { label: 'Outdated', class: 'status-outdated' };
+  }
 
   getQuestionName(question: DashboardQuestionScoreDto): string {
     return question.questionDescription ;

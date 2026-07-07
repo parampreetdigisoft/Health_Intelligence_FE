@@ -534,7 +534,7 @@
 
 .live_tag {
   position: absolute;
-  top: 100px;
+  top: 45px;
   right: 12px;
   z-index: 2;
   display: inline-flex;
@@ -744,6 +744,28 @@
   gap: 6px;
   margin-top: 13px;
   margin-bottom: 9px;
+}
+
+.signal_value_row--no-recency {
+  justify-content: flex-start;
+  align-items: baseline;
+}
+
+.signal_value_row--no-recency .signal_value {
+  margin-top: 0;
+  font-size: clamp(28px, 2.2vw, 36px);
+}
+
+@media (min-width: 1600px) {
+  .signal_value_row--no-recency .signal_value {
+    font-size: 38px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .signal_value_row--no-recency .signal_value {
+    font-size: 30px;
+  }
 }
 
 .signal_value_row .signal_value {

@@ -265,7 +265,8 @@ export class AnalystDashboardComponent implements OnInit {
           if (!d) return "";
 
           return `
-          <div style="padding:14px 16px; min-width:220px; font-size:12px; font-family:Poppins,sans-serif; background:#fff; border-radius:12px; box-shadow:${AHI_CHART.tooltipShadow}; border-left:4px solid ${AHI_CHART.primary};">
+          <div style="padding:14px 16px; min-width:220px; font-size:12px; font-family:Poppins,sans-serif; 
+          background:#fff; border-radius:12px; box-shadow:${AHI_CHART.tooltipShadow}; ">
             <div style="font-weight:700; margin-bottom:10px; color:${AHI_CHART.primary}; font-size:14px;">
               ${d.countryName}
             </div>
@@ -530,7 +531,7 @@ export class AnalystDashboardComponent implements OnInit {
         }
       },
 
-      tooltip: {
+     tooltip: {
         enabled: true,
         theme: 'light',
         custom: ({ dataPointIndex }) => {
@@ -550,14 +551,13 @@ export class AnalystDashboardComponent implements OnInit {
             avgScore >= 50 ? '📈' :
               avgScore >= 25 ? '⚡' : '🌱';
 
-          return `
+          let tooltip = `
           <div style="
             padding: 18px 20px;
             min-width: 300px;
             background: #ffffff;
             border-radius: 14px;
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
-            border-left: 4px solid ${AHI_CHART.primary};
             font-family: 'Poppins', system-ui, sans-serif;
             position: relative;
             overflow: hidden;
@@ -766,10 +766,11 @@ export class AnalystDashboardComponent implements OnInit {
               100% { transform: translateX(100%); }
             }
           </style>
-        `;
+           `;
+
+        return tooltip;
         }
       },
-
       legend: {
         show: false
       }
