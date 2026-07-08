@@ -1,4 +1,4 @@
-::ng-deep .inner_content_area
+/* ::ng-deep .inner_content_area
     {
       background-color: var(--background-Color);
     border: 1px solid var(--Light-Border-Color);
@@ -6,4 +6,4 @@
     border-radius: 30px;
     padding: 40px 40px 30px;
     position: relative;
-    }
+    } */

@@ -25,6 +25,7 @@ import { AiComputationService } from "src/app/core/services/ai-computation.servi
 import { AITransferAssessmentRequestDto } from "src/app/core/models/aiVm/AITransferAssessmentRequestDto";
 import { AdminService } from "src/app/features/admin/admin.service";
 import { ExportType } from "src/app/core/enums/exportEnum";
+import { AssessmentPhase } from "src/app/core/enums/AssessmentPhase";
 
 @Component({
   selector: "app-analyst-assessment",
@@ -35,6 +36,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   pillars: PillarsVM[] = [];
   countries: CountryVM[] = []; // ✅ fixed type
   selectedUserCountryMappingID: number = 0;
+  selectedCountry!: CountryVM ;
   pillerQuestions: GetQuestionByCountryMappingResponse | null = null;
   form!: FormGroup;
   pillarDisplayOrder: number = 1;
@@ -47,6 +49,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
   isAssessementFinalized = false;
   isAItransfer: boolean = false;
   selectedYear = new Date().getFullYear();
+  ROSEWPillarID =22;
   constructor(
     private analystService: AnalystService,
     private userService: UserService,
@@ -118,6 +121,18 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
     }
   }
 
+  makePillarActive(pillar:PillarsVM){
+    return (this.selectedCountry?.assessmentPhase != AssessmentPhase.Completed && pillar.displayOrder <= this.pillarDisplayOrder ) 
+              || pillar?.pillarID == this.ROSEWPillarID;
+  }
+  activeClass(pillar:PillarsVM){
+
+    let con = this.selectedPillar?.displayOrder == pillar.displayOrder
+     &&  this.selectedCountry?.assessmentPhase != AssessmentPhase.Completed 
+     && this.selectedPillar.pillarID != this.ROSEWPillarID;
+    return con;
+  }
+
   GetAllPillars() {
     this.analystService.getAllPillars().subscribe((pillars) => {
       this.pillars = pillars;
@@ -128,13 +143,17 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       this.toaster.showWarning("Please select country first");
       return;
     }
+    if(this.selectedCountry?.assessmentPhase == AssessmentPhase.Completed && (pillar?.pillarID != this.ROSEWPillarID)){
+      this.toaster.showWarning("You can only edit the ROSEW pillar. Editing other pillars requires administrator permission.");
+      return
+    }
 
     this.isAssessementFinalized = false;
     if (pillar) {
       this.selectedPillar = pillar;
       this.getQuestionsByCountryId();
     }
-    else {
+    else if(!this.selectedPillar){
       this.selectedPillar = this.pillars.find((x) => x.pillarID == this.pillerQuestions?.pillarID);
       if (this.pillerQuestions && this.pillerQuestions?.submittedPillarDisplayOrder < (this.selectedPillar?.displayOrder ?? 0)) {
         this.pillarDisplayOrder = this.selectedPillar?.displayOrder ?? 1;
@@ -142,6 +161,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
     }
   }
   countryChanged() {
+    this.selectedCountry = this.countries.filter(x=>x.userCountryMappingID == this.selectedUserCountryMappingID)[0]
     this.selectedPillar = undefined;
     this.getQuestionsByCountryId();
   }
@@ -156,9 +176,10 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
             this.selectedUserCountryMappingID = this.analystService.userCountryMappingIDSubject$.value != null ?
               this.analystService.userCountryMappingIDSubject$.value
               : this.countries[0].userCountryMappingID ?? 0;
+              this.selectedCountry = this.countries.filter(x=>x.userCountryMappingID == this.selectedUserCountryMappingID)[0]
             setTimeout(() => {
               this.toaster.showInfo("You have rediredected to assgined country, please submit all pillars for the country");
-            }, 1000);
+            }, 500);
             this.getQuestionsByCountryId();
           } else {
             this.toaster.showWarning(res.errors.join(", "));
@@ -201,7 +222,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
           this.pillarChanged();
           this.loadQuestions();
         } else {
-          this.toaster.showWarning("Country's assessment is already submitted");
+          this.toaster.showWarning("The country's assessment has already been submitted, or the selected pillar has no questions.");
         }
       },
     });
@@ -303,8 +324,10 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.isUploading = false;
         if (res.succeeded) {
-           this.selectedPillar = this.pillars[0];
-           this.getQuestionsByCountryId();
+          this.selectedPillar = this.selectedCountry?.assessmentPhase == AssessmentPhase.Completed ? 
+                  this.pillars.filter(x=>x.pillarID == this.ROSEWPillarID)[0]
+                  : this.pillars[0];
+          this.getQuestionsByCountryId();
           this.toaster.showSuccess(res.messages.join(", "));
         } else {
           this.toaster.showError(res.errors.join(", "));

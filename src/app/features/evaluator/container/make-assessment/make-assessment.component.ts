@@ -19,6 +19,7 @@ import {
 import { environment } from "src/environments/environment";
 import { EvaluatorService } from "../../evaluator.service";
 import { CommonService } from "src/app/core/services/common.service";
+import { AssessmentPhase } from "src/app/core/enums/AssessmentPhase";
 
 @Component({
   selector: "app-make-assessment",
@@ -29,6 +30,7 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
   pillars: PillarsVM[] = [];
   countries: CountryVM[] = []; // ✅ fixed type
   selectedUserCountryMappingID: number = 0;
+  selectedCountry!: CountryVM ;
   pillerQuestions: GetQuestionByCountryMappingResponse | null = null;
   form!: FormGroup;
   pillarDisplayOrder: number = 1;
@@ -39,7 +41,7 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
   isLoader: boolean = false;
   urlBase = environment.apiUrl;
   isAssessementFinalized = false;
-
+  ROSEWPillarID =22;
   constructor(
     private evaluatorService: EvaluatorService,
     private userService: UserService,
@@ -106,6 +108,18 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
       });
     }
   }
+  makePillarActive(pillar:PillarsVM){
+    return (this.selectedCountry?.assessmentPhase != AssessmentPhase.Completed && pillar.displayOrder <= this.pillarDisplayOrder ) 
+              || pillar?.pillarID == this.ROSEWPillarID;
+  }
+  activeClass(pillar:PillarsVM){
+
+    let con = this.selectedPillar?.displayOrder == pillar.displayOrder
+     &&  this.selectedCountry?.assessmentPhase != AssessmentPhase.Completed 
+     && this.selectedPillar.pillarID != this.ROSEWPillarID;
+    return con;
+  }
+
 
   GetAllPillars() {
     this.evaluatorService.getAllPillars().subscribe((pillars) => {
@@ -117,12 +131,16 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
       this.toaster.showWarning("Please select country first");
       return;
     }
+    if(this.selectedCountry?.assessmentPhase == AssessmentPhase.Completed && (pillar?.pillarID != this.ROSEWPillarID)){
+      this.toaster.showWarning("You can only edit the ROSEW pillar. Editing other pillars requires analyst permission.");
+      return
+    }
 
     this.isAssessementFinalized = false;
     if (pillar) {
       this.selectedPillar = pillar;
       this.getQuestionsByCountryId();
-    } else {
+    } else if(!this.selectedPillar){
       this.selectedPillar = this.pillars.find(
         (x) => x.pillarID == this.pillerQuestions?.pillarID
       );
@@ -132,6 +150,7 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
     }
   }
   countryChanged() {
+    this.selectedCountry = this.countries.filter(x=>x.userCountryMappingID == this.selectedUserCountryMappingID)[0]
     this.selectedPillar = undefined;
     this.getQuestionsByCountryId();
   }
@@ -146,11 +165,12 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
               this.evaluatorService.userCountryMappingIDSubject$.value
               : this.countries[0].userCountryMappingID ?? 0;
 
+              this.selectedCountry = this.countries.filter(x=>x.userCountryMappingID == this.selectedUserCountryMappingID)[0]
             setTimeout(() => {
               this.toaster.showInfo(
                 "You have rediredected to assgined country, please submit all pillars for the country"
               );
-            }, 1000);
+            }, 500);
             this.getQuestionsByCountryId();
           } else {
             this.toaster.showWarning(res.errors.join(", "));
@@ -194,7 +214,7 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
           }
           this.loadQuestions();
         } else {
-          this.toaster.showWarning("Country's assessment is already submitted");
+          this.toaster.showWarning("The country's assessment has already been submitted, or the selected pillar has no questions.");
         }
       },
     });
@@ -296,7 +316,9 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.isUploading = false;
         if (res.succeeded) {
-          this.selectedPillar = this.pillars[0];
+          this.selectedPillar = this.selectedCountry?.assessmentPhase == AssessmentPhase.Completed ? 
+                  this.pillars.filter(x=>x.pillarID == this.ROSEWPillarID)[0]
+                  : this.pillars[0];
            this.getQuestionsByCountryId();
           this.toaster.showSuccess(res.messages.join(", "));
         } else {

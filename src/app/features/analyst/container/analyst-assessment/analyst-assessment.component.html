@@ -95,10 +95,10 @@
     <div class="faq_sidebar">
       <div class="faq_sidebar_inner">
         <div class="faq_sidebar_item" *ngFor="let piller of pillars; let i = index"
-          [class.active]="piller.displayOrder <= pillarDisplayOrder">
+          [class.active]="makePillarActive(piller)">
           <div class="faq_sidebar_item_inner"
             (click)="selectedPillar?.displayOrder == piller.displayOrder ? $event.stopPropagation() :pillarChanged(piller)"
-            [ngClass]="selectedPillar?.displayOrder == piller.displayOrder ? 'current-active' : ''">
+            [ngClass]="activeClass(piller) ? 'current-active' : ''">
             <span class="faq_inner_svg">
               <img [src]="urlBase + '/' + piller.imagePath" [alt]="'No image found'" />
             </span>

@@ -471,64 +471,64 @@ export class ChatService {
   // Questions for a single country
   countryQuickQuestions = [
     {
-      label: 'Health summary',
-      question: 'Summarize the recent health progress and overall stability of this country.'
+      label: 'Health Summary',
+      question: 'Summarize the current health situation, key challenges, and recent developments in this country.'
     },
     {
-      label: 'health initiatives',
-      question: 'What major health initiatives or diplomatic efforts are currently taking place in this country?'
+      label: 'Health Priorities',
+      question: 'What are the major public health priorities and healthcare initiatives currently underway in this country?'
     },
     {
-      label: 'Security risks',
-      question: 'What are the major security risks or conflict concerns affecting this country?'
+      label: 'Health Risks',
+      question: 'What are the most significant health risks, disease outbreaks, or public health concerns affecting this country?'
     },
     {
       label: 'Recommendations',
-      question: 'What recommendations can improve health, security, and stability in this country?'
+      question: 'What recommendations can strengthen healthcare services, disease prevention, and health system resilience in this country?'
     },
     {
-      label: 'Recent improvements',
-      question: 'What recent improvements have been observed in this country’s health and stability indicators?'
+      label: 'Recent Improvements',
+      question: 'What recent improvements have been observed in this country’s healthcare system, public health outcomes, or disease control efforts?'
     },
     {
-      label: 'Risk factors',
-      question: 'What are the biggest political, social, or economic risks impacting this country?'
+      label: 'Risk Factors',
+      question: 'What are the key factors affecting health outcomes in this country, including healthcare access, infrastructure, funding, or environmental challenges?'
     },
     {
-      label: 'health trends',
-      question: 'What are the latest health trends and international cooperation efforts related to this country?'
+      label: 'Health Trends',
+      question: 'What are the latest health trends, emerging diseases, vaccination efforts, and international health partnerships in this country?'
     }
   ];
 
   // Questions for all countries globally
   globalQuickQuestions = [
-    {
-      label: 'health summary',
-      question: 'Summarize the health across all countries in recent days.'
-    },
-    {
-      label: 'health leaders',
-      question: 'Which countries are showing the strongest health initiatives recently?'
-    },
-    {
-      label: 'Security risks',
-      question: 'What are the major security risks affecting countries globally?'
-    },
-    {
-      label: 'Recommendations',
-      question: 'What are the key recommendations for enhancing global health and stability?'
-    },
-    {
-      label: 'Improved countries',
-      question: 'Which nations have experienced the most significant improvement in health indicators recently?'
-    },
-    {
-      label: 'Risk countries',
-      question: 'Which countries are facing the highest conflict or instability risks?'
-    },
-    {
-      label: 'health trends',
-      question: 'What are the latest global health trends and international cooperation efforts?'
-    }
-  ];
+  {
+    label: 'Health Summary',
+    question: 'Summarize the overall health situation across African countries over the past few days.'
+  },
+  {
+    label: 'Health Leaders',
+    question: 'Which African countries are demonstrating the strongest performance in healthcare systems and public health initiatives recently?'
+  },
+  {
+    label: 'Health Risks',
+    question: 'What are the major health risks and disease outbreaks currently affecting African countries?'
+  },
+  {
+    label: 'Recommendations',
+    question: 'What are the key recommendations for strengthening healthcare systems, disease preparedness, and public health resilience across Africa?'
+  },
+  {
+    label: 'Improved Countries',
+    question: 'Which African countries have shown the most significant improvements in health outcomes and healthcare performance recently?'
+  },
+  {
+    label: 'High-Risk Countries',
+    question: 'Which African countries are currently facing the highest health risks due to disease outbreaks, weak healthcare systems, or humanitarian crises?'
+  },
+  {
+    label: 'Health Trends',
+    question: 'What are the latest health trends, emerging diseases, and regional healthcare developments across Africa?'
+  }
+]
 }

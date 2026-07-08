@@ -241,7 +241,7 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
   }
 
   isAlertQuestion(question: DashboardQuestionScoreDto): boolean {
-    const condition = (this.getInterpretationConditionByScore(question.aiScore).condition || '').toLowerCase();
+    const condition = (this.getInterpretationConditionByScore(question.evaluationScore).condition || '').toLowerCase();
     return (
       condition.includes('critical') ||
       condition.includes('elevated') ||
@@ -258,14 +258,14 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
 
   getAverageScore(dashboard: DashboardModeResponseDto | null): number | null {
     const scores = (dashboard?.questions ?? [])
-      .map((q) => q.aiScore)
+      .map((q) => q.evaluationScore)
       .filter((score): score is number => this.hasScore(score));
     if (!scores.length) return null;
     return scores.reduce((sum, score) => sum + score, 0) / scores.length;
   }
 
   getReportingCount(dashboard: DashboardModeResponseDto | null): number {
-    return (dashboard?.questions ?? []).filter((q) => this.hasScore(q.aiScore)).length;
+    return (dashboard?.questions ?? []).filter((q) => this.hasScore(q.evaluationScore)).length;
   }
 
   getTotalQuestionCount(dashboard: DashboardModeResponseDto | null): number {
@@ -316,7 +316,7 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
   }
 
   getQuestionAccentClass(question: DashboardQuestionScoreDto): string {
-    const score = question.aiScore;
+    const score = question.evaluationScore;
     if (!this.hasScore(score)) return 'accent-default';
     if (Number(score) <= 40) return 'accent-alert';
     if (Number(score) <= 60) return 'accent-warning';
@@ -402,10 +402,10 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
   private updateGlanceCharts(dashboard: DashboardModeResponseDto | null): void {
     const questions = dashboard?.questions ?? [];
     const categories = questions.map((q) => this.truncateLabel(q.questionDescription || `Q${q.questionID}`, 22));
-    const scores = questions.map((q) => (this.hasScore(q.aiScore) ? Number(q.aiScore) : 0));
+    const scores = questions.map((q) => (this.hasScore(q.evaluationScore) ? Number(q.evaluationScore) : 0));
     const barColors = questions.map((q, i) => {
-      if (!this.hasScore(q.aiScore)) return '#cbd5e1';
-      const score = Number(q.aiScore);
+      if (!this.hasScore(q.evaluationScore)) return '#cbd5e1';
+      const score = Number(q.evaluationScore);
       if (score <= 40) return '#dc3545';
       if (score <= 60) return '#fd7e14';
       if (score <= 80) return '#006D77';
@@ -434,7 +434,7 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
         enabled: true,
         formatter: (val: number, opts: any) => {
           const q = questions[opts.dataPointIndex];
-          return this.hasScore(q?.aiScore) ? Number(val).toFixed(1) : 'N/A';
+          return this.hasScore(q?.evaluationScore) ? Number(val).toFixed(1) : 'N/A';
         },
         offsetX: 24,
         style: { fontSize: '11px', fontWeight: 700, colors: [AHI_CHART.text] },
@@ -465,7 +465,7 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
         y: {
           formatter: (val: number, opts: any) => {
             const q = questions[opts.dataPointIndex];
-            if (!this.hasScore(q?.aiScore)) return 'No data';
+            if (!this.hasScore(q?.evaluationScore)) return 'No data';
             return `${Number(val).toFixed(1)} / 100`;
           },
         },
@@ -476,11 +476,11 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
     const conditionMap = new Map<string, number>();
     let noDataCount = 0;
     questions.forEach((q) => {
-      if (!this.hasScore(q.aiScore)) {
+      if (!this.hasScore(q.evaluationScore)) {
         noDataCount++;
         return;
       }
-      const key = this.getInterpretationConditionByScore(q.aiScore).condition || 'Stable';
+      const key = this.getInterpretationConditionByScore(q.evaluationScore).condition || 'Stable';
       conditionMap.set(key, (conditionMap.get(key) ?? 0) + 1);
     });
     if (noDataCount > 0) {
