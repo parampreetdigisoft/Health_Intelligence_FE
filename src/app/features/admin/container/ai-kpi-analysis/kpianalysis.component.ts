@@ -247,7 +247,7 @@ export class KPIAnalysisComponent implements OnInit {
         },
         background: {
           enabled: true,
-          foreColor: '#0906aaff',
+          foreColor: 'rgb(11, 155, 59)',
           padding: 4,
           borderRadius: 2,
           borderWidth: 0,

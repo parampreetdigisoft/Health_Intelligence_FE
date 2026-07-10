@@ -261,7 +261,7 @@ export class KPIAnalysisComponent implements OnInit {
         style: {
           fontSize: '11px',
           fontWeight: 700,
-          colors: ['#32288f']
+          colors: ['#288f81']
         },
         background: {
           enabled: true,
@@ -269,7 +269,7 @@ export class KPIAnalysisComponent implements OnInit {
           padding: 6,
           borderRadius: 4,
           borderWidth: 1,
-          borderColor: '#7f8feb',
+          borderColor: '#7febdd',
           opacity: 0.95
         }
       },
@@ -277,7 +277,7 @@ export class KPIAnalysisComponent implements OnInit {
       stroke: {
         curve: 'smooth',
         width: 3,
-        colors: ['#425cf0']
+        colors: ['#459480']
       },
 
       fill: {
@@ -290,17 +290,17 @@ export class KPIAnalysisComponent implements OnInit {
           colorStops: [
             {
               offset: 0,
-              color: '#5975c2',
+              color: '#3d7572',
               opacity: 0.8
             },
             {
               offset: 50,
-              color: '#78bef7',
+              color: '#95a0a8',
               opacity: 0.5
             },
             {
               offset: 100,
-              color: '#a5bef5',
+              color: '#353636',
               opacity: 0.2
             }
           ]
@@ -325,7 +325,7 @@ export class KPIAnalysisComponent implements OnInit {
           style: {
             fontSize: '11px',
             fontWeight: 500,
-            colors: '#2153b8'
+            colors: '#217769'
           }
         },
         axisBorder: {
@@ -344,7 +344,7 @@ export class KPIAnalysisComponent implements OnInit {
           style: {
             fontSize: '13px',
             fontWeight: 600,
-            color: '#83b0ee'
+            color: '#83eee9'
           }
         },
         min: 0,
@@ -354,7 +354,7 @@ export class KPIAnalysisComponent implements OnInit {
           formatter: (val) => val >= 0 ? `${Math.round(val)}` : '',
           style: {
             fontSize: '12px',
-            colors: '#3b5281'
+            colors: '#3b817e'
           }
         }
       },
@@ -380,9 +380,9 @@ export class KPIAnalysisComponent implements OnInit {
             <div style="
               padding: 18px 20px;
               min-width: 280px;
-              background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+              background: linear-gradient(145deg, #1e3b31 0%, #1c524a 100%);
               border-radius: 14px;
-              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+              box-shadow: 0 20px 40px rgba(44, 44, 44, 0.4);
               font-family: 'Inter', system-ui, sans-serif;
               color: white;
               border: 1px solid rgba(255, 255, 255, 0.1);
@@ -412,7 +412,7 @@ export class KPIAnalysisComponent implements OnInit {
                   <div style="
                     width: 40px;
                     height: 40px;
-                    background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+                    background: linear-gradient(135deg, #5cf697 0%, #63f1d2 100%);
                     border-radius: 10px;
                     display: flex;
                     align-items: center;
@@ -456,15 +456,15 @@ export class KPIAnalysisComponent implements OnInit {
                   color: rgba(255, 255, 255, 0.9);
                 ">
                   <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                    <span style="color: #8b5cf6; font-size: 16px;">✓</span>
+                    <span style="color: #72e7c4; font-size: 16px;">✓</span>
                     <span>Detailed Analytics</span>
                   </div>
                   <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                    <span style="color: #8b5cf6; font-size: 16px;">✓</span>
+                    <span style="color: #5cf6a9; font-size: 16px;">✓</span>
                     <span>Real-time Progress Tracking</span>
                   </div>
                   <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="color: #8b5cf6; font-size: 16px;">✓</span>
+                    <span style="color: #4fd1aa; font-size: 16px;">✓</span>
                     <span>Advanced Insights & Reports</span>
                   </div>
                 </div>
@@ -473,7 +473,7 @@ export class KPIAnalysisComponent implements OnInit {
                 <button style="
                   width: 100%;
                   padding: 12px 20px;
-                  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+                  background: linear-gradient(135deg, #61ada3 0%, #63f1cd 100%);
                   color: white;
                   border: none;
                   border-radius: 10px;
@@ -481,11 +481,11 @@ export class KPIAnalysisComponent implements OnInit {
                   font-size: 14px;
                   cursor: pointer;
                   transition: all 0.3s ease;
-                  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+                  box-shadow: 0 6px 20px rgba(92, 246, 187, 0.4);
                   text-transform: uppercase;
                   letter-spacing: 0.5px;
                 ">
-                  🚀 Upgrade Now
+                  🚀 Upgrade Plan
                 </button>
               </div>
             </div>
@@ -685,19 +685,8 @@ export class KPIAnalysisComponent implements OnInit {
 
   PillarColorByScore(pillar: any): string {
     let score = pillar.aiProgress;
-    const colors = [
-      "#E3ECF7", // very light blue
-      "#C9DBF0",
-      "#AFC9E9",
-      "#95B8E2",
-      "#7BA6DB",
-      "#6195D4",
-      "#4A7FC2",
-      "#345FA3",
-      "#1F3F7A",
-      "#0D2B4D"  // deep navy (highest)
-    ];
-
+    const colors = this.commonService.PillarColors;
+    
     if (score === null || score === undefined || isNaN(score)) {
       return "#d3d3d3";
     }
