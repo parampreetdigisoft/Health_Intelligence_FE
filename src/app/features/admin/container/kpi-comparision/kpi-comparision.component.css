@@ -218,7 +218,14 @@ app-kpi-comparision app-ag-bar:nth-child(3) {
 }
 p.btn_spinner {
     display: inline-block;
+    background-color: #006D77;
     padding: 8px 10px;
+    white-space: nowrap;
+    color: #ffffff;
+    border-radius: 5px;
+}
+p.btn_spinner_export {
+    display: inline-block;
     white-space: nowrap;
     color: #ffffff;
     border-radius: 5px;

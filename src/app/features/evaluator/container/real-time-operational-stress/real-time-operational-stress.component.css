@@ -1678,7 +1678,7 @@
 
 .pem_hero_icon .bi {
   font-size: 28px;
-  color: var(--pe-primary);
+  color: var(----pe-bg-card);
 }
 
 .pem_hero--warning {

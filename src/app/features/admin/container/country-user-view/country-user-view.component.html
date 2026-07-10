@@ -2,7 +2,7 @@
   <div class="row justify-content-between align-items-center">
     <ng-container *ngIf="!roleId">
       <div class="col-md-auto">
-        <h3 class="page_head">Add/Edit Country User</h3>
+        <h3 class="page_head">Add/Edit client account</h3>
       </div>
       <div class="col-md-auto">
         <a (click)="editCountryUser(null)" href="javascript:void(0)" class="common_button">
@@ -11,7 +11,7 @@
               d="M9.99992 3.33301C10.4602 3.33301 10.8333 3.7061 10.8333 4.16634V9.16634H15.8333C16.2935 9.16634 16.6666 9.53944 16.6666 9.99967C16.6666 10.4599 16.2935 10.833 15.8333 10.833H10.8333V15.833C10.8333 16.2932 10.4602 16.6663 9.99992 16.6663C9.53968 16.6663 9.16658 16.2932 9.16658 15.833V10.833H4.16659C3.70635 10.833 3.33325 10.4599 3.33325 9.99967C3.33325 9.53944 3.70635 9.16634 4.16659 9.16634H9.16658V4.16634C9.16658 3.7061 9.53968 3.33301 9.99992 3.33301Z"
               fill="white" />
           </svg>
-          Add Country User</a>
+          Add Client Account</a>
       </div>
     </ng-container>
     <ng-container *ngIf="roleId">
@@ -44,7 +44,7 @@
         <th>Phone No</th>
         <ng-container *ngIf="roleId">
           <th>Role</th>
-          <th>Country User</th>
+          <th>Client</th>
         </ng-container>
         <th>Assigned Country</th>
         <th *ngIf="!roleId">Mail Status</th>
@@ -120,5 +120,5 @@
   </div>
 </ng-container>
 
-<app-prompt [title]="'Delete Country User'" [message]="'Are you sure you want to delete this country user?'"
+<app-prompt [title]="'Delete client account'" [message]="'Are you sure you want to delete this client account?'"
   [confirmText]="'Delete'" [cancelText]="'Cancel'" (confirm)="deleteCountryUser()"></app-prompt>

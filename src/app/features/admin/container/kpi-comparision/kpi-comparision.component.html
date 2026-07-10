@@ -68,7 +68,7 @@
 		</div>
 		<div class="col-md-auto">
       <button
-        *ngIf="selectedCountries.length"
+        
         [matTooltip]="'Export Country Comparison Details'"
         class="common_button d-flex align-items-center"
         (click)="exportData()"
@@ -86,7 +86,7 @@
           ></path>
         </svg>
 
-        <p *ngIf="downloadkpiSpinnerEnable" class="btn_spinner">
+        <p *ngIf="downloadkpiSpinnerEnable" class="btn_spinner_export">
           <span class="spinner-border spinner-border-sm ms-2"></span>
         </p>
 

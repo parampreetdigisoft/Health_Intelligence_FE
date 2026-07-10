@@ -272,7 +272,7 @@ export class ChatService {
   }
 
   getContriesCrossComparision() {
-    let userText = "Provide a detailed comparative analysis of the selected countries across all PEM pillars, including key risks, opportunities, structural vulnerabilities, resilience indicators, emerging trends, and strategic observations for each pillar."
+    let userText = "Provide a comprehensive comparative analysis of the selected countries across all AHI pillars, highlighting healthcare performance, key health challenges, strengths, structural vulnerabilities, resilience indicators, emerging public health trends, and strategic recommendations for each pillar."
 
     if (this.isTyping()) {
       this.stopGeneration();

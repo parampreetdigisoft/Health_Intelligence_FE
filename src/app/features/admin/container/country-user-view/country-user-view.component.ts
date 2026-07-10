@@ -107,7 +107,7 @@ export class CountryUserViewComponent implements OnInit, OnDestroy {
   }
   deleteCountryUser() {
     if (this.selectedCountryUser === null) {
-      this.toaster.showError("No country user selected for deletion");
+      this.toaster.showError("No client account selected for deletion");
       return;
     }
     this.adminService.deleteUser(this.selectedCountryUser.userID).subscribe({
@@ -120,7 +120,7 @@ export class CountryUserViewComponent implements OnInit, OnDestroy {
         }
       },
       error: () => {
-        this.toaster.showError("Failed to delete country user");
+        this.toaster.showError("Failed to delete client account");
       },
     });
   }
@@ -172,7 +172,7 @@ export class CountryUserViewComponent implements OnInit, OnDestroy {
         },
         error: () => {
           this.closeModal();
-          this.toaster.showError("Failed to edit country user");
+          this.toaster.showError("Failed to edit client account");
         },
       });
     } else {
@@ -188,7 +188,7 @@ export class CountryUserViewComponent implements OnInit, OnDestroy {
         },
         error: () => {
           this.closeModal();
-          this.toaster.showError("Failed to add country user");
+          this.toaster.showError("Failed to add client account");
         },
       });
     }
@@ -240,7 +240,7 @@ export class CountryUserViewComponent implements OnInit, OnDestroy {
       },
       error: () => {
         this.closeModal();
-        this.toaster.showError("Failed to add country user");
+        this.toaster.showError("Failed to add client account");
       },
     });
   }

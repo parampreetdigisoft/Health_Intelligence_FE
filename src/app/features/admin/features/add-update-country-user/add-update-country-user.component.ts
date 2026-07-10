@@ -127,9 +127,9 @@ export class AddUpdateCountryUserComponent implements OnInit {
     const headers = ["FullName", "Email", "Phone", "countryName"];
 
     const sampleRow = {
-      FullName: "FullName of Country User",
-      Email: "Enter Email of Country User",
-      Phone: "Enter Phone Number of Country User",
+      FullName: "FullName of client account",
+      Email: "Enter Email of client account",
+      Phone: "Enter Phone Number of client account",
       countryName: "Enter country seprated by comma, like :- USA, Canada, Brazil",
     };
 
