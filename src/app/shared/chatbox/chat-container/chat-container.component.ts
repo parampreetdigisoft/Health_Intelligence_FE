@@ -110,20 +110,18 @@ export class ChatContainerComponent implements OnInit, OnDestroy {
   });
 
   readonly rotatingHeadlines = [
-    'Welcome to AHI',
-    'Surface stability signals across regions',
-    'Interrogate country risk with pillar context',
-    'Compare indices and emerging pressure points',
-    'Brief on conflict trajectories and early warnings',
-  ];
-
-  readonly rotatingPlaceholders = [
-    'Frame a country intelligence question…',
-    'Which stability indicators matter for your decision?',
-    'Ask about governance, security, or humanitarian drivers…',
-    'Request a cross-country or regional assessment…',
-  ];
-
+  'Welcome to the Africa Health Intelligence Engine',
+  'Monitor health system performance across Africa',
+  'Explore country health risks and resilience',
+  'Compare health indicators, pillars, and trends',
+  'Detect early health warnings and emerging risks',
+];
+readonly rotatingPlaceholders = [
+  'Ask about a country’s health system or current health status…',
+  'Explore health risks, trends, or early warning indicators…',
+  'Compare health performance across countries or regions…',
+  'Ask about health pillars, KPIs, or ROSEW operational status…',
+];
   rotatingIndex = signal(0);
   placeholderIndex = signal(0);
   promptAnimating = signal(false);

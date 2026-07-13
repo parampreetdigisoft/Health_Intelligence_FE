@@ -157,6 +157,9 @@ export class AiDocumentsComponent {
           this.getAICountryPillarDocuments(false);
           this.toaster.showSuccess(res.messages.join(", "))
         }
+        else{
+          this.toaster.showError(res.errors.join(", "));
+        }
       }
     });
   }
