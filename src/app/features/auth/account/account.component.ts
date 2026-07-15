@@ -65,39 +65,39 @@ export class AccountComponent implements OnInit {
       if (event.value.email != null && event.value.password != null) {
         this.loading = true;
         this.authService.login(event.value.email, event.value.password, event.value.rememberMe)
-          .subscribe({
-            next: (res) => {
-              this.loading = false;
-              if (res.succeeded) {               
-                if (res.result?.userID) {
-                  if ((this.roleName === 'clientPortalLogin' && res?.result?.role == 'CountryUser') || (this.roleName === 'login' && res?.result?.role != 'CountryUser')) {
-                    this.toasterService.showSuccess('Login successful');
-                    this.userService.RedirectBasedOnRole();
-                  }
-                  else {
-                    this.toasterService.showError('Invalid credentials, please try again');
-                    this.userService.logoutNotRedirect();
-                  }
-                }
-                else if (this.roleName === 'clientPortalLogin' || this.roleName === 'login') {
-                  localStorage.setItem(StorageKeyEnum.UserKey, event.value.email ?? '');
-                  this.toasterService.showSuccess(res?.messages?.join(", "));
-                  this.router.navigate(['/auth/2fa-verification']);
+        .subscribe({
+          next: (res) => {
+            this.loading = false;
+            if (res.succeeded) {               
+              if (res.result?.userID) {
+                if ((this.roleName === 'clientPortalLogin' && res?.result?.role == 'CountryUser') || (this.roleName === 'login' && res?.result?.role != 'CountryUser')) {
+                  this.toasterService.showSuccess('Login successful');
+                  this.userService.RedirectBasedOnRole();
                 }
                 else {
                   this.toasterService.showError('Invalid credentials, please try again');
                   this.userService.logoutNotRedirect();
                 }
               }
-              else {
-                this.toasterService.showError(res?.errors?.join(", "));
+              else if (this.roleName === 'clientPortalLogin' || this.roleName === 'login') {
+                localStorage.setItem(StorageKeyEnum.UserKey, event.value.email ?? '');
+                this.toasterService.showSuccess(res?.messages?.join(", "));
+                this.router.navigate(['/auth/2fa-verification']);
               }
-            },
-            error: (err) => {
-              this.loading = false;
-              this.toasterService.showError("Invalid credentials");
-            },
-          })
+              else {
+                this.toasterService.showError('Invalid credentials, please try again');
+                this.userService.logoutNotRedirect();
+              }
+            }
+            else {
+              this.toasterService.showError(res?.errors?.join(", "));
+            }
+          },
+          error: (err) => {
+            this.loading = false;
+            this.toasterService.showError("Invalid credentials");
+          },
+        })
       }
     }
   }

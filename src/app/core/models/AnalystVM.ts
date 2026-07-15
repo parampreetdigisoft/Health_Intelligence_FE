@@ -13,6 +13,7 @@ export interface RegisterDto {
 export interface InviteUserDto extends RegisterDto {
   invitedUserID: number;
   countryID: number[]; 
+  isAllCountries?: boolean;
 }
 
 export interface UpdateInviteUserDto extends InviteUserDto {
