@@ -209,6 +209,7 @@
     <app-view-ai-question-details
       [question]="selectedQuestion"
       [aiTrustLevels]="aiTrustLevels"
+      (dataSaved)="getAIPillarQuestions(currentPage)"
     ></app-view-ai-question-details>
   </div>
 </div>

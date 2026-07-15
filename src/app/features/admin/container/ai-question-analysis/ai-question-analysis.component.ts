@@ -133,6 +133,8 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
 
   getAIPillarQuestions(currentPage: any = 1) {
     this.isLoader = true;
+    this.closeSidebar();
+    
     let payload: AiPillarQuetionsRequestDto = {
       sortDirection: SortDirection.DESC,
       sortBy: 'AIProgress',
@@ -182,6 +184,21 @@ export class AiQuestionAnalysisComponent implements OnInit, OnChanges {
 
     offcanvas.show();
   }
+  
+  closeSidebar(): void {
+    const sidebarEl = document.getElementById('kpiLayerSidebar');
+
+    if (!sidebarEl) {
+      return;
+    }
+
+    const offcanvas = bootstrap.Offcanvas.getInstance(sidebarEl);
+
+    if (offcanvas) {
+      offcanvas.hide();
+    }
+  }
+
   customSearchFn(term: string, item: any) {
     term = term.toLowerCase();
     return (

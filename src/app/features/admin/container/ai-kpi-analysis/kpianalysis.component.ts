@@ -129,6 +129,8 @@ export class KPIAnalysisComponent implements OnInit {
   }
 
   getAICountryPillars() {
+    this.closeSidebar();
+
     if (!this.selectedCountry) {
       this.toaster.showWarning("Please select at least one country to view data.");
       return;
@@ -145,7 +147,7 @@ export class KPIAnalysisComponent implements OnInit {
         if (res.succeeded && res.result != null) {
           this.aiCountryPillarResponseDto = res.result;
 
-          this.buildPillarComparisonChart();
+          this.buildPillarComparisonChart();          
         }
         else {
           this.toaster.showInfo("No comparison data available for the selected countries.");
@@ -409,6 +411,20 @@ export class KPIAnalysisComponent implements OnInit {
     }, { once: true });
 
     offcanvas.show();
+  }
+
+  closeSidebar(): void {
+    const sidebarEl = document.getElementById('kpiLayerSidebar');
+
+    if (!sidebarEl) {
+      return;
+    }
+
+    const offcanvas = bootstrap.Offcanvas.getInstance(sidebarEl);
+
+    if (offcanvas) {
+      offcanvas.hide();
+    }
   }
 
   viewQuestions(pillar: AiCountryPillarVM) {

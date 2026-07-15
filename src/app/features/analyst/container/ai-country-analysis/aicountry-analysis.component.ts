@@ -26,7 +26,7 @@ import { UtcToLocalTooltipDirective } from 'src/app/shared/directives/utc-to-loc
 import { AiCountrySummeryRequestPdfDto } from 'src/app/core/models/aiVm/AiCountrySummeryRequestPdfDto';
 import { RegenerateAiScoreAndAddViewerComponent } from 'src/app/shared/standAlone/regenerate-ai-score-and-add-viewer/regenerate-ai-score-and-add-viewer.component';
 import { ActivatedRoute } from '@angular/router';
-import { ViewCountryDetailComponent } from 'src/app/features/city-user/features/view-country-detail/view-country-detail.component';
+import { ViewCountryDetailComponent } from 'src/app/shared/standAlone/view-country-detail/view-country-detail.component';
 
 declare var bootstrap: any; // 👈 use Bootstrap JS API
 @Component({
@@ -95,6 +95,7 @@ export class AICountryAnalaysisComponent implements OnInit, OnDestroy {
 
   getaiCountries(currentPage: any = 1) {
     this.isLoader = true;
+    this.closeSidebar();
     let payload: AiCountrySummeryRequestDto = {
       sortDirection: SortDirection.DESC,
       sortBy: 'AIProgress',
@@ -133,7 +134,19 @@ export class AICountryAnalaysisComponent implements OnInit, OnDestroy {
 
     offcanvas.show();
   }
+  closeSidebar(): void {
+    const sidebarEl = document.getElementById('kpiLayerSidebar');
 
+    if (!sidebarEl) {
+      return;
+    }
+
+    const offcanvas = bootstrap.Offcanvas.getInstance(sidebarEl);
+
+    if (offcanvas) {
+      offcanvas.hide();
+    }
+  }
   aiCountryDetailsReport(country: AiCountrySummeryDto, selectedIndex: number) {
     if (this.selectedIndex != -1) return;
     this.selectedIndex = selectedIndex;

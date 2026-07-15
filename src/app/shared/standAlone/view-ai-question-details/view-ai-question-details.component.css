@@ -230,3 +230,15 @@ button.btn-close:focus-visible {
     color: #155724 !important;
     border: 1px solid #75d69c !important;
 }
+
+.ai-detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.ai-edit-surface {
+    border-color: #006d77;
+    box-shadow: 0 0 0 1px rgba(0, 109, 119, 0.08);
+}

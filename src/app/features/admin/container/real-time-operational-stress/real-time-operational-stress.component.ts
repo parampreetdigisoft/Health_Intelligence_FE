@@ -579,9 +579,15 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
     };
   }
 
+
   formatDate(date: Date | string | null | undefined): string {
     if (!date) return 'N/A';
-    return new Date(date).toLocaleDateString();
+
+    return new Date(date).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
   }
 }
 

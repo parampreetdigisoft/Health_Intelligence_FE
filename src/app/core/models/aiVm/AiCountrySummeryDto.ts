@@ -8,10 +8,13 @@ export interface AiCountrySummeryDto {
   aiProgress: number | null;
   evaluatorScore: number | null;
   discrepancy: number | null;
-
-  confidenceLevel: string;
+  
+  
+  immediateSituationSummary: string;  
   evidenceSummary: string;
-
+  countryScoreSummery: string;
+  
+  confidenceLevel: string;
   structuralEvidence: string | null;
   operationalEvidence: string | null;
   outcomeEvidence: string | null;

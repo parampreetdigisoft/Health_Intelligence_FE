@@ -158,6 +158,7 @@
 <div class="offcanvas offcanvas-end custom-sidebar kpi_sidebar" tabindex="-1" id="kpiLayerSidebar">
   <div class="offcanvas-body">
     <app-view-ai-question-details [question]="selectedQuestion"
-      [aiTrustLevels]="aiTrustLevels"></app-view-ai-question-details>
+      [aiTrustLevels]="aiTrustLevels"
+      (dataSaved)="getAIPillarQuestions(currentPage)"></app-view-ai-question-details>
   </div>
 </div>

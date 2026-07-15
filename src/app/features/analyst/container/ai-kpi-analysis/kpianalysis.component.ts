@@ -132,6 +132,7 @@ export class KPIAnalysisComponent implements OnInit {
       return;
     }
     this.isLoader = true;
+    this.closeSidebar();
     let payload: AiCountrySummeryRequestPdfDto = {
       countryID: this.selectedCountry,
       year: this.selectedYear
@@ -411,6 +412,19 @@ export class KPIAnalysisComponent implements OnInit {
     }, { once: true });
 
     offcanvas.show();
+  }
+  closeSidebar(): void {
+    const sidebarEl = document.getElementById('kpiLayerSidebar');
+
+    if (!sidebarEl) {
+      return;
+    }
+
+    const offcanvas = bootstrap.Offcanvas.getInstance(sidebarEl);
+
+    if (offcanvas) {
+      offcanvas.hide();
+    }
   }
 
   viewQuestions(pillar: AiCountryPillarVM) {
