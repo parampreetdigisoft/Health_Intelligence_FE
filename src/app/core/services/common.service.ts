@@ -266,17 +266,17 @@ export class CommonService {
       "#005D68", // 9
       "#67BC8D", // 4
       "#45A88D", // 5
-      "#D8F1E0", // 1 - very light green      
-      "#B7E3C4", // 2
+      "#8bebaa", // 1 - very light green      
+      "#5eb478", // 2
       "#1E8189", // 7
       "#0F6E78", // 8
       "#003F4A", // 10 - darkest
-      "#8FD0A8", // 3
+      "#7dcf9d", // 3
       "#2D9590", // 6
       "#005D68", // 9
       "#67BC8D", // 4
       "#45A88D", // 5
-      "#D8F1E0", // 1 - very light green      
+      "#46fa7f", // 1 - very light green      
       "#B7E3C4", // 2
       "#1E8189", // 7
       "#0F6E78", // 8
