@@ -74,14 +74,27 @@
             <div class="faq_main_item_inner">
               <p>{{ i + 1 }}. {{ questions[i].questionText }}</p>
 
-              <select class="form-select faq_select" formControlName="questionOptionID"
+              <ng-select class="faq_select assessment_select"
+                [items]="questions[i].questionOptions"
+                bindValue="optionID"
+                formControlName="questionOptionID"
+                placeholder="Select option"
+                [searchable]="false"
+                [clearable]="true"
+                dropdownPosition="auto"
                 (change)="onOptionChange($event, i)">
-                <option value="">Select option</option>
-                <option *ngFor="let o of questions[i].questionOptions" [value]="o.optionID">
-                  {{ o.scoreValue != null ? o.scoreValue + " - " : "" }}
-                  {{ o.optionText }}
-                </option>
-              </select>
+                <ng-template ng-label-tmp let-item="item">
+                  <span class="assessment_select_label" [title]="item.optionText">
+                    <span *ngIf="item.scoreValue != null">{{ item.scoreValue }} - </span>{{ item.optionText }}
+                  </span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="assessment_option">
+                    <span *ngIf="item.scoreValue != null" class="assessment_option_score">{{ item.scoreValue }}</span>
+                    <span class="assessment_option_text">{{ item.optionText }}</span>
+                  </div>
+                </ng-template>
+              </ng-select>
               <div class="faqtextarea">
                 <textarea class="form-control" formControlName="justification" rows="3"
                   (blur)="autoSaveSingleAssessemnt(i)" placeholder="Add Comment . . ."></textarea>
