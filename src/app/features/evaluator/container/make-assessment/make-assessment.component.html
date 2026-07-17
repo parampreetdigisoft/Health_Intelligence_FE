@@ -126,7 +126,7 @@
     pillerQuestions?.displayOrder == 14 || isAssessementFinalized? 'Submit Pillar' : 'Save Pillar'
   " [message]="
     pillerQuestions?.displayOrder == 14 || isAssessementFinalized
-      ? 'Are you sure you want to submit this country? After submission, changes can’t be made directly. To edit later, you’ll need to request it from the Admin.'
+      ? 'Are you sure you want to submit this country? After submission, changes can’t be made directly. To edit later, you’ll need to request it from the Analyst.'
       : 'Are you sure you want to save this pillar?'
   " [confirmText]="pillerQuestions?.displayOrder == 14 || isAssessementFinalized ? 'Submit' : 'Save'"
   [cancelText]="'Cancel'" (confirm)="SaveAssessment()" (cancel)="isAssessementFinalized=false">

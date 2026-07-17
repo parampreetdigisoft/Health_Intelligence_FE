@@ -66,7 +66,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   pillars: PillarsVM[] = [];
   loading = false;
   isLoading = false;
-
+  chooseKpisLayers: boolean = false;
   stressDashboard: DashboardModeResponseDto | null = null;
   warningDashboard: DashboardModeResponseDto | null = null;
   resilienceDashboard: DashboardModeResponseDto | null = null;
@@ -102,6 +102,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
             this.selectedCountryID = this.countries[0].countryID;
             this.loadActiveTabData();
           } else {
+            this.chooseKpisLayers = true;
             this.selectedCountryID = null;
             this.getAllPillars();
             this.opendialog();
@@ -378,6 +379,25 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
       modalInstance.hide();
     }
   }
+  SelectedKpisLayers(event: any) {
+      this.loading = true;
+      this.countryUserService.addCountryUserKpisCountryAndPillar(event).subscribe({
+        next: (res) => {
+          this.loading = false;
+          if (res.succeeded) {
+            this.closeModal();
+            this.toaster.showSuccess("Access granted successfully");
+            this.ngOnInit();
+          } else {
+            this.toaster.showWarning("Access may not granted. Please try again");
+          }
+        },
+        error: (err) => {
+          this.toaster.showError("Something went wrong");
+          this.loading = false;
+        },
+      });
+    }
 
   private updateGlanceCharts(dashboard: DashboardModeResponseDto | null): void {
     const questions = dashboard?.questions ?? [];
@@ -550,4 +570,5 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
       description: match?.description ?? 'No interpretation available.'
     };
   }
+
 }

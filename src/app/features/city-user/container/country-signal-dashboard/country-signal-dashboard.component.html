@@ -224,3 +224,15 @@
     </div>
   </div>
 </div>
+<div *ngIf="chooseKpisLayers">
+	<div class="modal fade modal_design"
+		id="exampleModal"
+		tabindex="-1"
+		aria-labelledby="exampleModalLabel"
+		aria-hidden>
+		<app-choose-kpis [pillars]="pillars"
+			[loading]="loading"
+			(kpiChange)="SelectedKpisLayers($event)">
+		</app-choose-kpis>
+	</div>
+</div>
