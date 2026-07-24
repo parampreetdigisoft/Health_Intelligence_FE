@@ -12,7 +12,7 @@
             class="form-control"
             (change)="onPillarChange()"
           >
-            <option value="">Select Pillar</option>
+            <option value="">Select Domain</option>
             <option *ngFor="let pillar of pillers" [value]="pillar.pillarID">
               {{ pillar.pillarName }}
             </option>

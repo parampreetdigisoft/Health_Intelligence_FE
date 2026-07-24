@@ -584,7 +584,7 @@ export class AiCountryComparisonComponent implements OnInit {
       .pop();
 
     let pillarValues = this.chartTableData.flatMap(x => x.pillarValues).filter(x => x.isAccess);
-    /* HIGHEST PILLAR */
+    /* HIGHEST domain */
     this.highestPillar = pillarValues.reduce((max, curr) => curr.value > max.value ? curr : max);
     if (this.highestPillar) {
       let image = this.pillars.find(p => p.pillarID === this.highestPillar?.pillarID)?.imagePath || '';

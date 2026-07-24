@@ -194,7 +194,7 @@ export class CountryDetailsComponent implements OnInit {
             },
             total: {
               show: true,
-              label: "Avg Pillar Score",
+              label: "Avg Domain Score",
               formatter: () => {
                 const avg =
                   history.reduce((sum, item) => sum + item.scoreProgress, 0) /

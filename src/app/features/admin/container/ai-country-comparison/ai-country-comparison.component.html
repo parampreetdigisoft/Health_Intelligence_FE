@@ -16,7 +16,7 @@
 				<ng-select [items]="pillars"
 					[multiple]="true"
 					[searchable]="true"
-					[placeholder]="selectedPillars.length ? '' : 'View selected Pillars'"
+					[placeholder]="selectedPillars.length ? '' : 'View selected domains'"
 					[(ngModel)]="selectedPillars"
 					[searchFn]="customSearchFn"
 					(change)="getRadarChartOptions()"
@@ -175,7 +175,7 @@
 											</h5>
 										</div>
 										<div class="pileer_info">
-											<h6 class="city_pile">Highest Pillar</h6>
+											<h6 class="city_pile">Highest Domain</h6>
 										</div>
 									</div>
 								</div>
@@ -199,7 +199,7 @@
 											</h5>
 										</div>
 										<div class="pileer_info">
-											<h6 class="city_pile">Lowest Pillar</h6>
+											<h6 class="city_pile">Lowest Domain</h6>
 										</div>
 									</div>
 								</div>
@@ -226,7 +226,7 @@
 									<div *ngIf="avgScore"
 										class="dashboard_number">
 										<div class="card_ttile">
-											<h4>All Pillars</h4>
+											<h4>All Domains</h4>
 											<h5>{{ avgScore }}</h5>
 										</div>
 										<div class="pileer_info">
@@ -274,7 +274,7 @@
 		<table class="table table-striped table-bordered compare_table">
 			<thead>
 				<tr>
-					<th>Pillar Name</th>
+					<th>Domain Name</th>
 					<th *ngFor="let country of chartTableData">
 						<div class="city_piller compare_piller">
 							<div class="position-relative city_card_outter">

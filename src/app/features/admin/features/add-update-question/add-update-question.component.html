@@ -32,18 +32,18 @@
                                 </div>
                             </div>
 
-                            <!-- Pillar -->
+                            <!-- Domain -->
                             <div class="input_field">
-                                <label>Pillar *</label>
+                                <label>Domain *</label>
                                 <select formControlName="pillarID" class="form-control">
-                                    <option value="null">Select Pillar</option>
+                                    <option value="null">Select Domain</option>
                                     <option *ngFor="let pillar of pillers" [value]="pillar.pillarID">
                                         {{ pillar.pillarName }}
                                     </option>
                                 </select>
                                 <div class="error-msg"
                                     *ngIf="questionForm.get('pillarID')?.invalid && (questionForm.get('pillarID')?.touched || isSubmitted)">
-                                    Pillar is required.
+                                    Domain is required.
                                 </div>
                             </div>
                             <div formArrayName="questionOptions" class="input_field mt-3">

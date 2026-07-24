@@ -300,7 +300,7 @@ export class ComparisionComponent implements OnInit {
           maxHeight: 120
         },
         title: {
-          text: 'Pillars',
+          text: 'Domains',
           style: {
             fontSize: '14px',
             fontWeight: 600,
@@ -527,7 +527,7 @@ export class ComparisionComponent implements OnInit {
         a.download = "PillarQuestionHistory.xlsx";
         a.click();
         this.isPillarHistroyDownloading = false;
-        this.toaster.showSuccess("Pillars History downloaded successfully");
+        this.toaster.showSuccess("Domains History downloaded successfully");
       },
       error: () => {
         this.isPillarHistroyDownloading = false;

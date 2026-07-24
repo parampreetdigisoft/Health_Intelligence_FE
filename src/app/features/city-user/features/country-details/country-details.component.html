@@ -74,7 +74,7 @@
 
                     <ng-container matColumnDef="pillarName">
                         <th mat-header-cell *matHeaderCellDef>
-                            {{ 'Pillar Name' }}
+                            {{ 'Domain Name' }}
                         </th>
                         <td mat-cell *matCellDef="let element" class="table_col_one">
                             <div class="pillar_icon_outter"
@@ -118,7 +118,7 @@
                     </ng-container>
                     <ng-container matColumnDef="totalAnsPillar">
                         <th mat-header-cell *matHeaderCellDef>
-                            {{ 'Total Ans Pillar' }}
+                            {{ 'Total Ans Domain' }}
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <span [ngClass]="element.isAccess ? 'pillar_name' : 'inactivePillar'"

@@ -9,7 +9,7 @@
       <div class="col-md-6">
         <div class="input_field input_flex">
           <select [(ngModel)]="selectedPillarID" (change)="getResponsesByUserId()" name="piller" class="form-control">
-            <option value>All Pillars</option>
+            <option value>All Domains</option>
             <option *ngFor="let piller of pillers" [value]="piller.pillarID">
               {{ piller.pillarName }}
             </option>
@@ -71,7 +71,7 @@
           <!-- Dynamic Columns -->
           <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
             <th *matHeaderCellDef mat-header-cell>
-              {{ column == "pillarName" ? "Pillar Name" : userMap.get(+column) }}
+              {{ column == "pillarName" ? "Domain Name" : userMap.get(+column) }}
             </th>
             <td *matCellDef="let element" mat-cell>
               <div class="single_pillar">

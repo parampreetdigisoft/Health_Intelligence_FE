@@ -196,7 +196,7 @@
 <app-file-upload-modal (fileUploaded)="handleFileUpload($event)"></app-file-upload-modal>
 
 <app-prompt [title]="
-    pillerQuestions?.displayOrder == 14 || isAssessementFinalized? 'Submit Pillar' : 'Save Pillar'
+    pillerQuestions?.displayOrder == 14 || isAssessementFinalized? 'Submit Domain' : 'Save Domain'
   " [message]="
     pillerQuestions?.displayOrder == 14 || isAssessementFinalized
       ? 'Are you sure you want to submit this country? After submission, changes can’t be made directly. To edit later, you’ll need to request it from the Admin.'

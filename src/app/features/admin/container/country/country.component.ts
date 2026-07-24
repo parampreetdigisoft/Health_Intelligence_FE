@@ -212,7 +212,7 @@ export class CountryComponent implements OnInit, OnDestroy {
         a.href = url;
         a.download = `Countries_Progress_${formattedDate}.xlsx`;
         a.click();
-        this.toaster.showSuccess("Pillars History downloaded successfully");
+        this.toaster.showSuccess("Domains History downloaded successfully");
       },
       error: () => {
         this.isExporting = false;

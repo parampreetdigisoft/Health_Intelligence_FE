@@ -398,7 +398,7 @@ readonly rotatingPlaceholders = [
     });
   }
 
-  /** Pillars from country slide, ordered for sidebar display. */
+  /** Domains from country slide, ordered for sidebar display. */
   get sidebarPillars(): PillarsUserHistroyResponseDto[] {
     const pillars = this.contrySlide?.country?.pillars;
     if (!pillars?.length) return [];
@@ -407,7 +407,7 @@ readonly rotatingPlaceholders = [
     );
   }
 
-  /** 0–100 peace index → PEM pillar palette (higher = more peaceful). */
+  /** 0–100 peace index → PEM domain palette (higher = more peaceful). */
   scoreToColor(value: number | null | undefined): string {
     const colors = this.commonService.PillarColors;
     if (value == null || isNaN(Number(value))) return '#E0E0E0';
@@ -424,7 +424,7 @@ readonly rotatingPlaceholders = [
     return colors[9];
   }
 
-  /** Pillar score 0–100 → bar / image accent color. */
+  /** Domain score 0–100 → bar / image accent color. */
   pillarScoreColor(score: number | null | undefined): string {
     return this.scoreToColor(this.normalizePillarScore(score));
   }
@@ -567,7 +567,7 @@ readonly rotatingPlaceholders = [
         if (!payload || pillars.length < 1) {
           this.pillarLiveSignals.set(null);
           this.pillarLiveSignalsError.set(
-            res?.errors?.[0] ?? 'Unable to load pillar signals right now.'
+            res?.errors?.[0] ?? 'Unable to load domain signals right now.'
           );
           return;
         }
@@ -579,7 +579,7 @@ readonly rotatingPlaceholders = [
       },
       error: () => {
         this.pillarLiveSignals.set(null);
-        this.pillarLiveSignalsError.set('Unable to load pillar signals. Please try again.');
+        this.pillarLiveSignalsError.set('Unable to load domain signals. Please try again.');
         this.cdr.markForCheck();
       },
     });
@@ -603,7 +603,7 @@ readonly rotatingPlaceholders = [
   }
 
   pillarSignalLabel(card: PillarLiveSignalCard): string {
-    return card.pillarName ?? `Pillar ${card.pillarId}`;
+    return card.pillarName ?? `Domain ${card.pillarId}`;
   }
 
   formatTrendUpdatedAt(iso: string | null | undefined): string {

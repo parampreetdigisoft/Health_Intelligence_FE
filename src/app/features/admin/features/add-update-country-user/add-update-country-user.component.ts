@@ -94,7 +94,7 @@ export class AddUpdateCountryUserComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Pillars loaded late: backfill Premium pillar IDs without resetting other fields
+    // Domains loaded late: backfill Premium domain IDs without resetting other fields
     if (changes["pillars"] && this.isPremium) {
       this.applyPremiumPillars();
     }

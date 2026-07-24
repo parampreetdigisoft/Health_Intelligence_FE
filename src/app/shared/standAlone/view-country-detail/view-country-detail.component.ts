@@ -54,7 +54,7 @@ const COUNTRY_EVIDENCE_FIELDS: AiEditableFieldConfig[] = [
   { key: 'relationalIntegrity', label: 'Relational Integrity', type: 'textarea', showInTable: true },
   { key: 'institutionalCapacity', label: 'Institutional Capacity', type: 'textarea', showInTable: true },
   { key: 'primarySource', label: 'Primary Source', type: 'textarea', showInTable: true },
-  { key: 'crossPillarPatterns', label: 'Cross Pillar Patterns', type: 'textarea', showInTable: true },
+  { key: 'crossPillarPatterns', label: 'Cross Domain Patterns', type: 'textarea', showInTable: true },
   { key: 'equityAssessment', label: 'Equity Assessment', type: 'textarea', showInTable: true },
   { key: 'conflictRiskOutlook', label: 'Conflict Risk Outlook', type: 'textarea', showInTable: true },
   { key: 'strategicRecommendation', label: 'Strategic Recommendation', type: 'textarea', showInTable: true },

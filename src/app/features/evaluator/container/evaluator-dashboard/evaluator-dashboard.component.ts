@@ -302,7 +302,7 @@ export class EvaluatorDashboardComponent {
           return `
           <div style="background: #ffffff; border-radius: 12px; box-shadow: ${AHI_CHART.tooltipShadow}; overflow: hidden; border: 2px solid ${barColor}55; font-family: Poppins, sans-serif;">
             
-            <!-- Header Section with Full Pillar Name -->
+            <!-- Header Section with Full Domain Name -->
             <div style="background: linear-gradient(135deg, ${barColor} 0%, ${barColor}cc 100%); padding: 16px 20px; position: relative; overflow: hidden; min-height: 60px;">
               <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
               <div style="position: absolute; bottom: -10px; left: -10px; width: 60px; height: 60px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>

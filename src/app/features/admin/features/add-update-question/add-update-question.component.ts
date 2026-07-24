@@ -119,7 +119,7 @@ export class AddUpdateQuestionComponent implements OnChanges, OnInit {
     // One sample row
     const sampleRow = {
       QuestionText: "Enter Question",
-      PillarName: "Enter Pillar",
+      PillarName: "Enter Domain",
       Option1Text: "Enter Option 1", Option1Score: "0",
       Option2Text: "Enter Option 2", Option2Score: "25",
       Option3Text: "Enter Option 3", Option3Score: "50",
@@ -170,13 +170,13 @@ export class AddUpdateQuestionComponent implements OnChanges, OnInit {
         if (!pillarName && !questionText) {
           continue;
         }
-        if(pillarName.toLowerCase() == "Enter Pillar".toLowerCase()) {
+        if(pillarName.toLowerCase() == "Enter Domain".toLowerCase()) {
           continue;
         }
 
         // ✅ case 2: one missing → error
         if (!pillarName || !questionText) {
-          this.alertMsg = `Row ${i + 2}: Both PillarName and QuestionText are required.`;
+          this.alertMsg = `Row ${i + 2}: Both DomainName and QuestionText are required.`;
           this.fileInput.nativeElement.value = "";
           return;
         }
@@ -184,7 +184,7 @@ export class AddUpdateQuestionComponent implements OnChanges, OnInit {
         // ✅ case 3: both present → validate pillar
         const pillar = this.getPillarByName(pillarName);
         if (!pillar) {
-          this.alertMsg = `Row ${i + 2}: Invalid Pillar - ${pillarName}`;
+          this.alertMsg = `Row ${i + 2}: Invalid Domain - ${pillarName}`;
           this.fileInput.nativeElement.value = "";
           return;
         }

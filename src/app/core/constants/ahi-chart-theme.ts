@@ -53,7 +53,7 @@ export const AHI_CHART = {
     '#004d55',
   ],
 
-  /** Pillar bar chart (evaluator) — light to strong */
+  /** Domain  bar chart (evaluator) — light to strong */
   pillarBar: [
     '#b9bdbc',
     '#8ea89f',

@@ -63,7 +63,7 @@ export class PillarComponent implements OnInit, OnDestroy {
     }
 
     if (!piller.pillarName || piller.pillarName.trim().length < 5) {
-      this.toaster.showError("Pillar name must be at least 5 characters");
+      this.toaster.showError("Domain name must be at least 5 characters");
       return;
     }
 
@@ -90,16 +90,16 @@ export class PillarComponent implements OnInit, OnDestroy {
           this.closeModal();
           if (res.succeeded) {
             this.toaster.showSuccess(
-              res.messages?.join(", ") || "Pillar created successfully",
+              res.messages?.join(", ") || "Domain created successfully",
             );
             this.GetAllPillars();
           } else {
-            this.toaster.showError(res.errors?.join(", ") || "Failed to create pillar");
+            this.toaster.showError(res.errors?.join(", ") || "Failed to create Domain");
           }
         },
         error: () => {
           this.loading = false;
-          this.toaster.showError("Failed to create pillar");
+          this.toaster.showError("Failed to create domain");
         },
       });
       return;
@@ -117,12 +117,12 @@ export class PillarComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.closeModal();
-          this.toaster.showSuccess("Pillar updated successfully");
+          this.toaster.showSuccess("Domain updated successfully");
           this.GetAllPillars();
         },
         error: () => {
           this.loading = false;
-          this.toaster.showError("Failed to update pillar");
+          this.toaster.showError("Failed to update domain");
         },
       });
   }
@@ -148,20 +148,20 @@ export class PillarComponent implements OnInit, OnDestroy {
 
   deletePillar() {
     if (this.selectedPillar === null) {
-      this.toaster.showError("No pillar selected for deletion");
+      this.toaster.showError("No domain selected for deletion");
       return;
     }
     this.adminService.deletePillar(this.selectedPillar.pillarID).subscribe({
       next: (res) => {
         if (res.succeeded) {
           this.GetAllPillars();
-          this.toaster.showSuccess(res?.messages?.join(", ") || "Pillar deleted successfully");
+          this.toaster.showSuccess(res?.messages?.join(", ") || "Domain deleted successfully");
         } else {
-          this.toaster.showError(res?.errors?.join(", ") || "Failed to delete pillar");
+          this.toaster.showError(res?.errors?.join(", ") || "Failed to delete domain");
         }
       },
       error: () => {
-        this.toaster.showError("Failed to delete pillar");
+        this.toaster.showError("Failed to delete domain");
       },
     });
   }

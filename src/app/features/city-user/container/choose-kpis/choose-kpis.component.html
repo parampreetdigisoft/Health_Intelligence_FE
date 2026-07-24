@@ -4,7 +4,7 @@
             <div class="alert alert-info text-center mb-4 rounded-3 shadow-sm">
                 <h4>Customize Your Access</h4><br />
                 <ng-container *ngIf="!isPremium">
-                    Select the <b>Pillars</b>, and <b>Countries</b> you want to work with.
+                    Select the <b>Domains</b>, and <b>Countries</b> you want to work with.
                     You’ll only be able to view and manage data for the items you choose here.
                 </ng-container>
                 <ng-container *ngIf="isPremium">
@@ -20,12 +20,12 @@
                     <div class="tab-pane fade show active" id="pills-home">
                         <form [formGroup]="kpiForm" (ngSubmit)="onSubmit()">
                             <div class="input_field" *ngIf="!isPremium">
-                                <label>Select Pillars *</label>
+                                <label>Select Domains *</label>
                                 <ng-select [items]="pillars" bindValue="pillarID" bindLabel="pillarName"
                                     formControlName="pillars" [multiple]="true" [closeOnSelect]="false"
                                     [searchable]="true"
                                     class="form-control analyst_multi_select"
-                                    [placeholder]="kpiForm.get('pillars')?.invalid ? 'Select Pillars' : ''"
+                                    [placeholder]="kpiForm.get('pillars')?.invalid ? 'Select Domains' : ''"
                                     (change)="checkSelectionLimit('pillars')" [trackByFn]="trackByFn">
                                     <ng-template ng-label-tmp let-item="item">
                                         {{ item.pillarName }}
@@ -46,8 +46,8 @@
                                 </div>
                             </div>
                             <div class="input_field" *ngIf="isPremium">
-                                <label>Pillars</label>
-                                <p class="mb-0">Premium includes access to all pillars automatically.</p>
+                                <label>Domains</label>
+                                <p class="mb-0">Premium includes access to all domains automatically.</p>
                             </div>
 
                             <div class="input_field" *ngIf="isPremium">

@@ -72,7 +72,7 @@ export class AnalystService {
   }
   public getCountriesProgressByUserId(userID: number, updatedAt: string) {
     return this.http.get(`Country/getCountriesProgressByUserId/`+ updatedAt).pipe(map(x => x as ResultResponseDto<GetCountriesSubmitionHistoryResponseDto[]>));
-  }
+  } 
   public getAllPillars() {
     return this.http.get(`Pillar/Pillars`).pipe(map(x => x as PillarsVM[]));
   }

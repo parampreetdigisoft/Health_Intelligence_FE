@@ -38,7 +38,7 @@
 
                     <button type="button" matTooltip="Open detailed pillar analysis" class="common_button"
                         (click)="viewPillars()">
-                        View Pillar Details
+                        View Domain Details
                     </button>
                 </div>
             </div>
@@ -216,7 +216,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><span class="score_label_tab">Cross Pillar Patterns</span></td>
+                        <td><span class="score_label_tab">Cross Domain Patterns</span></td>
                         <td *ngIf="country?.crossPillarPatterns"> <app-typing-text [text]="country!.crossPillarPatterns!"
                                 [speed]="5" [numberOfWordAfterHideText]="7">
                             </app-typing-text>

@@ -76,11 +76,11 @@
                             </div>
 
                             <div class="input_field" *ngIf="!isPremium">
-                                <label>Select Pillars *</label>
+                                <label>Select Domains *</label>
                                 <ng-select [items]="pillars" bindValue="pillarID" bindLabel="pillarName"
                                     formControlName="pillars" [multiple]="true" [closeOnSelect]="false"
                                     class="form-control analyst_multi_select" [searchable]="true"
-                                    [placeholder]="countryUserForm.get('pillars')?.invalid ? 'Select Pillars' : ''"
+                                    [placeholder]="countryUserForm.get('pillars')?.invalid ? 'Select Domains' : ''"
                                     (change)="checkSelectionLimit('pillars')" [trackByFn]="trackByFn">
 
                                     <ng-template ng-label-tmp let-item="item" class="select_item">
@@ -97,7 +97,7 @@
                             </div>
 
                             <div class="input_field" *ngIf="isPremium">
-                                <label>Pillars</label>
+                                <label>Domains</label>
                                 <p class="modal_sub_head mb-0">Premium includes access to all pillars automatically.</p>
                             </div>
 

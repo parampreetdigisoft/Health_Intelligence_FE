@@ -180,7 +180,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
               : this.countries[0].userCountryMappingID ?? 0;
               this.selectedCountry = this.countries.filter(x=>x.userCountryMappingID == this.selectedUserCountryMappingID)[0]
             setTimeout(() => {
-              this.toaster.showInfo("You have rediredected to assgined country, please submit all pillars for the country");
+              this.toaster.showInfo("You have rediredected to assgined country, please submit all domains for the country");
             }, 500);
             this.getQuestionsByCountryId();
           } else {
@@ -480,7 +480,7 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
         this.isLoader = false;
         const fileType = type === ExportType.Pdf ? "PDF" : "EXCEL";
 
-        this.toaster.showSuccess(`Pillars History ${fileType} downloaded successfully`);
+        this.toaster.showSuccess(`Domains History ${fileType} downloaded successfully`);
       },
       error: () => {
         this.isLoader = false;

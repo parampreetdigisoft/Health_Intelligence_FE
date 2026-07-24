@@ -140,11 +140,11 @@
 			</select>
 
 			<label>
-				Choose a pillar if applicable, otherwise leave blank to upload as country-level documents.
+				Choose a domain if applicable, otherwise leave blank to upload as country-level documents.
 			</label>
 			<select [(ngModel)]="selectedPillarID"
 				class="form-control">
-				<option [ngValue]="undefined">-- Select Pillar --</option>
+				<option [ngValue]="undefined">-- Select Domain --</option>
 				<option *ngFor="let p of pillars()"
 					[value]="p.pillarID">
 					{{p.pillarName}}

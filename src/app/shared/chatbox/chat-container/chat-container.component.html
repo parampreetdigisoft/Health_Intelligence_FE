@@ -52,8 +52,8 @@
         <div class="cb__selector-inner">
           <ng-select [items]="chatService.pillars | async" [searchable]="true" [clearable]="true" appendTo="body"
             [ngModel]="selectedPillar()" (ngModelChange)="onPillarChange($event)" class="analyst_multi_select pem-context-select"
-            placeholder="Select pillar" bindLabel="pillarName"
-            notFoundText="No pillars match your search" typeToSearchText="Type to search pillars">
+            placeholder="Select Domain" bindLabel="pillarName"
+            notFoundText="No domains match your search" typeToSearchText="Type to search domains">
             <ng-template ng-label-tmp let-item="item">{{ item?.pillarName }}</ng-template>
             <ng-template ng-option-tmp let-item="item">
               <span class="option-main">{{ item.pillarName }}</span>
@@ -596,7 +596,7 @@
       <div class="stats-card pillar-signals-card">
         <div class="pillars-header">
           <div class="title-wd-btn">
-            <h3 class="title">KEY PILLARS</h3>
+            <h3 class="title">KEY DOMAINS</h3>
           </div>
         </div>
 
@@ -604,14 +604,14 @@
           <ng-container *ngIf="pillarLiveSignalsLoading(); else pillarSignalsReady">
             <div class="sidebar-loading sidebar-loading--compact" aria-live="polite" aria-busy="true">
               <div class="sidebar-loading__spinner" aria-hidden="true"></div>
-              <p class="sidebar-loading__text">Loading live pillar signals…</p>
+              <p class="sidebar-loading__text">Loading live domain signals…</p>
             </div>
           </ng-container>
 
           <ng-template #pillarSignalsReady >
             <ng-container *ngIf="pillarLiveSignals() as pillarFeed; else pillarSignalsFailed">
               <header class="pillar-signals__header">
-                <p class="pillar-signals__eyebrow">{{ pillarFeed.headline || 'Live Pillar Signals' }}</p>
+                <p class="pillar-signals__eyebrow">{{ pillarFeed.headline || 'Live Domain Signals' }}</p>
                 <time class="pillar-signals__updated" *ngIf="pillarFeed.updatedAt">
                   Updated {{ formatTrendUpdatedAt(pillarFeed.updatedAt) }}
                 </time>
@@ -670,7 +670,7 @@
 
             <ng-template #pillarSignalsFailed>
               <div class="pillar-signals__error">
-                <p>{{ pillarLiveSignalsError() || 'Unable to load pillar signals.' }}</p>
+                <p>{{ pillarLiveSignalsError() || 'Unable to load domain signals.' }}</p>
                 <button type="button" class="pillar-signals__retry" (click)="retryPillarLiveSignals()">
                   Retry
                 </button>
@@ -682,7 +682,7 @@
 
         <ng-container *ngIf="selectedCountry()">
           <div class="pillar-signals__divider">
-            <span>Country pillar scores</span>
+            <span>Country domain scores</span>
           </div>
           <ng-container *ngIf="countrySlidesLoading(); else pillarsLoaded">
             <div class="sidebar-loading sidebar-loading--compact" aria-live="polite" aria-busy="true">
@@ -723,7 +723,7 @@
           </div>
         </div>
         <ng-template #noPillarData>
-          <p class="pillar-empty">No pillar data available for this country.</p>
+          <p class="pillar-empty">No domain data available for this country.</p>
         </ng-template>
           </ng-template>
         </ng-container>

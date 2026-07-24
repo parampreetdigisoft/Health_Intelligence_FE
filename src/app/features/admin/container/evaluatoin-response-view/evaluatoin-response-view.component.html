@@ -12,7 +12,7 @@
 					(change)="getAssessmentQuestoins()"
 					name="pillarID"
 					class="form-control ms-auto">
-					<option value>Select Pillar</option>
+					<option value>Select Domain</option>
 					<option *ngFor="let pillar of pillers"
 						[value]="pillar.pillarID">
 						{{ pillar.pillarName }}
@@ -28,7 +28,7 @@
 		<thead>
 			<tr>
 				<th>S.No.</th>
-				<th>Pillar</th>
+				<th>Domain</th>
 				<th>Questions</th>
 				<th>Score</th>
 				<th>Comment</th>

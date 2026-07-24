@@ -156,10 +156,7 @@ maxSelectedCountriesValidator(max: number): ValidatorFn {
       if (this.isPremium && this.premiumGeoMode === 'all') {
         this.limitMessages[controlName] = '';
         return;
-      }
-      if (selected.length < 1) {
-        message = 'Please select at least one country.';
-      }
+      }      
       else if (selected.length > limits?.max) {
         control?.patchValue(selected.slice(0, limits?.max));
         message = `${limits?.name} plan allows maximum ${limits?.max} country.`;

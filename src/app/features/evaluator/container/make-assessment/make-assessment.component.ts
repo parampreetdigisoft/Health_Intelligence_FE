@@ -133,7 +133,7 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
       return;
     }
     if(this.selectedCountry?.assessmentPhase == AssessmentPhase.Completed && (pillar?.pillarID != this.ROSEWPillarID)){
-      this.toaster.showWarning("You can only edit the ROSEW pillar. Editing other pillars requires analyst permission.");
+      this.toaster.showWarning("You can only edit the ROSEW pillar. Editing other domains requires analyst permission.");
       return
     }
 
@@ -169,7 +169,7 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
               this.selectedCountry = this.countries.filter(x=>x.userCountryMappingID == this.selectedUserCountryMappingID)[0]
             setTimeout(() => {
               this.toaster.showInfo(
-                "You have rediredected to assgined country, please submit all pillars for the country"
+                "You have rediredected to assgined country, please submit all domains for the country"
               );
             }, 500);
             this.getQuestionsByCountryId();
@@ -215,7 +215,7 @@ export class MakeAssessmentComponent implements OnInit, OnDestroy {
           }
           this.loadQuestions();
         } else {
-          this.toaster.showWarning("The country's assessment has already been submitted, or the selected pillar has no questions.");
+          this.toaster.showWarning("The country's assessment has already been submitted, or the selected domain has no questions.");
         }
       },
     });

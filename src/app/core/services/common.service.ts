@@ -110,8 +110,8 @@ export class CommonService {
 
     // Create workbook and add worksheet
     const workbook: XLSX.WorkBook = {
-      Sheets: { "Pillars Data": worksheet },
-      SheetNames: ["Pillars Data"],
+      Sheets: { "Domains Data": worksheet },
+      SheetNames: ["Domains Data"],
     };
 
     // Generate Excel buffer
@@ -133,7 +133,7 @@ export class CommonService {
     let paddingOuter = 0.1;
 
     if (n === 1) {
-      // Special case: one pillar → center the bar
+      // Special case: one domain → center the bar
       paddingInner = 0.8;
       paddingOuter = 0.41;
     } else if (n < 15) {
