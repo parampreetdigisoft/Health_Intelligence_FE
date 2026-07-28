@@ -170,7 +170,6 @@ export class CommonService {
       .pipe(map((x) => x as any[]));
   }
   getGeneratedTime(utcDate: string | Date | null | undefined): string {
-
     if (!utcDate) return 'NA';
 
     // Ensure UTC parsing for string dates
@@ -193,7 +192,7 @@ export class CommonService {
     const diffMs = now.getTime() - generatedDate.getTime();
 
     // If future date, treat as NA
-    if (diffMs < -60000) return 'NA';
+    if (diffMs < -90000) return 'NA';
 
     const safeDiffMs = Math.max(0, diffMs);
 
