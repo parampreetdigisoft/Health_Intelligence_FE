@@ -543,7 +543,7 @@
   padding: 3px 9px;
   border-radius: 999px;
   background: #ffe2e2;
-  color: #a51d1d;
+  color: #f35656;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -635,12 +635,13 @@
 
 .signal_icon_ring {
   --ring-value: 0%;
+  --ring-color: var(--pe-secondary);
   position: relative;
   flex-shrink: 0;
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background: conic-gradient(var(--pe-secondary) var(--ring-value), #e7eef8 var(--ring-value));
+  background: conic-gradient(var(--ring-color) var(--ring-value), #e7eef8 var(--ring-value));
   display: grid;
   place-items: center;
   padding: 3px;
@@ -861,14 +862,37 @@
   border-radius: 50%;
   background: currentColor;
 }
+.condition_badge.stable {
+    background: #E8F5E9;   /* SuccessGreenBg */
+    color: #2E7D32;        /* SuccessGreen */
+}
 
-.condition_badge.stable { background: #e3f6e9; color: #1f7a35; }
+.condition_badge.low {
+    background: #edf8e9;
+    color: #469449;        /* BarGreenLow */
+}
+
 .condition_badge.watch,
-.condition_badge.medium { background: #fff3d2; color: #986f00; }
+.condition_badge.medium {
+    background: #FFF8E1;   /* WarningAmberBg */
+    color: #F9A825;        /* WarningAmber */
+}
+
 .condition_badge.elevated,
-.condition_badge.high { background: #ffe3d2; color: #c0501d; }
-.condition_badge.critical { background: #ffdcdc; color: #a51d1d; }
-.condition_badge.low { background: #e1f1ff; color: #0f5d8c; }
+.condition_badge.high {
+    background: #ffe3d2;
+    color: #c66528;        /* BarOrangeMid */
+}
+
+.condition_badge.critical {
+    background: #FDECEA;   /* DangerRedBg */
+    color: #C62828;        /* DangerRed */
+}
+
+.condition_badge.no-data {
+    background: #f1f3f5;
+    color: #6c757d;
+}
 
 /* ── Signal accent variants ── */
 
@@ -883,6 +907,49 @@
 .accent-education .signal_icon_well { background: linear-gradient(135deg, #e8e4f8, #d0c8f0); color: #4a3a7a; border-color: #b8b0e0; }
 .accent-institution .signal_icon_well { background: linear-gradient(135deg, #e8ece8, #d0d8d0); color: #3a4a3a; border-color: #b8c4b8; }
 .accent-default .signal_icon_well { background: linear-gradient(135deg, #e4f2eb, #d4ebe0); color: #006D77; border-color: #c8dfd4; }
+
+/* Score-based icon ring + well (matches GetColor / ReportThemeColors) */
+.signal_icon_ring.stable { --ring-color: #2E7D32; }
+.signal_icon_ring.low { --ring-color: #469449; }
+.signal_icon_ring.watch,
+.signal_icon_ring.medium { --ring-color: #F9A825; }
+.signal_icon_ring.elevated,
+.signal_icon_ring.high { --ring-color: #c66528; }
+.signal_icon_ring.critical { --ring-color: #C62828; }
+.signal_icon_ring.no-data { --ring-color: #94a3b8; }
+
+.signal_icon_ring.stable .signal_icon_well {
+  background: linear-gradient(135deg, #E8F5E9, #c8e6c9);
+  color: #2E7D32;
+  border-color: #a5d6a7;
+}
+.signal_icon_ring.low .signal_icon_well {
+  background: linear-gradient(135deg, #edf8e9, #c8e6c9);
+  color: #469449;
+  border-color: #a5d6a7;
+}
+.signal_icon_ring.watch .signal_icon_well,
+.signal_icon_ring.medium .signal_icon_well {
+  background: linear-gradient(135deg, #FFF8E1, #ffe082);
+  color: #F9A825;
+  border-color: #ffe082;
+}
+.signal_icon_ring.elevated .signal_icon_well,
+.signal_icon_ring.high .signal_icon_well {
+  background: linear-gradient(135deg, #ffe3d2, #ffcc80);
+  color: #c66528;
+  border-color: #ffb74d;
+}
+.signal_icon_ring.critical .signal_icon_well {
+  background: linear-gradient(135deg, #FDECEA, #ef9a9a);
+  color: #C62828;
+  border-color: #ef9a9a;
+}
+.signal_icon_ring.no-data .signal_icon_well {
+  background: linear-gradient(135deg, #f1f3f5, #e2e8f0);
+  color: #6c757d;
+  border-color: #cbd5e1;
+}
 
 /* ============================================================
    Narrative & chips

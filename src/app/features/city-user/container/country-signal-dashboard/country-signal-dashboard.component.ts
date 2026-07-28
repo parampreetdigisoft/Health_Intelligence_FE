@@ -228,7 +228,7 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
   }
 
   formatScore(score: number | null | undefined): string {
-    if (!this.hasScore(score)) return 'N/A';
+    if (!this.hasScore(score)) return 'NA';
     return Number(score).toFixed(1);
   }
 

@@ -92,14 +92,15 @@
             <i class="bi bi-exclamation-triangle-fill"></i> Alert
           </div>
           <div class="signal_card_header">
-            <div class="signal_icon_ring" [style.--ring-value]="getSignalProgress(question.aiScore) + '%'">
+            <div class="signal_icon_ring" [ngClass]="getConditionClass(question.aiScore)"
+              [style.--ring-value]="getSignalProgress(question.aiScore) + '%'">
               <div class="signal_icon_well">
                 <i class="bi" [ngClass]="getQuestionIconClass(question)"></i>
               </div>
             </div>
             <div class="signal_header_meta">
               <div class="signal_top">
-                <span class="condition_badge" [ngClass]="getConditionClass(getInterpretationConditionByScore(question.aiScore).condition)">
+                <span class="condition_badge" [ngClass]="getConditionClass(question.aiScore)">
                   {{ getInterpretationConditionByScore(question.aiScore).condition || (hasScore(question.aiScore) ? 'Stable' : 'No Data') }}
                 </span>
               </div>
