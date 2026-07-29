@@ -232,12 +232,14 @@ export class CountryUserDashboardComponent implements OnInit, OnDestroy {
     return Number(score).toFixed(1);
   }
 
-  getConditionClass(condition?: string | null): string {
-    const value = (condition || '').toLowerCase();
-    if (value.includes('critical') || value.includes('fragile')) return 'critical';
-    if (value.includes('elevated') || value.includes('high')) return 'elevated';
-    if (value.includes('watch') || value.includes('developing')) return 'watch';
-    return 'stable';
+  getConditionClass(score: number | null | undefined): string {
+    if (!this.hasScore(score)) return 'no-data';
+    const value = Number(score);
+    if (value >= 80) return 'stable';
+    if (value >= 60) return 'low';
+    if (value >= 40) return 'watch';
+    if (value >= 20) return 'elevated';
+    return 'critical';
   }
 
   isAlertQuestion(question: DashboardQuestionScoreDto): boolean {

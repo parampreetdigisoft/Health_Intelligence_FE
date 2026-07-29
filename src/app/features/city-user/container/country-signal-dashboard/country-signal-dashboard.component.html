@@ -99,7 +99,7 @@
             </div>
             <div class="signal_header_meta">
              <div class="signal_top">
-                <span class="condition_badge" [ngClass]="getConditionClass(getInterpretationConditionByScore(question.aiScore).condition)">
+                <span class="condition_badge" [ngClass]="getConditionClass(question.aiScore)">
                   {{ getInterpretationConditionByScore(question.aiScore).condition || (hasScore(question.aiScore) ? 'Stable' : 'No Data') }}
                 </span>
               </div>
@@ -206,7 +206,7 @@
           </div>
           <div class="signal_detail_stat">
             <span>Condition</span>
-            <strong [ngClass]="getConditionClass(getInterpretationConditionByScore(selectedQuestion.aiScore).condition)">
+            <strong [ngClass]="getConditionClass(selectedQuestion.aiScore)">
               {{ getInterpretationConditionByScore(selectedQuestion.aiScore).condition || (hasScore(selectedQuestion.aiScore) ? 'Stable' : 'No Data') }}
             </strong>
           </div>

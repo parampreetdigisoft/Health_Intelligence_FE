@@ -1,5 +1,5 @@
 /* ============================================================
-   AHI · Country Signal Dashboard
+   AHI · Real-Time Operational Stress Dashboard
    Design language: "Intelligence Command Console"
    — deep navy + signal green, targeting-reticle card framing,
      radar/grid texture, tabular data typography, live-scan motif.
@@ -635,12 +635,13 @@
 
 .signal_icon_ring {
   --ring-value: 0%;
+  --ring-color: var(--pe-secondary);
   position: relative;
   flex-shrink: 0;
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background: conic-gradient(var(--pe-secondary) var(--ring-value), #e7eef8 var(--ring-value));
+  background: conic-gradient(var(--ring-color) var(--ring-value), #e7eef8 var(--ring-value));
   display: grid;
   place-items: center;
   padding: 3px;
@@ -733,39 +734,19 @@
   margin-top: 12px;
   margin-bottom: 0;
   color: var(--pe-primary);
-  font-weight: 700;
-  font-size: 36px;
+  font-weight: 600;
+  font-size: 30px;
   line-height: 1;
 }
 
 .signal_value_row {
   display: flex;
-  align-items: baseline;
+  justify-content: flex-start;
+  width: 100%;
+  align-items: center;
   gap: 6px;
   margin-top: 13px;
   margin-bottom: 9px;
-}
-
-.signal_value_row--no-recency {
-  justify-content: flex-start;
-  align-items: baseline;
-}
-
-.signal_value_row--no-recency .signal_value {
-  margin-top: 0;
-  font-size: clamp(28px, 2.2vw, 36px);
-}
-
-@media (min-width: 1600px) {
-  .signal_value_row--no-recency .signal_value {
-    font-size: 38px;
-  }
-}
-
-@media (max-width: 1280px) {
-  .signal_value_row--no-recency .signal_value {
-    font-size: 30px;
-  }
 }
 
 .signal_value_row .signal_value {
@@ -881,13 +862,37 @@
   background: currentColor;
 }
 
-.condition_badge.stable { background: #e3f6e9; color: #1f7a35; }
+.condition_badge.stable {
+    background: #E8F5E9;   /* SuccessGreenBg */
+    color: #2E7D32;        /* SuccessGreen */
+}
+
+.condition_badge.low {
+    background: #edf8e9;
+    color: #469449;        /* BarGreenLow */
+}
+
 .condition_badge.watch,
-.condition_badge.medium { background: #fff3d2; color: #986f00; }
+.condition_badge.medium {
+    background: #FFF8E1;   /* WarningAmberBg */
+    color: #F9A825;        /* WarningAmber */
+}
+
 .condition_badge.elevated,
-.condition_badge.high { background: #ffe3d2; color: #c0501d; }
-.condition_badge.critical { background: #ffdcdc; color: #a51d1d; }
-.condition_badge.low { background: #e1f1ff; color: #0f5d8c; }
+.condition_badge.high {
+    background: #ffe3d2;
+    color: #c66528;        /* BarOrangeMid */
+}
+
+.condition_badge.critical {
+    background: #FDECEA;   /* DangerRedBg */
+    color: #C62828;        /* DangerRed */
+}
+
+.condition_badge.no-data {
+    background: #f1f3f5;
+    color: #6c757d;
+}
 
 /* ── Signal accent variants ── */
 
@@ -902,6 +907,49 @@
 .accent-education .signal_icon_well { background: linear-gradient(135deg, #e8e4f8, #d0c8f0); color: #4a3a7a; border-color: #b8b0e0; }
 .accent-institution .signal_icon_well { background: linear-gradient(135deg, #e8ece8, #d0d8d0); color: #3a4a3a; border-color: #b8c4b8; }
 .accent-default .signal_icon_well { background: linear-gradient(135deg, #e4f2eb, #d4ebe0); color: #006D77; border-color: #c8dfd4; }
+
+/* Score-based icon ring + well (matches GetColor / ReportThemeColors) */
+.signal_icon_ring.stable { --ring-color: #2E7D32; }
+.signal_icon_ring.low { --ring-color: #469449; }
+.signal_icon_ring.watch,
+.signal_icon_ring.medium { --ring-color: #F9A825; }
+.signal_icon_ring.elevated,
+.signal_icon_ring.high { --ring-color: #c66528; }
+.signal_icon_ring.critical { --ring-color: #C62828; }
+.signal_icon_ring.no-data { --ring-color: #94a3b8; }
+
+.signal_icon_ring.stable .signal_icon_well {
+  background: linear-gradient(135deg, #E8F5E9, #c8e6c9);
+  color: #2E7D32;
+  border-color: #a5d6a7;
+}
+.signal_icon_ring.low .signal_icon_well {
+  background: linear-gradient(135deg, #edf8e9, #c8e6c9);
+  color: #469449;
+  border-color: #a5d6a7;
+}
+.signal_icon_ring.watch .signal_icon_well,
+.signal_icon_ring.medium .signal_icon_well {
+  background: linear-gradient(135deg, #FFF8E1, #ffe082);
+  color: #F9A825;
+  border-color: #ffe082;
+}
+.signal_icon_ring.elevated .signal_icon_well,
+.signal_icon_ring.high .signal_icon_well {
+  background: linear-gradient(135deg, #ffe3d2, #ffcc80);
+  color: #c66528;
+  border-color: #ffb74d;
+}
+.signal_icon_ring.critical .signal_icon_well {
+  background: linear-gradient(135deg, #FDECEA, #ef9a9a);
+  color: #C62828;
+  border-color: #ef9a9a;
+}
+.signal_icon_ring.no-data .signal_icon_well {
+  background: linear-gradient(135deg, #f1f3f5, #e2e8f0);
+  color: #6c757d;
+  border-color: #cbd5e1;
+}
 
 /* ============================================================
    Narrative & chips
@@ -991,11 +1039,26 @@
 }
 
 .drill_chip i { font-size: 13px; opacity: 0.8; }
-.drill_chip.accent-risk { border-left-color: #c0501d; }
-.drill_chip.accent-alert { border-left-color: #b83a1a; }
-.drill_chip.accent-warning { border-left-color: #986f00; }
-.drill_chip.accent-cohesion { border-left-color: #1a5a7a; }
-.drill_chip.accent-network { border-left-color: #4a3a8a; }
+
+.drill_chip.accent-risk {
+    border-left-color: #a51d1d;   /* DangerRed */
+}
+
+.drill_chip.accent-alert {
+    border-left-color: #c0501d;   /* BarOrangeMid */
+}
+
+.drill_chip.accent-warning {
+    border-left-color: #986f00;   /* WarningAmber */
+}
+
+.drill_chip.accent-cohesion {
+    border-left-color: #4b8f29;   /* BarGreenLow */
+}
+
+.drill_chip.accent-network {
+    border-left-color: #1f7a35;   /* SuccessGreen */
+}
 
 /* ============================================================
    Warning layout
@@ -1741,4 +1804,176 @@
   .glance_charts_grid {
     grid-template-columns: 1fr;
   }
+}
+
+.signal_label {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--pe-text-muted);
+  min-width: 26px;
+  line-height: 1;
+}
+
+.score_value {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.signal_lastUpdated {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding-left: 6px;
+}
+
+.status_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px 3px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  line-height: 1.25;
+  cursor: default;
+}
+
+.status_badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6);
+}
+
+.status_badge.status-recent {
+  background: #e3f6e9;
+  color: #1f7a35;
+  border-color: rgba(31, 122, 53, 0.22);
+}
+
+.status_badge.status-intermediate {
+  background: #fff3d2;
+  color: #986f00;
+  border-color: rgba(152, 111, 0, 0.22);
+}
+
+.status_badge.status-outdated {
+  background: #ffdcdc;
+  color: #a51d1d;
+  border-color: rgba(165, 29, 29, 0.22);
+}
+
+@media (min-width: 1600px) {
+  .status_badge {
+    font-size: 10.5px;
+    padding: 4px 10px 4px 8px;
+  }
+}
+
+@media (max-width: 1440px) {
+  .status_badge {
+    font-size: 9.5px;
+    padding: 2px 8px 2px 6px;
+    gap: 4px;
+  }
+
+  .status_badge::before {
+    width: 5px;
+    height: 5px;
+  }
+}
+
+@media (max-width: 1320px) {
+  .signal_value_row {
+    flex-wrap: wrap;
+    row-gap: 5px;
+  }
+
+  .signal_lastUpdated {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 1100px) {
+  .signal_lastUpdated {
+    flex-basis: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-left: 26px;
+  }
+}
+
+.ai_manual_split {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.split_card {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.split_title {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.detail_item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.detail_item.full {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.detail_item.full p {
+  margin: 5px 0 0;
+  font-size: 13px;
+  color: #555;
+}
+
+.split_divider {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: #999;
+}
+
+.ai_card {
+  border-left: 4px solid #4f46e5;
+}
+
+.manual_card {
+  border-left: 4px solid #16a34a;
+}
+
+.meta_row{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.meta_label {
+  font-weight: 600;
+  font-size: 20px;
+}
+.modal_design .modal-body {
+    padding: 29px 23px 35px 23px !important;
 }
