@@ -245,6 +245,7 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
   }
 
   isAlertQuestion(question: DashboardQuestionScoreDto): boolean {
+    if (this.isStaleUnverified(question.aiUpdatedAt)) return false;
     const condition = (this.getInterpretationConditionByScore(question.aiScore).condition || '').toLowerCase();
     return (
       condition.includes('critical') ||
@@ -283,30 +284,53 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
     );
   }
   
-  getUpdateStatus(date: Date | string | null | undefined): { label: string; class: string } {
-    if (!date) { return { label: 'N/A', class: 'status-intermediate' }; 
-    }
-    
+  private getDaysSince(date: Date | string | null | undefined): number | null {
+    if (!date) return null;
     const updatedDate = new Date(date);
     const today = new Date();
-    const diffTime = today.getTime() - updatedDate.getTime();
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    if (diffDays < 7) {
-      return { label: 'Recent', class: 'status-recent'
-      };
-    }
-    
-    if (diffDays <= 15) {
-      return {
-        label: 'Aging',
-        class: 'status-intermediate'
-      };
-    }
+    return Math.floor((today.getTime() - updatedDate.getTime()) / (1000 * 60 * 60 * 24));
+  }
 
-    return {
-      label: 'Outdated',
-      class: 'status-outdated'
-    };
+  /** Live this week (<7d) vs carried-forward (>=7d) vs stale floor (~21d). */
+  getUpdateStatus(date: Date | string | null | undefined): { label: string; class: string } {
+    const days = this.getDaysSince(date);
+    if (days === null) return { label: 'N/A', class: 'status-intermediate' };
+    if (days < 7) return { label: 'Live this week', class: 'status-recent' };
+    if (days < 21) return { label: 'Carried forward', class: 'status-intermediate' };
+    return { label: 'Stale / Unverified', class: 'status-outdated' };
+  }
+
+  getLastVerifiedLabel(date: Date | string | null | undefined): string {
+    const days = this.getDaysSince(date);
+    if (days === null) return 'Last verified: N/A';
+    if (days <= 0) return 'Last verified today';
+    if (days === 1) return 'Last verified 1 day ago';
+    return `Last verified ${days} days ago`;
+  }
+
+  isCarriedForward(date: Date | string | null | undefined): boolean {
+    const days = this.getDaysSince(date);
+    return days !== null && days >= 7;
+  }
+
+  isStaleUnverified(date: Date | string | null | undefined): boolean {
+    const days = this.getDaysSince(date);
+    return days !== null && days >= 21;
+  }
+
+  getDisplayCondition(score: number | null | undefined, updatedAt: Date | string | null | undefined) {
+    if (this.hasScore(score) && this.isStaleUnverified(updatedAt)) {
+      return {
+        condition: 'Stale / Unverified',
+        description: 'Score is carried forward from older evidence; treat as unverified until refreshed.',
+      };
+    }
+    return this.getInterpretationConditionByScore(score);
+  }
+
+  getDisplayConditionClass(score: number | null | undefined, updatedAt: Date | string | null | undefined): string {
+    if (this.hasScore(score) && this.isStaleUnverified(updatedAt)) return 'stale';
+    return this.getConditionClass(score);
   }
 
   getQuestionName(question: DashboardQuestionScoreDto): string {
@@ -552,7 +576,7 @@ export class RealTimeOperationalStressComponent implements OnInit, OnDestroy {
 
   private getConditionColor(condition: string): string {
     const value = condition.toLowerCase();
-    if (value.includes('no data')) return '#cbd5e1';
+    if (value.includes('no data') || value.includes('stale')) return '#cbd5e1';
     if (value.includes('critical') || value.includes('fragile')) return '#dc3545';
     if (value.includes('elevated') || value.includes('high')) return '#fd7e14';
     if (value.includes('watch') || value.includes('developing')) return '#ffc107';

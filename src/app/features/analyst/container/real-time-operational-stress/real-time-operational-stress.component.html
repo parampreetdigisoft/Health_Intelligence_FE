@@ -92,7 +92,7 @@
             <i class="bi bi-exclamation-triangle-fill"></i> Alert
           </div>
           <div class="signal_card_header">
-            <div class="signal_icon_ring" [ngClass]="getConditionClass(question.aiScore)"
+            <div class="signal_icon_ring" [ngClass]="getDisplayConditionClass(question.aiScore, question.aiUpdatedAt)"
               [style.--ring-value]="getSignalProgress(question.aiScore) + '%'">
               <div class="signal_icon_well">
                 <i class="bi" [ngClass]="getQuestionIconClass(question)"></i>
@@ -100,8 +100,8 @@
             </div>
             <div class="signal_header_meta">
               <div class="signal_top">
-                <span class="condition_badge" [ngClass]="getConditionClass(question.aiScore)">
-                  {{ getInterpretationConditionByScore(question.aiScore).condition || (hasScore(question.aiScore) ? 'Stable' : 'No Data') }}
+                <span class="condition_badge" [ngClass]="getDisplayConditionClass(question.aiScore, question.aiUpdatedAt)">
+                  {{ getDisplayCondition(question.aiScore, question.aiUpdatedAt).condition || (hasScore(question.aiScore) ? 'Stable' : 'No Data') }}
                 </span>
               </div>
               <h4>{{ getQuestionName(question) }}</h4>
@@ -109,36 +109,42 @@
           </div>
           <div class="signal_value_row">
             <span class="signal_label" matTooltip="AI">🤖: </span>
-            <div class="score_value">  
-            <span class="signal_value">{{ formatScore(question.aiScore) }} </span>
-            <span class="signal_value_unit" *ngIf="hasScore(question.aiScore)">/ 100</span>
+            <div class="score_value">
+              <span class="signal_value">{{ formatScore(question.aiScore) }}</span>
+              <span class="signal_value_unit" *ngIf="hasScore(question.aiScore)">/ 100</span>
+            </div>
           </div>
-           <div class="signal_lastUpdated"> 
+          <div class="signal_freshness_row" *ngIf="hasScore(question.aiScore)">
             <span class="status_badge" [ngClass]="getUpdateStatus(question.aiUpdatedAt).class"
-           matTooltip="{{(question.aiUpdatedAt | date:'medium')}}"> 
-            {{ getUpdateStatus(question.aiUpdatedAt).label }}
-           </span>
+              matTooltip="{{(question.aiUpdatedAt | date:'medium')}}">
+              <i class="bi" [ngClass]="isCarriedForward(question.aiUpdatedAt) ? 'bi-clock-history' : 'bi-broadcast'"></i>
+              {{ getUpdateStatus(question.aiUpdatedAt).label }}
+            </span>
+            <span class="signal_verified_meta">{{ getLastVerifiedLabel(question.aiUpdatedAt) }}</span>
           </div>
-          </div>
-          <div class="progress_track" *ngIf="hasScore(question.aiScore)">
+          <div class="progress_track" *ngIf="hasScore(question.aiScore)"
+            [class.progress_track--carried]="isCarriedForward(question.aiUpdatedAt)">
             <div class="progress_fill animated shimmer" [style.width.%]="getSignalProgress(question.aiScore)"></div>
           </div>
           <p class="signal_no_data" *ngIf="!hasScore(question.aiScore)">Score not available for this indicator yet.</p>
-        
+
           <div class="signal_value_row">
             <span class="signal_label" matTooltip="Manual">👤: </span>
-            <div class="score_value">  
-            <span class="signal_value">{{ formatScore(question.evaluationScore) }} </span>
-            <span class="signal_value_unit" *ngIf="hasScore(question.evaluationScore)">/ 100</span>
+            <div class="score_value">
+              <span class="signal_value">{{ formatScore(question.evaluationScore) }}</span>
+              <span class="signal_value_unit" *ngIf="hasScore(question.evaluationScore)">/ 100</span>
+            </div>
           </div>
-           <div class="signal_lastUpdated"> 
+          <div class="signal_freshness_row" *ngIf="hasScore(question.evaluationScore)">
             <span class="status_badge" [ngClass]="getUpdateStatus(question.evaluationUpdatedAt).class"
-            matTooltip="{{(question.evaluationUpdatedAt | date:'medium')}}"> 
-            {{ getUpdateStatus(question.evaluationUpdatedAt).label }}
-           </span>
+              matTooltip="{{(question.evaluationUpdatedAt | date:'medium')}}">
+              <i class="bi" [ngClass]="isCarriedForward(question.evaluationUpdatedAt) ? 'bi-clock-history' : 'bi-broadcast'"></i>
+              {{ getUpdateStatus(question.evaluationUpdatedAt).label }}
+            </span>
+            <span class="signal_verified_meta">{{ getLastVerifiedLabel(question.evaluationUpdatedAt) }}</span>
           </div>
-          </div>
-          <div class="progress_track" *ngIf="hasScore(question.evaluationScore)">
+          <div class="progress_track" *ngIf="hasScore(question.evaluationScore)"
+            [class.progress_track--carried]="isCarriedForward(question.evaluationUpdatedAt)">
             <div class="progress_fill animated shimmer" [style.width.%]="getSignalProgress(question.evaluationScore)"></div>
           </div>
           <p class="signal_no_data" *ngIf="!hasScore(question.evaluationScore)">Score not available for this indicator yet.</p>
@@ -226,63 +232,67 @@
       </div>
       <!-- BODY -->
       <div class="modal-body">
+        <!-- ================= SPLIT SECTION ================= -->
         <div class="ai_manual_split">
           <!-- ================= AI SIDE ================= -->
           <div class="split_card ai_card">
             <div class="meta_row">
               <strong class="meta_label">🤖 AI Details :</strong>
-              <span class="meta_value" matTooltip="Last Updated Date">
+              <span class="meta_value">
                 {{ formatDate(selectedQuestion.aiUpdatedAt) }}
               </span>
             </div>
             <div class="detail_item">
               <span>Score</span>
-              <strong matTooltip="Score based on AI evaluation">{{ formatScore(selectedQuestion.aiScore) }}/100</strong>
+              <strong>{{ formatScore(selectedQuestion.aiScore) }}/100</strong>
             </div>
-
             <div class="detail_item">
               <span>Condition</span>
-              <strong matTooltip="Condition based on AI score">{{ getInterpretationConditionByScore(selectedQuestion.aiScore).condition || 'No Data' }}</strong>
+              <strong>{{ getDisplayCondition(selectedQuestion.aiScore, selectedQuestion.aiUpdatedAt).condition || 'No Data' }}</strong>
             </div>
-
+            <div class="detail_item">
+              <span>Freshness</span>
+              <strong>{{ getUpdateStatus(selectedQuestion.aiUpdatedAt).label }} · {{ getLastVerifiedLabel(selectedQuestion.aiUpdatedAt) }}</strong>
+            </div>
             <div class="detail_item">
               <span>Indicator</span>
-              <strong matTooltip="Indicator description">{{ selectedQuestion.questionDescription }}</strong>
+              <strong>{{ selectedQuestion.questionDescription }}</strong>
             </div>
-
             <div class="detail_item full">
               <span>Interpretation</span>
-              <p matTooltip="Interpretation based on AI score"> {{ getInterpretationConditionByScore(selectedQuestion.aiScore).description }}</p>
+              <p> {{ getDisplayCondition(selectedQuestion.aiScore, selectedQuestion.aiUpdatedAt).description }}</p>
             </div>
-
           </div>
           <div class="split_divider">
             ||
           </div>
-
           <!-- ================= MANUAL SIDE ================= -->
           <div class="split_card manual_card">
              <div class="meta_row">
               <strong class="meta_label">👤 Manual Details :</strong>
-              <span class="meta_value" matTooltip="Last Updated Date">
+              <span class="meta_value">
                  {{ formatDate(selectedQuestion.evaluationUpdatedAt) }}
                  </span>
                 </div>
             <div class="detail_item">
               <span>Score</span>
-              <strong matTooltip="Score based on evaluation">{{ formatScore(selectedQuestion.evaluationScore) }}/100</strong>
+              <strong>{{ formatScore(selectedQuestion.evaluationScore) }}/100</strong>
             </div>
             <div class="detail_item">
               <span>Condition</span>
-              <strong matTooltip="Condition based on evaluation score">{{getInterpretationConditionByScore(selectedQuestion.evaluationScore).condition || 'No Data' }}</strong>
+              <strong>{{ getDisplayCondition(selectedQuestion.evaluationScore, selectedQuestion.evaluationUpdatedAt).condition || 'No Data' }}</strong>
+            </div>
+            <div class="detail_item">
+              <span>Freshness</span>
+              <strong>{{ getUpdateStatus(selectedQuestion.evaluationUpdatedAt).label }} · {{ getLastVerifiedLabel(selectedQuestion.evaluationUpdatedAt) }}</strong>
             </div>
             <div class="detail_item">
               <span>Indicator</span>
-              <strong matTooltip="Indicator description">{{ selectedQuestion.questionDescription }}</strong>
+              <strong>{{ selectedQuestion.questionDescription }}</strong>
             </div>
            <div class="detail_item full">
               <span>Interpretation</span>
-                 <p matTooltip="Interpretation based on evaluation score"> {{ getInterpretationConditionByScore(selectedQuestion.evaluationScore).description }}</p>
+                 <p> {{ getDisplayCondition(selectedQuestion.evaluationScore, selectedQuestion.evaluationUpdatedAt).description }}</p>
             </div>
           </div>
         </div>

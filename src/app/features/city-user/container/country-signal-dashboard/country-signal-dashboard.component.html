@@ -92,7 +92,7 @@
             <i class="bi bi-exclamation-triangle-fill"></i> Alert
           </div>
           <div class="signal_card_header">
-            <div class="signal_icon_ring" [ngClass]="getConditionClass(question.aiScore)"
+            <div class="signal_icon_ring" [ngClass]="getDisplayConditionClass(question.aiScore, question.aiUpdatedAt)"
               [style.--ring-value]="getSignalProgress(question.aiScore) + '%'">
               <div class="signal_icon_well">
                 <i class="bi" [ngClass]="getQuestionIconClass(question)"></i>
@@ -100,8 +100,8 @@
             </div>
             <div class="signal_header_meta">
              <div class="signal_top">
-                <span class="condition_badge" [ngClass]="getConditionClass(question.aiScore)">
-                  {{ getInterpretationConditionByScore(question.aiScore).condition || (hasScore(question.aiScore) ? 'Stable' : 'No Data') }}
+                <span class="condition_badge" [ngClass]="getDisplayConditionClass(question.aiScore, question.aiUpdatedAt)">
+                  {{ getDisplayCondition(question.aiScore, question.aiUpdatedAt).condition || (hasScore(question.aiScore) ? 'Stable' : 'No Data') }}
                 </span>
               </div>
               <h4>{{ getQuestionName(question) }}</h4>
@@ -111,12 +111,20 @@
             <span class="signal_value">{{ formatScore(question.aiScore) }}</span>
             <span class="signal_value_unit" *ngIf="hasScore(question.aiScore)">/ 100</span>
           </div>
-          <div class="progress_track" *ngIf="hasScore(question.aiScore)">
+          <div class="signal_freshness_row" *ngIf="hasScore(question.aiScore)">
+            <span class="status_badge" [ngClass]="getUpdateStatus(question.aiUpdatedAt).class">
+              <i class="bi" [ngClass]="isCarriedForward(question.aiUpdatedAt) ? 'bi-clock-history' : 'bi-broadcast'"></i>
+              {{ getUpdateStatus(question.aiUpdatedAt).label }}
+            </span>
+            <span class="signal_verified_meta">{{ getLastVerifiedLabel(question.aiUpdatedAt) }}</span>
+          </div>
+          <div class="progress_track" *ngIf="hasScore(question.aiScore)"
+            [class.progress_track--carried]="isCarriedForward(question.aiUpdatedAt)">
             <div class="progress_fill animated shimmer" [style.width.%]="getSignalProgress(question.aiScore)"></div>
           </div>
           <p class="signal_no_data" *ngIf="!hasScore(question.aiScore)">Score not available for this indicator yet.</p>
           <p class="signal_interpretation_preview" *ngIf="hasScore(question.aiScore)">
-            {{ getInterpretationConditionByScore(question.aiScore).description }}
+            {{ getDisplayCondition(question.aiScore, question.aiUpdatedAt).description }}
           </p>
           <span class="signal_view_hint"><i class="bi bi-box-arrow-up-right"></i> View details</span>
         </div>
@@ -207,10 +215,14 @@
           </div>
           <div class="signal_detail_stat">
             <span>Condition</span>
-            <strong [ngClass]="getConditionClass(selectedQuestion.aiScore)">
-              {{ getInterpretationConditionByScore(selectedQuestion.aiScore).condition || (hasScore(selectedQuestion.aiScore) ? 'Stable' : 'No Data') }}
+            <strong [ngClass]="getDisplayConditionClass(selectedQuestion.aiScore, selectedQuestion.aiUpdatedAt)">
+              {{ getDisplayCondition(selectedQuestion.aiScore, selectedQuestion.aiUpdatedAt).condition || (hasScore(selectedQuestion.aiScore) ? 'Stable' : 'No Data') }}
             </strong>
           </div>
+        </div>
+        <div class="signal_detail_block">
+          <h6><i class="bi bi-clock-history"></i> Freshness</h6>
+          <p>{{ getUpdateStatus(selectedQuestion.aiUpdatedAt).label }} · {{ getLastVerifiedLabel(selectedQuestion.aiUpdatedAt) }}</p>
         </div>
         <div class="signal_detail_block">
           <h6><i class="bi bi-card-text"></i> Indicator</h6>
@@ -219,7 +231,7 @@
         <div class="signal_detail_block signal_detail_block--action">
           <h6><i class="bi bi-compass"></i> Interpretation</h6>
           <!-- <p>{{ selectedQuestion.interpretation || 'No interpretation available.' }}</p> -->
-          <p> {{ getInterpretationConditionByScore(selectedQuestion.aiScore).description }}</p>
+          <p> {{ getDisplayCondition(selectedQuestion.aiScore, selectedQuestion.aiUpdatedAt).description }}</p>
         </div>
       </div>
     </div>

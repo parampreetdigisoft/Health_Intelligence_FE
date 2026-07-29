@@ -92,7 +92,7 @@
             <i class="bi bi-exclamation-triangle-fill"></i> Alert
           </div>
           <div class="signal_card_header">
-            <div class="signal_icon_ring" [ngClass]="getConditionClass(question.evaluationScore)"
+            <div class="signal_icon_ring" [ngClass]="getDisplayConditionClass(question.evaluationScore, question.evaluationUpdatedAt)"
               [style.--ring-value]="getSignalProgress(question.evaluationScore) + '%'">
               <div class="signal_icon_well">
                 <i class="bi" [ngClass]="getQuestionIconClass(question)"></i>
@@ -100,8 +100,8 @@
             </div>
             <div class="signal_header_meta">
              <div class="signal_top">
-                <span class="condition_badge" [ngClass]="getConditionClass(question.evaluationScore)">
-                  {{ getInterpretationConditionByScore(question.evaluationScore).condition || (hasScore(question.evaluationScore) ? 'Stable' : 'No Data') }}
+                <span class="condition_badge" [ngClass]="getDisplayConditionClass(question.evaluationScore, question.evaluationUpdatedAt)">
+                  {{ getDisplayCondition(question.evaluationScore, question.evaluationUpdatedAt).condition || (hasScore(question.evaluationScore) ? 'Stable' : 'No Data') }}
                 </span>
               </div>
               <h4>{{ getQuestionName(question) }}</h4>
@@ -113,19 +113,22 @@
               <span class="signal_value">{{ formatScore(question.evaluationScore) }}</span>
               <span class="signal_value_unit" *ngIf="hasScore(question.evaluationScore)">/ 100</span>
             </div>
-            <div class="signal_lastUpdated">
-              <span class="status_badge" [ngClass]="getUpdateStatus(question.evaluationUpdatedAt).class"
-                matTooltip="{{ question.evaluationUpdatedAt ? (question.evaluationUpdatedAt | date:'medium') : '' }}">
-                {{ getUpdateStatus(question.evaluationUpdatedAt).label }}
-              </span>
-            </div>
           </div>
-          <div class="progress_track" *ngIf="hasScore(question.evaluationScore)">
+          <div class="signal_freshness_row" *ngIf="hasScore(question.evaluationScore)">
+            <span class="status_badge" [ngClass]="getUpdateStatus(question.evaluationUpdatedAt).class"
+              matTooltip="{{ question.evaluationUpdatedAt ? (question.evaluationUpdatedAt | date:'medium') : '' }}">
+              <i class="bi" [ngClass]="isCarriedForward(question.evaluationUpdatedAt) ? 'bi-clock-history' : 'bi-broadcast'"></i>
+              {{ getUpdateStatus(question.evaluationUpdatedAt).label }}
+            </span>
+            <span class="signal_verified_meta">{{ getLastVerifiedLabel(question.evaluationUpdatedAt) }}</span>
+          </div>
+          <div class="progress_track" *ngIf="hasScore(question.evaluationScore)"
+            [class.progress_track--carried]="isCarriedForward(question.evaluationUpdatedAt)">
             <div class="progress_fill animated shimmer" [style.width.%]="getSignalProgress(question.evaluationScore)"></div>
           </div>
           <p class="signal_no_data" *ngIf="!hasScore(question.evaluationScore)">Score not available for this indicator yet.</p>
           <p class="signal_interpretation_preview" *ngIf="hasScore(question.evaluationScore)">
-            {{ getInterpretationConditionByScore(question.evaluationScore).description }}
+            {{ getDisplayCondition(question.evaluationScore, question.evaluationUpdatedAt).description }}
           </p>
           <span class="signal_view_hint"><i class="bi bi-box-arrow-up-right"></i> View details</span>
         </div>
@@ -216,10 +219,14 @@
           </div>
           <div class="signal_detail_stat">
             <span>Condition</span>
-            <strong [ngClass]="getConditionClass(selectedQuestion.evaluationScore)">
-              {{ getInterpretationConditionByScore(selectedQuestion.evaluationScore).condition || (hasScore(selectedQuestion.evaluationScore) ? 'Stable' : 'No Data') }}
+            <strong [ngClass]="getDisplayConditionClass(selectedQuestion.evaluationScore, selectedQuestion.evaluationUpdatedAt)">
+              {{ getDisplayCondition(selectedQuestion.evaluationScore, selectedQuestion.evaluationUpdatedAt).condition || (hasScore(selectedQuestion.evaluationScore) ? 'Stable' : 'No Data') }}
             </strong>
           </div>
+        </div>
+        <div class="signal_detail_block">
+          <h6><i class="bi bi-clock-history"></i> Freshness</h6>
+          <p>{{ getUpdateStatus(selectedQuestion.evaluationUpdatedAt).label }} · {{ getLastVerifiedLabel(selectedQuestion.evaluationUpdatedAt) }}</p>
         </div>
         <div class="signal_detail_block">
           <h6><i class="bi bi-card-text"></i> Indicator</h6>
@@ -228,7 +235,7 @@
         <div class="signal_detail_block signal_detail_block--action">
           <h6><i class="bi bi-compass"></i> Interpretation</h6>
           <!-- <p>{{ selectedQuestion.interpretation || 'No interpretation available.' }}</p> -->
-          <p> {{ getInterpretationConditionByScore(selectedQuestion.evaluationScore).description }}</p>
+          <p> {{ getDisplayCondition(selectedQuestion.evaluationScore, selectedQuestion.evaluationUpdatedAt).description }}</p>
         </div>
       </div>
     </div>
