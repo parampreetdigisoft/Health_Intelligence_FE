@@ -92,7 +92,8 @@
             <i class="bi bi-exclamation-triangle-fill"></i> Alert
           </div>
           <div class="signal_card_header">
-            <div class="signal_icon_ring" [style.--ring-value]="getSignalProgress(question.aiScore) + '%'">
+            <div class="signal_icon_ring" [ngClass]="getConditionClass(question.aiScore)"
+              [style.--ring-value]="getSignalProgress(question.aiScore) + '%'">
               <div class="signal_icon_well">
                 <i class="bi" [ngClass]="getQuestionIconClass(question)"></i>
               </div>
