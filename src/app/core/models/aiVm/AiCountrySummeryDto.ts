@@ -46,6 +46,8 @@ export interface AiCountrySummeryDto {
   keyDevelopments: string | null;
   criticalRisks: string | null;
   gaps: string | null;
+  keyFindings: string | null;
+  recommendations: string | null;
 
   updatedAt: Date;
   isVerified: boolean;

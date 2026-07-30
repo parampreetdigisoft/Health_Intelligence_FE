@@ -9,6 +9,8 @@ export interface UpdateAICountryScoreDto {
   keyDevelopments?: string | null;
   criticalRisks?: string | null;
   gaps?: string | null;
+  keyFindings?: string | null;
+  recommendations?: string | null;
   structuralEvidence?: string | null;
   operationalEvidence?: string | null;
   outcomeEvidence?: string | null;
