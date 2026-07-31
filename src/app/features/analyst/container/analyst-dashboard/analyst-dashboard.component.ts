@@ -187,12 +187,12 @@ export class AnalystDashboardComponent implements OnInit {
     let option: Partial<ApexChartOptions> = {
       series: [
         {
-          name: "Evaluation Progress",
+          name: "Evaluation Score",
           data: evaluationSeries,
           color: evaluationColor
         },
         {
-          name: "AI Progress",
+          name: "AI Score",
           data: aiSeries,
           color: aiColor
         }
@@ -253,7 +253,7 @@ export class AnalystDashboardComponent implements OnInit {
         max: 100,
         decimalsInFloat: 0,
         title: {
-          text: "Submission  Progress",
+          text: "Submission  Score",
           style: { fontSize: "13px", fontWeight: 600 }
         }
       },
@@ -402,7 +402,7 @@ export class AnalystDashboardComponent implements OnInit {
     const evaluatorSeries = data.map(x => x.evaluationValue);
     this.chartPillarOptions = {
       series: [{
-        name: 'AI Progress',
+        name: 'AI Score',
         data: aiSeries
       },
       {
@@ -544,7 +544,7 @@ export class AnalystDashboardComponent implements OnInit {
           const avgScore = ((progressPercent + evaluatorProgressPercent) / 2);
 
           const statusText = avgScore >= 75 ? 'Excellent Performance' :
-            avgScore >= 50 ? 'Strong Progress' :
+            avgScore >= 50 ? 'Strong Score' :
               avgScore >= 25 ? 'Steady Growth' : 'Early Stage';
 
           const statusIcon = avgScore >= 75 ? '🌟' :
@@ -617,7 +617,7 @@ export class AnalystDashboardComponent implements OnInit {
                 </div>
               </div>
 
-              <!-- Progress Bar -->
+              <!-- Score Bar -->
               <div style="margin-bottom: 14px;">
                 <div style="
                   display: flex;

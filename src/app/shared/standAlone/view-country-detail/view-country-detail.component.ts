@@ -334,14 +334,14 @@ export class ViewCountryDetailComponent implements OnChanges {
             },
             total: {
               show: true,
-              label: "Avg Progress",
+              label: "Avg Score",
               formatter: () => `${avgProgress.toFixed(2)}`,
             }
           }
         }
       },
       colors: ["#51eea5", "#486363", "#383836d9", "#099176"],
-      labels: ["AI Progress", "Evaluator Progress", "Discrepancy", "Avg Progress"],
+      labels: ["AI Score", "Evaluator Score", "Discrepancy", "Avg Score"],
       legend: {
         show: true,
         floating: true,
