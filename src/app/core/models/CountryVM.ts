@@ -13,6 +13,7 @@ export interface CountryVM extends AddUpdateCountryDto {
   aiScore?: number; 
   selected:boolean;
   assessmentPhase:AssessmentPhase;
+  aiCompletionRate?: number; 
 }
 export interface AddUpdateCountryDto {
   countryID: number;

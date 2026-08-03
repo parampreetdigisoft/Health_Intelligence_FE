@@ -208,11 +208,36 @@ export class ViewCountryDetailComponent implements OnChanges {
     });
   }
 
+  private static readonly LIST_FIELDS = new Set([
+    'keyDevelopments',
+    'criticalRisks',
+    'gaps',
+    'keyFindings',
+    'recommendations',
+  ]);
+
   getFieldValue(key: string): string | number | null {
+    let value: string | number | null;
     if (this.editMode && key in this.draft) {
-      return this.draft[key];
+      value = this.draft[key];
+    } else {
+      value = (this.country as any)?.[key] ?? null;
     }
-    return (this.country as any)?.[key] ?? null;
+    if (typeof value === 'string' && ViewCountryDetailComponent.LIST_FIELDS.has(key)) {
+      return this.normalizeNumberedListText(value);
+    }
+    return value;
+  }
+
+  /** Convert legacy "||" / mid-line "2)" markers so each point starts on a new line. */
+  private normalizeNumberedListText(text: string): string {
+    return text
+      .replace(/\r\n/g, '\n')
+      .replace(/\r/g, '\n')
+      .replace(/\s*\|\|\s*/g, '\n')
+      .replace(/\s+(?=\d+\))/g, '\n')
+      .replace(/\n{2,}/g, '\n')
+      .trim();
   }
 
   setFieldValue(key: string, value: string | number | null) {

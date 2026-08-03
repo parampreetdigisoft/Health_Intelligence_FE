@@ -103,7 +103,12 @@ export class KPIAnalysisComponent implements OnInit {
     this.getAITrustLevels();
   }
   getSelectedCountry() {
-    return this.countries?.find(x => x.countryID == this.selectedCountry);
+    let country  = this.countries?.find(x => x.countryID == this.selectedCountry);
+    if(!country) return;
+
+    country.aiScore = this.selectedAiCountryPillar?.aiScore ?? 0;
+    country.aiCompletionRate = this.selectedAiCountryPillar?.aiCompletionRate ?? 0;
+    return  country;
   }
 
   getAITrustLevels() {
