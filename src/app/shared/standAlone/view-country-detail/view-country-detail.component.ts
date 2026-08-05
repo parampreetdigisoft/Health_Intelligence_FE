@@ -21,9 +21,10 @@ import { UserRole } from 'src/app/core/enums/UserRole';
 import { AiEditToolbarComponent } from 'src/app/shared/standAlone/ai-edit-toolbar/ai-edit-toolbar.component';
 import { AiEditableFieldComponent } from 'src/app/shared/standAlone/ai-editable-field/ai-editable-field.component';
 import { AiEditableFieldConfig, UpdateAICountryScoreDto } from 'src/app/core/models/aiVm/UpdateAiScoreDtos';
-import { AiComputationService } from 'src/app/core/services/ai-computation.service';
+import { AiEditService } from 'src/app/core/services/ai-edit-audit.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { FormsModule } from '@angular/forms';
+import { AIEditAccessDto } from 'src/app/core/models/aiVm/AiEditDtos';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -91,17 +92,26 @@ export class ViewCountryDetailComponent implements OnChanges {
 
   router = inject(Router);
   userService = inject(UserService);
-  aiComputationService = inject(AiComputationService);
+  aiEditService = inject(AiEditService);
   toaster = inject(ToasterService);
 
   editMode = false;
   saving = false;
+  submitting = false;
+  requesting = false;
+  editAccess: AIEditAccessDto | null = null;
   draft: Record<string, string | number | null> = {};
   evidenceFields = COUNTRY_EVIDENCE_FIELDS;
 
   get canEdit(): boolean {
     const role = this.userService.userInfo?.role;
-    return role === UserRole.Admin || role === UserRole.Analyst;
+    if (role === UserRole.Admin) return true;
+    if (role === UserRole.Analyst) return !!this.editAccess?.canEdit;
+    return false;
+  }
+
+  get isAnalyst(): boolean {
+    return this.userService.userInfo?.role === UserRole.Analyst;
   }
 
   get averageProgress(): number {
@@ -123,8 +133,72 @@ export class ViewCountryDetailComponent implements OnChanges {
     if (changes['country']) {
       this.editMode = false;
       this.resetDraft();
+      this.loadEditAccess();
     }
     this.ApexGetPieOptions();
+  }
+
+  loadEditAccess() {
+    if (!this.country?.countryID || !this.country?.year) {
+      this.editAccess = null;
+      return;
+    }
+    const role = this.userService.userInfo?.role;
+    if (role !== UserRole.Admin && role !== UserRole.Analyst) {
+      this.editAccess = null;
+      return;
+    }
+    this.aiEditService.getEditAccess(this.country.countryID, this.country.year).subscribe({
+      next: (res) => {
+        this.editAccess = res.succeeded ? (res.result ?? null) : null;
+      },
+      error: () => {
+        this.editAccess = null;
+      }
+    });
+  }
+
+  requestPermission() {
+    if (!this.country) return;
+    this.requesting = true;
+    this.aiEditService.requestPermission({
+      countryID: this.country.countryID,
+      year: this.country.year
+    }).subscribe({
+      next: (res) => {
+        this.requesting = false;
+        if (res.succeeded) {
+          this.toaster.showSuccess(res.messages?.join(', ') || 'Edit permission requested.');
+          this.loadEditAccess();
+        } else {
+          this.toaster.showError(res.errors?.join(', ') || 'Failed to request permission.');
+        }
+      },
+      error: () => {
+        this.requesting = false;
+        this.toaster.showError('Failed to request permission.');
+      }
+    });
+  }
+
+  submitDraft() {
+    if (!this.editAccess?.sessionID) return;
+    this.submitting = true;
+    this.aiEditService.submitSession(this.editAccess.sessionID).subscribe({
+      next: (res) => {
+        this.submitting = false;
+        if (res.succeeded) {
+          this.toaster.showSuccess(res.messages?.join(', ') || 'Draft submitted for admin approval.');
+          this.loadEditAccess();
+        } else {
+          this.toaster.showError(res.errors?.join(', ') || 'Failed to submit draft.');
+        }
+      },
+      error: () => {
+        this.submitting = false;
+        this.toaster.showError('Failed to submit draft.');
+      }
+    });
   }
 
   viewPillars() {
@@ -188,15 +262,24 @@ export class ViewCountryDetailComponent implements OnChanges {
     };
 
     this.saving = true;
-    this.aiComputationService.updateAICountryScore(payload).subscribe({
+    this.aiEditService.updateAICountryScore(payload).subscribe({
       next: (res) => {
         this.saving = false;
         if (res.succeeded) {
-          this.applyDraftToCountry();
-          this.editMode = false;
-          this.ApexGetPieOptions();
+          if (this.isAnalyst) {
+            // Show this analyst's draft values locally; live AI DB stays unchanged until admin approves.
+            this.applyDraftToCountry();
+            this.editMode = false;
+            this.resetDraft();
+            this.loadEditAccess();
+            this.dataSaved.emit();
+          } else {
+            this.applyDraftToCountry();
+            this.editMode = false;
+            this.ApexGetPieOptions();
+            this.dataSaved.emit();
+          }
           this.toaster.showSuccess(res.messages?.join(', ') || 'Changes saved successfully.');
-          this.dataSaved.emit();
         } else {
           this.toaster.showError(res.errors?.join(', ') || 'Failed to save changes.');
         }

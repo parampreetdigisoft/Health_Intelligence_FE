@@ -12,6 +12,17 @@
 		data-bs-dismiss="offcanvas"></button>
 </div>
 
+<div class="ai-edit-access-banner" *ngIf="isAnalyst && editAccess">
+	<p>{{ editAccess.message }}</p>
+	<button *ngIf="editAccess.hasPendingDraft && editAccess.sessionID"
+		type="button"
+		class="common_button"
+		[disabled]="submitting"
+		(click)="submitDraft()">
+		Submit all drafts for admin approval
+	</button>
+</div>
+
 
 <ng-container>
 	<div [class.ai-edit-surface]="editMode"

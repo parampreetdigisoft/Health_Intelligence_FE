@@ -12,6 +12,26 @@
 		data-bs-dismiss="offcanvas"></button>
 </div>
 
+<div class="ai-edit-access-banner" *ngIf="isAnalyst && editAccess">
+	<p>{{ editAccess.message }}</p>
+	<div class="ai-edit-access-actions">
+		<button *ngIf="!editAccess.canEdit && editAccess.permissionStatus !== 'PendingRequest'"
+			type="button"
+			class="common_button"
+			[disabled]="requesting"
+			(click)="requestPermission()">
+			Request edit permission
+		</button>
+		<button *ngIf="editAccess.hasPendingDraft && editAccess.sessionID"
+			type="button"
+			class="common_button"
+			[disabled]="submitting"
+			(click)="submitDraft()">
+			Submit all drafts for admin approval
+		</button>
+	</div>
+</div>
+
 
 <ng-container>
 	<div class="city_piller">

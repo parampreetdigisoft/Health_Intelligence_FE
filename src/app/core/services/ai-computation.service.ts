@@ -119,20 +119,4 @@ export class AiComputationService {
     return this.http
       .ImportFile(`AiComputation/downloadDocument/` + countryDocumentID);
   }
-
-  public updateAICountryScore(payload: UpdateAICountryScoreDto) {
-    return this.http.post(`AiComputation/updateAICountryScore`, payload).pipe(map(x => x as ResultResponseDto<boolean>));
-  }
-
-  public updateAIPillarScore(payload: UpdateAIPillarScoreDto) {
-    return this.http.post(`AiComputation/updateAIPillarScore`, payload).pipe(map(x => x as ResultResponseDto<boolean>));
-  }
-
-  public updateAIDataSourceCitation(payload: UpdateAIDataSourceCitationDto) {
-    return this.http.post(`AiComputation/updateAIDataSourceCitation`, payload).pipe(map(x => x as ResultResponseDto<boolean>));
-  }
-
-  public updateAIEstimatedQuestionScore(payload: UpdateAIEstimatedQuestionScoreDto) {
-    return this.http.post(`AiComputation/updateAIEstimatedQuestionScore`, payload).pipe(map(x => x as ResultResponseDto<boolean>));
-  }
 }

@@ -11,9 +11,10 @@ import { UserRole } from 'src/app/core/enums/UserRole';
 import { AiEditToolbarComponent } from 'src/app/shared/standAlone/ai-edit-toolbar/ai-edit-toolbar.component';
 import { AiEditableFieldComponent } from 'src/app/shared/standAlone/ai-editable-field/ai-editable-field.component';
 import { AiEditableFieldConfig, UpdateAIEstimatedQuestionScoreDto } from 'src/app/core/models/aiVm/UpdateAiScoreDtos';
-import { AiComputationService } from 'src/app/core/services/ai-computation.service';
+import { AiEditService } from 'src/app/core/services/ai-edit-audit.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { FormsModule } from '@angular/forms';
+import { AIEditAccessDto } from 'src/app/core/models/aiVm/AiEditDtos';
 
 const QUESTION_TEXT_FIELDS: AiEditableFieldConfig[] = [
   { key: 'evidenceSummary', label: 'Evidence Summary', type: 'textarea' },
@@ -64,18 +65,26 @@ export class ViewAiQuestionDetailsComponent implements OnChanges {
 
   urlBase = environment.apiUrl;
   userService = inject(UserService);
-  aiComputationService = inject(AiComputationService);
+  aiEditService = inject(AiEditService);
   toaster = inject(ToasterService);
 
   editMode = false;
   saving = false;
+  submitting = false;
+  editAccess: AIEditAccessDto | null = null;
   draft: Record<string, string | number | null> = {};
   textFields = QUESTION_TEXT_FIELDS;
   sourceFields = QUESTION_SOURCE_FIELDS;
 
   get canEdit(): boolean {
     const role = this.userService.userInfo?.role;
-    return role === UserRole.Admin || role === UserRole.Analyst;
+    if (role === UserRole.Admin) return true;
+    if (role === UserRole.Analyst) return !!this.editAccess?.canEdit;
+    return false;
+  }
+
+  get isAnalyst(): boolean {
+    return this.userService.userInfo?.role === UserRole.Analyst;
   }
 
   get averageScore(): number {
@@ -88,7 +97,46 @@ export class ViewAiQuestionDetailsComponent implements OnChanges {
     if (changes['question']) {
       this.editMode = false;
       this.resetDraft();
+      this.loadEditAccess();
     }
+  }
+
+  loadEditAccess() {
+    if (!this.question?.countryID || !this.question?.year) {
+      this.editAccess = null;
+      return;
+    }
+    const role = this.userService.userInfo?.role;
+    if (role !== UserRole.Admin && role !== UserRole.Analyst) {
+      this.editAccess = null;
+      return;
+    }
+    this.aiEditService.getEditAccess(this.question.countryID, this.question.year).subscribe({
+      next: (res) => {
+        this.editAccess = res.succeeded ? (res.result ?? null) : null;
+      },
+      error: () => { this.editAccess = null; }
+    });
+  }
+
+  submitDraft() {
+    if (!this.editAccess?.sessionID) return;
+    this.submitting = true;
+    this.aiEditService.submitSession(this.editAccess.sessionID).subscribe({
+      next: (res) => {
+        this.submitting = false;
+        if (res.succeeded) {
+          this.toaster.showSuccess(res.messages?.join(', ') || 'Draft submitted for admin approval.');
+          this.loadEditAccess();
+        } else {
+          this.toaster.showError(res.errors?.join(', ') || 'Failed to submit draft.');
+        }
+      },
+      error: () => {
+        this.submitting = false;
+        this.toaster.showError('Failed to submit draft.');
+      }
+    });
   }
 
   onImgError(event: Event) {
@@ -160,14 +208,23 @@ export class ViewAiQuestionDetailsComponent implements OnChanges {
     };
 
     this.saving = true;
-    this.aiComputationService.updateAIEstimatedQuestionScore(payload).subscribe({
+    this.aiEditService.updateAIEstimatedQuestionScore(payload).subscribe({
       next: (res) => {
         this.saving = false;
         if (res.succeeded) {
-          this.applyDraftToQuestion();
-          this.editMode = false;
+          if (this.isAnalyst) {
+            // Show this analyst's draft values locally; live AI DB stays unchanged until admin approves.
+            this.applyDraftToQuestion();
+            this.editMode = false;
+            this.resetDraft();
+            this.loadEditAccess();
+            this.dataSaved.emit();
+          } else {
+            this.applyDraftToQuestion();
+            this.editMode = false;
+            this.dataSaved.emit();
+          }
           this.toaster.showSuccess(res.messages?.join(', ') || 'Changes saved successfully.');
-          this.dataSaved.emit();
         } else {
           this.toaster.showError(res.errors?.join(', ') || 'Failed to save changes.');
         }

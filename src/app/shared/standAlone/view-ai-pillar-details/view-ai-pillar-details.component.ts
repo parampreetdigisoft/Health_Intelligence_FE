@@ -15,9 +15,10 @@ import {
   mapCitationsForUpdate,
   UpdateAIPillarScoreDto
 } from 'src/app/core/models/aiVm/UpdateAiScoreDtos';
-import { AiComputationService } from 'src/app/core/services/ai-computation.service';
+import { AiEditService } from 'src/app/core/services/ai-edit-audit.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { FormsModule } from '@angular/forms';
+import { AIEditAccessDto } from 'src/app/core/models/aiVm/AiEditDtos';
 
 const PILLAR_TEXT_FIELDS: AiEditableFieldConfig[] = [
   { key: 'evidenceSummary', label: 'Evidence Summary', type: 'textarea' },
@@ -65,19 +66,27 @@ export class ViewAiPillarDetailsComponent implements OnChanges {
 
   urlBase = environment.apiUrl;
   userService = inject(UserService);
-  aiComputationService = inject(AiComputationService);
+  aiEditService = inject(AiEditService);
   currentYear = new Date().getFullYear();
   toaster = inject(ToasterService);
 
   editMode = false;
   saving = false;
+  submitting = false;
+  editAccess: AIEditAccessDto | null = null;
   draft: Record<string, string | number | null> = {};
   citationDrafts: Record<number, Record<string, string | number | null>> = {};
   textFields = PILLAR_TEXT_FIELDS;
 
   get canEdit(): boolean {
     const role = this.userService.userInfo?.role;
-    return role === UserRole.Admin || role === UserRole.Analyst;
+    if (role === UserRole.Admin) return true;
+    if (role === UserRole.Analyst) return !!this.editAccess?.canEdit;
+    return false;
+  }
+
+  get isAnalyst(): boolean {
+    return this.userService.userInfo?.role === UserRole.Analyst;
   }
 
   get averageScore(): number {
@@ -96,7 +105,46 @@ export class ViewAiPillarDetailsComponent implements OnChanges {
     if (changes['pillar']) {
       this.editMode = false;
       this.resetDraft();
+      this.loadEditAccess();
     }
+  }
+
+  loadEditAccess() {
+    if (!this.pillar?.countryID || !this.pillar?.aiDataYear) {
+      this.editAccess = null;
+      return;
+    }
+    const role = this.userService.userInfo?.role;
+    if (role !== UserRole.Admin && role !== UserRole.Analyst) {
+      this.editAccess = null;
+      return;
+    }
+    this.aiEditService.getEditAccess(this.pillar.countryID, this.pillar.aiDataYear).subscribe({
+      next: (res) => {
+        this.editAccess = res.succeeded ? (res.result ?? null) : null;
+      },
+      error: () => { this.editAccess = null; }
+    });
+  }
+
+  submitDraft() {
+    if (!this.editAccess?.sessionID) return;
+    this.submitting = true;
+    this.aiEditService.submitSession(this.editAccess.sessionID).subscribe({
+      next: (res) => {
+        this.submitting = false;
+        if (res.succeeded) {
+          this.toaster.showSuccess(res.messages?.join(', ') || 'Draft submitted for admin approval.');
+          this.loadEditAccess();
+        } else {
+          this.toaster.showError(res.errors?.join(', ') || 'Failed to submit draft.');
+        }
+      },
+      error: () => {
+        this.submitting = false;
+        this.toaster.showError('Failed to submit draft.');
+      }
+    });
   }
 
   onImgError(event: Event) {
@@ -161,14 +209,23 @@ export class ViewAiPillarDetailsComponent implements OnChanges {
     };
 
     this.saving = true;
-    this.aiComputationService.updateAIPillarScore(payload).subscribe({
+    this.aiEditService.updateAIPillarScore(payload).subscribe({
       next: (res) => {
         this.saving = false;
         if (res.succeeded) {
-          this.applyDraftToPillar();
-          this.editMode = false;
+          if (this.isAnalyst) {
+            // Show this analyst's draft values locally; live AI DB stays unchanged until admin approves.
+            this.applyDraftToPillar();
+            this.editMode = false;
+            this.resetDraft();
+            this.loadEditAccess();
+            this.dataSaved.emit();
+          } else {
+            this.applyDraftToPillar();
+            this.editMode = false;
+            this.dataSaved.emit();
+          }
           this.toaster.showSuccess(res.messages?.join(', ') || 'Changes saved successfully.');
-          this.dataSaved.emit();
         } else {
           this.toaster.showError(res.errors?.join(', ') || 'Failed to save changes.');
         }

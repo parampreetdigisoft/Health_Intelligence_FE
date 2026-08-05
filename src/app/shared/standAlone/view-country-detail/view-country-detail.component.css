@@ -363,3 +363,21 @@ button.btn-close:focus-visible {
     margin-left: 0.35rem;
     vertical-align: middle;
 }
+.ai-edit-access-banner {
+  margin: 0 16px 12px;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+}
+
+.ai-edit-access-banner p {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: #374151;
+}
+
+.ai-edit-access-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
