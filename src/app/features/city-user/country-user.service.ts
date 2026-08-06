@@ -4,10 +4,9 @@ import { HttpService } from 'src/app/core/http/http.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { CountryVM } from '../../core/models/CountryVM';
 import { ResultResponseDto } from 'src/app/core/models/ResultResponseDto';
-import { CountryHistoryDto, CountryPillarHistoryResponseDto, GetCountriesSubmitionHistoryResponseDto, GetCountryQuestionHistoryResponseDto, UserCountryRequestDto } from 'src/app/core/models/countryHistoryDto';
+import { CountryHistoryDto, GetCountriesSubmitionHistoryResponseDto, GetCountryQuestionHistoryResponseDto, UserCountryRequestDto } from 'src/app/core/models/countryHistoryDto';
 import { PillarsVM } from 'src/app/core/models/PillersVM';
 import { GetCountryPillarHistoryRequestDto } from 'src/app/core/models/AssessmentRequest';
-import { PillarsHistoryResponse } from 'src/app/core/models/PillarsUserHistoryResponse';
 import { QuestionsByUserPillarsResponsetDto } from 'src/app/core/models/GetQuestionHistoryResponseDto ';
 import { PaginationUserRequest } from 'src/app/core/models/PaginationRequest';
 import { PaginationResponse } from 'src/app/core/models/PaginationResponse';
@@ -105,9 +104,7 @@ export class CountryUserService {
     return this.http.getWithQueryParams(`Dashboard/getResilienceScorecard`, { countryID })
       .pipe(map(x => x as ResultResponseDto<DashboardModeResponseDto>));
   }
-  
   public exportCompareCountriesCountryUsers(params: any) {
     return this.http.ImportFile(`CountryUser/ExportCompareCountries`, params);
   }
-
 }

@@ -15,12 +15,7 @@ import { AiCountrySummeryRequestPdfDto } from '../models/aiVm/AiCountrySummeryRe
 import { AITransferAssessmentRequestDto } from '../models/aiVm/AITransferAssessmentRequestDto';
 import { DownloadReportDto } from '../models/aiVm/DownloadReportDto';
 import { GetCountryDocumentResponseDto, GetCountryPillarDocumentResponseDto } from '../models/aiVm/GetCountryDocumentResponseDto';
-import {
-  UpdateAICountryScoreDto,
-  UpdateAIDataSourceCitationDto,
-  UpdateAIEstimatedQuestionScoreDto,
-  UpdateAIPillarScoreDto
-} from '../models/aiVm/UpdateAiScoreDtos';
+import { SummarizeKpiRequestDto, SummarizeKpiResponseDto } from '../models/SummarizeKpiDto';
 
 @Injectable({
   providedIn: 'root'
@@ -118,5 +113,9 @@ export class AiComputationService {
   public downloadDocument(countryDocumentID: number) {
     return this.http
       .ImportFile(`AiComputation/downloadDocument/` + countryDocumentID);
-  }
+  }  
+  
+  public summarizeKpiPerformance(params: SummarizeKpiRequestDto) {
+    return this.http.post(`Kpi/SummarizeKpiPerformance`, params).pipe(map(x=> x as ResultResponseDto<SummarizeKpiResponseDto>))
+  }    
 }
