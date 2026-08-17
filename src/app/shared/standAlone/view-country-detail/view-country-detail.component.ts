@@ -39,8 +39,6 @@ const COUNTRY_EVIDENCE_FIELDS: AiEditableFieldConfig[] = [
   { key: 'keyDevelopments', label: 'Key Developments', type: 'textarea', showInTable: true },
   { key: 'criticalRisks', label: 'Critical Risks', type: 'textarea', showInTable: true },
   { key: 'gaps', label: 'Gaps', type: 'textarea', showInTable: true },
-  { key: 'keyFindings', label: 'Key Findings', type: 'textarea', showInTable: true },
-  { key: 'recommendations', label: 'Recommendations', type: 'textarea', showInTable: true },
   { key: 'structuralEvidence', label: 'Structural Evidence', type: 'textarea', showInTable: true },
   { key: 'operationalEvidence', label: 'Operational Evidence', type: 'textarea', showInTable: true },
   { key: 'outcomeEvidence', label: 'Outcome Evidence', type: 'textarea', showInTable: true },
@@ -62,6 +60,8 @@ const COUNTRY_EVIDENCE_FIELDS: AiEditableFieldConfig[] = [
   { key: 'conflictRiskOutlook', label: 'Conflict Risk Outlook', type: 'textarea', showInTable: true },
   { key: 'strategicRecommendation', label: 'Strategic Recommendation', type: 'textarea', showInTable: true },
   { key: 'dataTransparencyNote', label: 'Data Transparency Note', type: 'textarea', showInTable: true },
+  { key: 'keyFindings', label: 'Key Findings', type: 'textarea', showInTable: true },
+  { key: 'recommendations', label: 'Recommendations', type: 'textarea', showInTable: true },
 ];
 
 @Component({
