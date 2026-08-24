@@ -25,9 +25,6 @@
               </th>
               <th *ngFor="let country of selectedLayerSig()?.countries">
                 <div class="side_city_title">{{ country?.country?.countryName }}</div>
-                <ng-container *ngIf="isCountryUser()">
-                  <span class="bold_num">Score</span>
-                </ng-container>
                 <ng-container *ngIf="!isCountryUser()">
                   <span class="bold_num side_sub_color">Evaluation</span> /
                   <span class="bold_num side_sub_color">AI</span>

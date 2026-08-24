@@ -86,6 +86,7 @@ export class CountryViewComponent {
   isCountrySelected(country: CountryVM): boolean {
     return this.selectedCountries.some(x => x.countryID === country.countryID);
   }
+  
   gotoComparision() {
     this.userDataService.compareCountry.set(this.selectedCountries);
     this.router.navigate(['/countryuser/comparision']);

@@ -50,6 +50,7 @@ export class KpiLayersComponent {
   kpiChanged() {
     this.$kpiChanged.next(true);
   }
+
   GetAnalyticalLayerResults(currentPage: any = 1) {
     this.kpiLayersResponse = undefined;
     this.isLoader = true;

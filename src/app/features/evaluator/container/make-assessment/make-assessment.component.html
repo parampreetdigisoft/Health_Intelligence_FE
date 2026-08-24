@@ -9,8 +9,8 @@
       <div class="header_btns">
         <div class="input_field">
           <select [(ngModel)]="selectedUserCountryMappingID" name="countryID" class="form-control" (change)="countryChanged()">
-            <option value="0">Select Country-Analyst</option>
-            <option *ngFor="let country of countries" [value]="country.userCountryMappingID">
+            <option [ngValue]="0">Select Country-Analyst</option>
+            <option *ngFor="let country of countries" [ngValue]="country.userCountryMappingID">
               {{ country.countryName }} - {{ country.assignedBy }}
             </option>
           </select>
@@ -35,7 +35,7 @@
         </a>
         <div class="next_btn">
           <button type="button" data-bs-toggle="modal" data-bs-target="#confirmModal" style="cursor: pointer" [disabled]="!this.selectedUserCountryMappingID || this.selectedUserCountryMappingID == 0"
-            class="common_button" (click)="isAssessementFinalized=true">
+            class="common_button" (click)="onAssessmentActionClick(true)">
             {{'Submit Assessment' }}
           </button>
         </div>
@@ -109,8 +109,8 @@
 
         <div class="next_btn"  [class.loading-bottom]="isLoader" *ngIf="this.selectedUserCountryMappingID || !(this.selectedUserCountryMappingID == 0)">
           <button type="button" data-bs-toggle="modal" data-bs-target="#confirmModal" style="cursor: pointer"
-            class="common_button" [disabled]="!this.selectedUserCountryMappingID || this.selectedUserCountryMappingID == 0">
-            {{pillerQuestions?.displayOrder == 14 ? 'Submit' :'Save & NEXT' }}
+            class="common_button" (click)="onAssessmentActionClick()" [disabled]="!this.selectedUserCountryMappingID || this.selectedUserCountryMappingID == 0">
+            {{isLastPillar ? 'Submit' : 'Save & NEXT' }}
           </button>
         </div>
       </form>
@@ -123,11 +123,11 @@
 
 <app-file-upload-modal (fileUploaded)="handleFileUpload($event)"></app-file-upload-modal>
 <app-prompt [title]="
-    pillerQuestions?.displayOrder == 14 || isAssessementFinalized? 'Submit Domain' : 'Save Domain'
+    isAssessementFinalized ? 'Submit Assessment' : 'Save Domain'
   " [message]="
-    pillerQuestions?.displayOrder == 14 || isAssessementFinalized
-      ? 'Are you sure you want to submit this country? After submission, changes can’t be made directly. To edit later, you’ll need to request it from the Analyst.'
+    isAssessementFinalized
+      ? 'Are you sure you want to submit this assessment? After submission, changes can’t be made directly. To edit later, you’ll need to request it from the Analyst.'
       : 'Are you sure you want to save this domain?'
-  " [confirmText]="pillerQuestions?.displayOrder == 14 || isAssessementFinalized ? 'Submit' : 'Save'"
-  [cancelText]="'Cancel'" (confirm)="SaveAssessment()" (cancel)="isAssessementFinalized=false">
+  " [confirmText]="isAssessementFinalized ? 'Submit' : 'Save'"
+  [cancelText]="'Cancel'" (confirm)="SaveAssessment()" (cancel)="resetAssessmentActionState()">
 </app-prompt>
