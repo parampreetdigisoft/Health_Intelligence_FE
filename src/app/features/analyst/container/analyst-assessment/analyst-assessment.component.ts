@@ -262,14 +262,18 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
             });
           }, 300);
           if (res.succeeded) {
-            if (this.pillerQuestions?.displayOrder == 14 || this.isAssessementFinalized) {
+            if (this.isAssessementFinalized) {
               this.analystService.userCountryMappingIDSubject$.next(null);
-              this.getCountryByUserIdForAssessment();
+              setTimeout(() => {
+                window.location.reload();
+              }, 300);
             } else {
-              if (this.selectedPillar)
-                this.selectedPillar = this.pillars.find(x => x.displayOrder == (Number(this.selectedPillar?.displayOrder) + 1));
+              this.selectedPillar = this.getNextPillar(
+                this.selectedPillar?.pillarID ?? this.pillerQuestions?.pillarID
+              );
               this.getQuestionsByCountryId();
             }
+            this.resetAssessmentActionState();
             this.toaster.showSuccess(res.messages.join(", "));
           } else {
             this.toaster.showError(res.errors.join(", "));
@@ -503,5 +507,49 @@ export class AnalystAssessmentComponent implements OnInit, OnDestroy {
       });
       this.autoSaveSingleAssessemnt(index);
     }
+  }
+
+  get isLastPillar(): boolean {
+    if (!this.pillerQuestions?.pillarID || this.pillars.length === 0) {
+      return false;
+    }
+    const sortedPillars = this.getSortedPillars();
+    const currentIndex = sortedPillars.findIndex(
+      (pillar) => pillar.pillarID === this.pillerQuestions?.pillarID
+    );
+
+    return currentIndex !== -1 && currentIndex === sortedPillars.length - 1;
+  }
+
+  onAssessmentActionClick(forceCountrySubmit: boolean = false): void {
+    const shouldSubmitCountry = forceCountrySubmit || this.isLastPillar;
+    this.isAssessementFinalized = shouldSubmitCountry;
+  }
+
+  resetAssessmentActionState(): void {
+    this.isAssessementFinalized = false;
+  }
+
+  private getSortedPillars(): PillarsVM[] {
+    return [...this.pillars].sort(
+      (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)
+    );
+  }
+
+  private getNextPillar(currentPillarID?: number): PillarsVM | undefined {
+    if (!currentPillarID) {
+      return undefined;
+    }
+
+    const sortedPillars = this.getSortedPillars();
+    const currentIndex = sortedPillars.findIndex(
+      (pillar) => pillar.pillarID === currentPillarID
+    );
+
+    if (currentIndex === -1 || currentIndex >= sortedPillars.length - 1) {
+      return undefined;
+    }
+
+    return sortedPillars[currentIndex + 1];
   }
 }
